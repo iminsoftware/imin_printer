@@ -1,7 +1,7 @@
 name: imin_printer
 description: It is used to print text, pictures, two-dimensional code, bar code and other functions sdk in imin printer using Android system
 version: 0.5.2
-homepage: https://github.com/asuradaSong/imin_printer
+homepage: https://github.com/iminsoftware/imin_printer
 
 environment:
   sdk: '>=3.0.6 <4.0.0' 

@@ -6,9 +6,8 @@ It is used to print text, pictures, two-dimensional code, bar code and other fun
 
 ### Resources:
 
-- [Documentation](https://pub.dev/documentation/imin_priner/imin_priner-library.html)
-- [Pub Package](https://pub.dev/packages/imin_priner)
-- [GitHub Repository](https://github.com/asuradaSong/imin_printer)
+- [Pub Package](https://pub.dev/packages/imin_printer)
+- [GitHub Repository](https://github.com/iminsoftware/imin_printer)
 
 
 #### Platform Support
