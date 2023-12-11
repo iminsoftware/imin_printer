@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.4
+- added setTextStyle method
+
+## 0.5.3
+- changed setTextStyle method
+- edited  andorid jar libs
+
 ## 0.5.2
 
 - Included printAndLineFeed method

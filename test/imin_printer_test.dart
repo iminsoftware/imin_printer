@@ -32,13 +32,13 @@ class MockIminPrinterPlatform
   Future<void> printColumnsText({required List<ColumnMaker> cols}) =>
       Future.value();
   @override
-  Future<void> printSingleBitmap(Uint8List img, {IminPrintAlign? alignment}) =>
+  Future<void> printSingleBitmap(dynamic img, {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override
-  Future<void> printSingleBitmapBlackWhite(Uint8List img) => Future.value();
+  Future<void> printSingleBitmapBlackWhite(Uint8List img, {IminBaseStyle? baseStyle }) => Future.value();
   @override
   Future<void> printMultiBitmap(List<Uint8List> imgs,
-          {IminPrintAlign? alignment}) =>
+          {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override
   Future<void> setQrCodeSize(int size) => Future.value();

@@ -94,7 +94,8 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: () async {
                           await iminPrinter.printText('居中',
-                              style: IminTextStyle(align: IminPrintAlign.center));
+                              style:
+                                  IminTextStyle(align: IminPrintAlign.center));
                         },
                         child: const Text('text alignment'))
                   ]),
@@ -128,15 +129,27 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        await iminPrinter.printText('测试打印字体样式',
+                        await iminPrinter.printText('PHOENIX POS',
                             style: IminTextStyle(
-                                fontStyle: IminFontStyle.boldItalic));
+                                space: 3,
+                                align: IminPrintAlign.center,
+                                fontSize: 28,
+                                typeface: IminTypeface.typefaceDefaultBold
+                                // fontStyle: IminFontStyle.boldItalic
+                                ));
+                        await iminPrinter.printText('Looney Tunes Tweety',
+                            style: IminTextStyle(
+                                space: 3,
+                                align: IminPrintAlign.center,
+                                fontSize: 25,
+                                // typeface: IminTypeface.typefaceDefault
+                                fontStyle: IminFontStyle.italic));
                       },
                       child: const Text('Text style')),
                   ElevatedButton(
                       onPressed: () async {
-                        Uint8List byte = await _getImageFromAsset(
-                            'assets/images/doraemon.jpg');
+                        Uint8List byte =
+                            await _getImageFromAsset('assets/images/logo.jpg');
                         await iminPrinter.printSingleBitmap(byte);
                       },
                       child: const Text('print singleBitmap'))
@@ -174,10 +187,16 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('print Text')),
                   ElevatedButton(
                       onPressed: () async {
-                        Uint8List byte =
-                            await readFileBytes('assets/images/logo.png');
-                        await iminPrinter.printSingleBitmap(byte,
-                            alignment: IminPrintAlign.center);
+                        // Uint8List byte =
+                        //     await readFileBytes('assets/images/logo.png');
+                        // await iminPrinter.printSingleBitmap(byte);
+                
+                        await iminPrinter.printSingleBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                            pictureStyle: IminPictureStyle(
+                              alignment: IminPrintAlign.center,
+                              width: 50,
+                              height: 20,
+                            ));
                       },
                       child: const Text('print singleBitmap in align'))
                 ],
@@ -239,13 +258,14 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('print barCode')),
                   ElevatedButton(
                       onPressed: () async {
-                        Uint8List byte1 = await _getImageFromAsset(
-                            'assets/images/logo.png');
+                        Uint8List byte1 =
+                            await _getImageFromAsset('assets/images/logo.png');
                         Uint8List byte2 =
                             await _getImageFromAsset('assets/images/logo.png');
 
                         await iminPrinter.printMultiBitmap([byte1, byte2],
-                            alignment: IminPrintAlign.left);
+                            pictureStyle: IminPictureStyle(
+                                alignment: IminPrintAlign.left));
                       },
                       child: const Text('print multiBitmap'))
                 ],

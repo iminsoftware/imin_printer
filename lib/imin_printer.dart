@@ -219,9 +219,10 @@ class IminPrinter {
   /// iminPrinter.printSingleBitmap(byte)
   /// ```
   /// {@end-tool}
-  Future<void> printSingleBitmap(Uint8List img, {IminPrintAlign? alignment}) {
+  Future<void> printSingleBitmap(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
     return IminPrinterPlatform.instance
-        .printSingleBitmap(img, alignment: alignment);
+        .printSingleBitmap(img, pictureStyle: pictureStyle);
   }
 
   /// print multi bitmap in your printer
@@ -235,9 +236,9 @@ class IminPrinter {
   /// ```
   /// {@end-tool}
   Future<void> printMultiBitmap(List<Uint8List> imgs,
-      {IminPrintAlign? alignment}) {
+      {IminPictureStyle? pictureStyle}) {
     return IminPrinterPlatform.instance
-        .printMultiBitmap(imgs, alignment: alignment);
+        .printMultiBitmap(imgs, pictureStyle: pictureStyle);
   }
 
   /// print single bitmap black white in your printer
@@ -249,7 +250,8 @@ class IminPrinter {
   /// iminPrinter.printSingleBitmapBlackWhite(byte)
   /// ```
   /// {@end-tool}
-  Future<void> printSingleBitmapBlackWhite(Uint8List img) {
+  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+      {IminBaseStyle? baseStyle}) {
     return IminPrinterPlatform.instance.printSingleBitmapBlackWhite(img);
   }
 

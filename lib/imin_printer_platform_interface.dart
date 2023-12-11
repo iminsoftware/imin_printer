@@ -88,16 +88,18 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('partialCut() has not been implemented.');
   }
 
-  Future<void> printSingleBitmap(Uint8List img, {IminPrintAlign? alignment}) {
+  Future<void> printSingleBitmap(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError('printSingleBitmap() has not been implemented.');
   }
 
   Future<void> printMultiBitmap(List<Uint8List> imgs,
-      {IminPrintAlign? alignment}) {
+      {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError('printMultiBitmap() has not been implemented.');
   }
 
-  Future<void> printSingleBitmapBlackWhite(Uint8List img) {
+  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+      {IminBaseStyle? baseStyle}) {
     throw UnimplementedError(
         'printSingleBitmapBlackWhite() has not been implemented.');
   }

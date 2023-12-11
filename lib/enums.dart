@@ -75,7 +75,6 @@ enum IminBarcodeType {
   const IminBarcodeType(this.type);
 }
 
-
 enum IminBarCodeToBitmapFormat {
   aztec,
   codabar,
@@ -93,4 +92,4 @@ enum IminBarCodeToBitmapFormat {
   upcA,
   upcE,
   upcEanExteNsion;
-} 
+}

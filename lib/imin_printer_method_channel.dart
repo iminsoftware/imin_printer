@@ -72,6 +72,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setTextStyle(IminFontStyle style) async {
+    logger.d('setTextStyle', style.index);
     Map<String, dynamic> arguments = <String, dynamic>{
       "style": style.index,
     };
@@ -123,11 +124,16 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     } else {
       arguments.putIfAbsent('text', () => '$text\n');
     }
-
     await methodChannel.invokeMethod<void>('printText', arguments);
     if (style != null) {
       if (style.align != null) {
         await setAlignment(IminPrintAlign.left);
+      }
+      if (style.typeface != null) {
+        await setTextTypeface(IminTypeface.typefaceDefault);
+      }
+      if (style.fontStyle != null) {
+        await setTextStyle(IminFontStyle.normal);
       }
     }
   }
@@ -297,11 +303,17 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
-  Future<void> printSingleBitmap(Uint8List img,
-      {IminPrintAlign? alignment}) async {
+  Future<void> printSingleBitmap(dynamic img,
+      {IminPictureStyle? pictureStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
-    if (alignment != null) {
-      arguments.putIfAbsent("alignment", () => alignment.index);
+    if (pictureStyle != null) {
+      if (pictureStyle.alignment != null) {
+        arguments.putIfAbsent("alignment", () => pictureStyle.alignment?.index);
+      }
+      if (pictureStyle.width != null && pictureStyle.height != null) {
+        arguments.putIfAbsent("width", () => pictureStyle.width);
+        arguments.putIfAbsent("height", () => pictureStyle.height);
+      }
     }
     arguments.putIfAbsent("bitmap", () => img);
     await methodChannel.invokeMethod<void>('printSingleBitmap', arguments);
@@ -309,19 +321,32 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> printMultiBitmap(List<Uint8List> imgs,
-      {IminPrintAlign? alignment}) async {
+      {IminPictureStyle? pictureStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
-    if (alignment != null) {
-      arguments.putIfAbsent("alignment", () => alignment.index);
+    if (pictureStyle != null) {
+      if (pictureStyle.alignment != null) {
+        arguments.putIfAbsent("alignment", () => pictureStyle.alignment?.index);
+      }
+      if (pictureStyle.width != null && pictureStyle.height != null) {
+        arguments.putIfAbsent("width", () => pictureStyle.width);
+        arguments.putIfAbsent("height", () => pictureStyle.height);
+      }
     }
-
     arguments.putIfAbsent("bitmaps", () => imgs);
     await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
   }
 
   @override
-  Future<void> printSingleBitmapBlackWhite(Uint8List img) async {
-    Map<String, dynamic> arguments = <String, dynamic>{"bitmap": img};
+  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+      {IminBaseStyle? baseStyle}) async {
+    Map<String, dynamic> arguments = <String, dynamic>{};
+    if (baseStyle != null) {
+      if (baseStyle.width != null && baseStyle.height != null) {
+        arguments.putIfAbsent("width", () => baseStyle.width);
+        arguments.putIfAbsent("height", () => baseStyle.height);
+      }
+    }
+    arguments.putIfAbsent("bitmap", () => img);
     await methodChannel.invokeMethod<void>(
         'printSingleBitmapBlackWhite', arguments);
   }

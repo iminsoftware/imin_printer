@@ -29,13 +29,11 @@ class IminQrCodeStyle {
       {this.align, this.qrSize, this.leftMargin, this.errorCorrectionLevel});
 }
 
-class IminBarCodeStyle {
-  int? width;
-  int? height;
+class IminBarCodeStyle extends IminBaseStyle {
   IminBarcodeTextPos? position;
   IminPrintAlign? align;
 
-  IminBarCodeStyle({this.width, this.height, this.align, this.position});
+  IminBarCodeStyle({this.align, this.position});
 }
 
 class IminDoubleQRCodeStyle {
@@ -45,4 +43,15 @@ class IminDoubleQRCodeStyle {
   int? version;
   IminDoubleQRCodeStyle(
       {this.level, this.text = '', this.leftMargin, this.version});
+}
+
+class IminBaseStyle {
+  int? width;
+  int? height;
+  IminBaseStyle({this.width, this.height});
+}
+
+class IminPictureStyle extends IminBaseStyle {
+  IminPrintAlign? alignment;
+  IminPictureStyle({this.alignment, width, height}) : super(width:width, height:height);
 }

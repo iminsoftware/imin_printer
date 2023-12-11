@@ -1,10 +1,14 @@
 package com.imin.printer.imin_printer;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.app.Application;
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
@@ -43,12 +47,14 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
     private IminPrintUtils iminPrintUtils;
+    private Context _context;
     private IminPrintUtils.PrintConnectType connectType = IminPrintUtils.PrintConnectType.USB;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
+        _context = flutterPluginBinding.getApplicationContext();
 
         String deviceModel = SystemPropManager.getModel();
         if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
@@ -109,12 +115,25 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setTextStyle":
                 int style = call.argument("style");
-                iminPrintUtils.setTextStyle(style);
+                switch (style) {
+                    case 1:
+                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT_BOLD);
+                        break;
+                    case 2:
+                        iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+                        break;
+                    case 3:
+                        iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+                        break;
+                    default:
+                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT);
+                        break;
+                }
                 result.success(true);
                 break;
             case "setTextWidth":
                 int textWidth = call.argument("width");
-                iminPrintUtils.setTextStyle(textWidth);
+                iminPrintUtils.setTextWidth(textWidth);
                 result.success(true);
                 break;
             case "setAlignment":
@@ -146,8 +165,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         colsAlign[i] = alignColumn;
                         colsFontSize[i] = fontSizeColumn;
                     }
-                    Log.e("IminPrinter", "printColumnsText == > "+Arrays.toString(colsText)+"    "+Arrays.toString(colsWidth)
-                    +"   "+Arrays.toString(colsAlign)+"     "+Arrays.toString(colsFontSize));
+                    Log.e("IminPrinter", "printColumnsText == > " + Arrays.toString(colsText) + "    " + Arrays.toString(colsWidth)
+                            + "   " + Arrays.toString(colsAlign) + "     " + Arrays.toString(colsFontSize));
                     iminPrintUtils.printColumnsText(colsText, colsWidth, colsAlign, colsFontSize);
                     result.success(true);
                 } catch (Exception err) {
@@ -179,48 +198,86 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 result.success(true);
                 break;
             case "printSingleBitmap":
-                byte[] bytes = call.argument("bitmap");
                 try {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    if (call.argument("alignment") != null) {
-                        int align = call.argument("alignment");
-                        iminPrintUtils.printSingleBitmap(bitmap, align);
+                    if (call.argument("height") != null && call.argument("width") != null) {
+                        int imageWidth = call.argument("width");
+                        int imageHeight = call.argument("height");
+                        String img = call.argument("bitmap");
+                        Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit().get();
+                        Log.e("IminPrinter", "printSingleBitmap1:" + img);
+                        // if (bitmap.isRecycled()) {
+                        // } else {
+                        //     if (call.argument("alignment") != null) {
+                        //         int align = call.argument("alignment");
+                        //         iminPrintUtils.printSingleBitmap(bitmap, align);
+                        //     } else {
+                        //         iminPrintUtils.printSingleBitmap(bitmap);
+                        //     }
+                        // }
                     } else {
-                        iminPrintUtils.printSingleBitmap(bitmap);
+                        byte[] img = call.argument("bitmap");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                        if (call.argument("alignment") != null) {
+                            int align = call.argument("alignment");
+                            iminPrintUtils.printSingleBitmap(bitmap, align);
+                        } else {
+                            iminPrintUtils.printSingleBitmap(bitmap);
+                        }
                     }
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printSingleBitmap:" + err.getMessage());
                 }
-
                 break;
             case "printSingleBitmapBlackWhite":
-                byte[] blackWhiteBytes = call.argument("bitmap");
-                try {
-                    Bitmap blackWhiteBitmap = BitmapFactory.decodeByteArray(blackWhiteBytes, 0, blackWhiteBytes.length);
-                    iminPrintUtils.printSingleBitmap(blackWhiteBitmap);
-                    result.success(true);
-                } catch (Exception err) {
-                    Log.e("IminPrinter", "printSingleBitmapBlackWhite:" + err.getMessage());
-                }
+                //     if (call.argument("height") != null and call.argument("width") != null){
+                //     String blackWhiteBytes = call.argument("bitmap");
+                // } else{
+                //     byte[] blackWhiteBytes = call.argument("bitmap");
+                // }
+                // try {
+                //     if (call.argument("height") != null and call.argument("width") != null){
+                //         String imageWidth = call.argument("width");
+                //         String imageHeight = call.argument("height");
+                //         Bitmap blackWhiteBitmap = Glide.with(_context).asBitmap().load(blackWhiteBytes).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                //     } else{
+                //         Bitmap blackWhiteBitmap = BitmapFactory.decodeByteArray(blackWhiteBytes, 0, blackWhiteBytes.length);
+                //     }
+                //     iminPrintUtils.printSingleBitmap(blackWhiteBitmap);
+                //     result.success(true);
+                // } catch (Exception err) {
+                //     Log.e("IminPrinter", "printSingleBitmapBlackWhite:" + err.getMessage());
+                // }
                 break;
             case "printMultiBitmap":
-                ArrayList<byte[]> multiBytes = call.argument("bitmaps");
-                try {
-                    ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-                    for (int i = 0; i < multiBytes.size(); i++) {
-                        bitmaps.add(BitmapFactory.decodeByteArray(multiBytes.get(i), 0, multiBytes.get(i).length));
-                    }
-                    if (call.argument("alignment") != null) {
-                        int multiAlign = call.argument("alignment");
-                        iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
-                    } else {
-                        iminPrintUtils.printMultiBitmap(bitmaps,0);
-                    }
-                    result.success(true);
-                } catch (Exception err) {
-                    Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
-                }
+                //     if (call.argument("height") != null and call.argument("width") != null){
+                //     ArrayList<String[]> multiBytes = call.argument("bitmaps");
+                // } else{
+                //     ArrayList<byte[]> multiBytes = call.argument("bitmaps");
+                // }
+                // try {
+                //     ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                //     if (call.argument("height") != null and call.argument("width") != null){
+                //         String imageWidth = call.argument("width");
+                //         String imageHeight = call.argument("height");
+                //         for (int i = 0; i < multiBytes.size(); i++) {
+                //             bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
+                //         }
+                //     } else{
+                //         for (int i = 0; i < multiBytes.size(); i++) {
+                //             bitmaps.add(BitmapFactory.decodeByteArray(multiBytes.get(i), 0, multiBytes.get(i).length));
+                //         }
+                //     }
+                //     if (call.argument("alignment") != null) {
+                //         int multiAlign = call.argument("alignment");
+                //         iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
+                //     } else {
+                //         iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                //     }
+                //     result.success(true);
+                // } catch (Exception err) {
+                //     Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
+                // }
 
                 break;
             case "setQrCodeSize":
@@ -387,11 +444,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 boolean isDefault = call.argument("isDefault");
                 iminPrintUtils.setInitIminPrinter(isDefault);
                 result.success(true);
-                break;    
-            case "resetDevice": 
-               iminPrintUtils.resetDevice();
-               result.success(true);
-               break;    
+                break;
+            case "resetDevice":
+                iminPrintUtils.resetDevice();
+                result.success(true);
+                break;
             default:
                 result.notImplemented();
                 break;
