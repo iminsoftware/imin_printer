@@ -1,4 +1,3 @@
-
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'imin_printer_method_channel.dart';
@@ -188,4 +187,177 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> resetDevice() {
     throw UnimplementedError('resetDevice() has not been implemented.');
   }
+
+  // Future<void> getPrinterSerialNumber() {
+  //   throw UnimplementedError(
+  //       'getPrinterSerialNumber() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterModelName() {
+  //   throw UnimplementedError('getPrinterModelName() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterThermalHead() {
+  //   throw UnimplementedError(
+  //       'getPrinterThermalHead() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterFirmwareVersion() {
+  //   throw UnimplementedError(
+  //       'getPrinterFirmwareVersion() has not been implemented.');
+  // }
+
+  // Future<void> getServiceVersion() {
+  //   throw UnimplementedError('getServiceVersion() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterHardwareVersion() {
+  //   throw UnimplementedError('getServiceVersion() has not been implemented.');
+  // }
+
+  // Future<void> getUsbPrinterVidPid() {
+  //   throw UnimplementedError('getUsbPrinterVidPid() has not been implemented.');
+  // }
+
+  // Future<void> getUsbDevicesName() {
+  //   throw UnimplementedError('getUsbDevicesName() has not been implemented.');
+  // }
+
+  // Future<void> setPrinterDensity(IminPrinterDensity density) {
+  //   throw UnimplementedError('setPrinterDensity() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterDensity() {
+  //   throw UnimplementedError('getPrinterDensity() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterSpeed() {
+  //   throw UnimplementedError('getPrinterSpeed() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterPaperDistance() {
+  //   throw UnimplementedError(
+  //       'getPrinterPaperDistance() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterPaperType() {
+  //   throw UnimplementedError('getPrinterPaperType() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterCutTimes() {
+  //   throw UnimplementedError('getPrinterCutTimes() has not been implemented.');
+  // }
+
+  // Future<void> getPrinterMode() {
+  //   throw UnimplementedError('getPrinterMode() has not been implemented.');
+  // }
+
+  // Future<void> getConfigurationInfo() {
+  //   throw UnimplementedError(
+  //       'getConfigurationInfo() has not been implemented.');
+  // }
+
+  // Future<void> updatePrinterInfo() {
+  //   throw UnimplementedError('updatePrinterInfo() has not been implemented.');
+  // }
+
+  // Future<void> openDrawer() {
+  //   throw UnimplementedError('openDrawer() has not been implemented.');
+  // }
+
+  // Future<void> getDrawerStatus() {
+  //   throw UnimplementedError('getDrawerStatus() has not been implemented.');
+  // }
+
+  // Future<void> getOpenDrawerTimes() {
+  //   throw UnimplementedError('getOpenDrawerTimes() has not been implemented.');
+  // }
+
+  // Future<void> printerSelfChecking() {
+  //   throw UnimplementedError('printerSelfChecking() has not been implemented.');
+  // }
+
+  // Future<void> setFontMultiple(int width, int height) {
+  //   throw UnimplementedError('printerSelfChecking() has not been implemented.');
+  // }
+
+  // Future<void> setFontBold(bool bold) {
+  //   throw UnimplementedError('setFontBold() has not been implemented.');
+  // }
+
+  // Future<void> setFontAntiWhite(bool antiWhite) {
+  //   throw UnimplementedError('setFontAntiWhite() has not been implemented.');
+  // }
+
+  // Future<void> setFontItalic(bool italic) {
+  //   throw UnimplementedError('setFontItalic() has not been implemented.');
+  // }
+
+  // Future<void> setFontUnderline(bool underline) {
+  //   throw UnimplementedError('setFontUnderline() has not been implemented.');
+  // }
+
+  // Future<void> setFontRotate(IminFontRotate rotate) {
+  //   throw UnimplementedError('setFontUnderline() has not been implemented.');
+  // }
+
+  // Future<void> setFontDirection(IminFontDirection direction) {
+  //   throw UnimplementedError('setFontDirection() has not been implemented.');
+  // }
+
+  // Future<void> setFontLineSpacing(int space) {
+  //   throw UnimplementedError('setFontLineSpacing() has not been implemented.');
+  // }
+
+  // Future<void> setFontChineseSpace(int chsLeftSpace, int chsRightSpace) {
+  //   throw UnimplementedError('setFontChineseSpace() has not been implemented.');
+  // }
+
+  // Future<void> setFontCharSpace(int space) {
+  //   throw UnimplementedError('setFontCharSpace() has not been implemented.');
+  // }
+
+  // Future<void> setFontCharSize(
+  //     int height, int width, int underLine, int asciitype) {
+  //   throw UnimplementedError('setFontCharSize() has not been implemented.');
+  // }
+
+  // Future<void> setFontChineseMode(int mode) {
+  //   throw UnimplementedError('setFontChineseMode() has not been implemented.');
+  // }
+
+  // Future<void> setFontChineseSize(
+  //     int height, int width, int underLine, int chineseType) {
+  //   throw UnimplementedError('setFontChineseSize() has not been implemented.');
+  // }
+
+  // Future<void> setCodeAlignment(IminPrintAlign align) {
+  //   throw UnimplementedError('setCodeAlignment() has not been implemented.');
+  // }
+
+  // Future<void> setFontCountryCode(int country) {
+  //   throw UnimplementedError('setFontCountryCode() has not been implemented.');
+  // }
+
+  // Future<void> getFontCountryCode() {
+  //   throw UnimplementedError('getFontCountryCode() has not been implemented.');
+  // }
+
+  // Future<void> setFontCodepage(int codepage) {
+  //   throw UnimplementedError('setFontCodepage() has not been implemented.');
+  // }
+
+  // Future<void> getFontCodepage() {
+  //   throw UnimplementedError('getFontCodepage() has not been implemented.');
+  // }
+  // Future<void> setTextBitmapTypeface(IminTypeface typeface) {
+  //   throw UnimplementedError('setTextBitmapTypeface() has not been implemented.');
+  // }
+  // Future<void> setTextBitmapSize(int size) {
+  //   throw UnimplementedError('setTextBitmapSize() has not been implemented.');
+  // }
+  // Future<void> setTextBitmapStyle(int style) {
+  //   throw UnimplementedError('setTextBitmapStyle() has not been implemented.');
+  // }
+  
 }

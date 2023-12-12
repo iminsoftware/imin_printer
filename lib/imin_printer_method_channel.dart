@@ -336,15 +336,14 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         arguments.putIfAbsent("width", () => pictureStyle.width);
         arguments.putIfAbsent("height", () => pictureStyle.height);
       }
-    } 
+    }
     arguments.putIfAbsent("bitmaps", () => imgs);
-    if(imgs is List<Uint8List>) {
+    if (imgs is List<Uint8List>) {
       await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
     } else {
-       arguments.putIfAbsent("multiBitmap", () => 1);
+      arguments.putIfAbsent("multiBitmap", () => 1);
       await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
     }
-   
   }
 
   @override
@@ -359,9 +358,10 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     }
     arguments.putIfAbsent("bitmap", () => img);
     if (img is Uint8List) {
-      await methodChannel.invokeMethod<void>('printSingleBitmapBlackWhite', arguments);
+      await methodChannel.invokeMethod<void>(
+          'printSingleBitmapBlackWhite', arguments);
     } else {
-       arguments.putIfAbsent("blackWhite", () => 1);
+      arguments.putIfAbsent("blackWhite", () => 1);
       await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
     }
   }
@@ -457,5 +457,24 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   @override
   Future<void> resetDevice() async {
     await methodChannel.invokeMethod<void>('resetDevice');
+  }
+
+  @override
+  Future<void> getPrinterSerialNumber() async {
+    await methodChannel.invokeMethod<void>('getPrinterSerialNumber');
+  }
+
+  @override
+  Future<void> getPrinterModelName() async {
+    await methodChannel.invokeMethod<void>('getPrinterModelName');
+  }
+
+  @override
+  Future<void> getPrinterThermalHead() async {
+    await methodChannel.invokeMethod<void>('getPrinterThermalHead');
+  }
+  @override
+  Future<void> getPrinterFirmwareVersion () async {
+    await methodChannel.invokeMethod<void>('getPrinterFirmwareVersion');
   }
 }

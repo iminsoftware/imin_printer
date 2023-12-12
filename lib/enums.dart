@@ -75,6 +75,37 @@ enum IminBarcodeType {
   const IminBarcodeType(this.type);
 }
 
+enum IminFontRotate {
+  zeroDeg(0),
+  ninetyDeg(1);
+
+  final int rotate;
+  const IminFontRotate(this.rotate);
+}
+
+enum IminFontDirection {
+  zeroDeg(0),
+  oneHundredAndEightyDeg(1);
+
+  final int direction;
+  const IminFontDirection(this.direction);
+}
+
+enum IminPrinterDensity {
+  seventy(70),
+  eighty(80),
+  ninety(90),
+  oneHundred(100),
+  oneHundredAndTen(110),
+  oneHundredAndTwenty(120),
+  oneHundredAndThirty(130),
+  oneHundredAndForty(140),
+  oneHundredAndFifty(150);
+
+  final int density;
+  const IminPrinterDensity(this.density);
+}
+
 enum IminBarCodeToBitmapFormat {
   aztec,
   codabar,
