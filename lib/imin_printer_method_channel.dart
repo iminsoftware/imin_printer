@@ -459,22 +459,22 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     await methodChannel.invokeMethod<void>('resetDevice');
   }
 
-  @override
-  Future<void> getPrinterSerialNumber() async {
-    await methodChannel.invokeMethod<void>('getPrinterSerialNumber');
-  }
+  // @override
+  // Future<void> getPrinterSerialNumber() async {
+  //   await methodChannel.invokeMethod<void>('getPrinterSerialNumber');
+  // }
 
-  @override
-  Future<void> getPrinterModelName() async {
-    await methodChannel.invokeMethod<void>('getPrinterModelName');
-  }
+  // @override
+  // Future<void> getPrinterModelName() async {
+  //   await methodChannel.invokeMethod<void>('getPrinterModelName');
+  // }
 
-  @override
-  Future<void> getPrinterThermalHead() async {
-    await methodChannel.invokeMethod<void>('getPrinterThermalHead');
-  }
-  @override
-  Future<void> getPrinterFirmwareVersion () async {
-    await methodChannel.invokeMethod<void>('getPrinterFirmwareVersion');
-  }
+  // @override
+  // Future<void> getPrinterThermalHead() async {
+  //   await methodChannel.invokeMethod<void>('getPrinterThermalHead');
+  // }
+  // @override
+  // Future<void> getPrinterFirmwareVersion () async {
+  //   await methodChannel.invokeMethod<void>('getPrinterFirmwareVersion');
+  // }
 }
