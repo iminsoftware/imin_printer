@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'imin_printer_platform_interface.dart';
 import 'enums.dart';
 import 'imin_style.dart';
@@ -235,7 +234,7 @@ class IminPrinter {
   /// iminPrinter.printMultiBitmap([byte1, byte2], alignment: IminPrintAlign.center)
   /// ```
   /// {@end-tool}
-  Future<void> printMultiBitmap(List<Uint8List> imgs,
+  Future<void> printMultiBitmap(List<dynamic> imgs,
       {IminPictureStyle? pictureStyle}) {
     return IminPrinterPlatform.instance
         .printMultiBitmap(imgs, pictureStyle: pictureStyle);
@@ -250,7 +249,7 @@ class IminPrinter {
   /// iminPrinter.printSingleBitmapBlackWhite(byte)
   /// ```
   /// {@end-tool}
-  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+  Future<void> printSingleBitmapBlackWhite(dynamic img,
       {IminBaseStyle? baseStyle}) {
     return IminPrinterPlatform.instance.printSingleBitmapBlackWhite(img);
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:imin_printer/imin_printer.dart';
 import 'package:imin_printer/enums.dart';
@@ -35,9 +34,9 @@ class MockIminPrinterPlatform
   Future<void> printSingleBitmap(dynamic img, {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override
-  Future<void> printSingleBitmapBlackWhite(Uint8List img, {IminBaseStyle? baseStyle }) => Future.value();
+  Future<void> printSingleBitmapBlackWhite(dynamic img, {IminBaseStyle? baseStyle }) => Future.value();
   @override
-  Future<void> printMultiBitmap(List<Uint8List> imgs,
+  Future<void> printMultiBitmap(List<dynamic> imgs,
           {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override

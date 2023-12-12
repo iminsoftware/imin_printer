@@ -316,11 +316,16 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
     }
     arguments.putIfAbsent("bitmap", () => img);
-    await methodChannel.invokeMethod<void>('printSingleBitmap', arguments);
+    if (img is Uint8List) {
+      await methodChannel.invokeMethod<void>('printSingleBitmap', arguments);
+    } else {
+      // logger.d('日志', img);
+      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
+    }
   }
 
   @override
-  Future<void> printMultiBitmap(List<Uint8List> imgs,
+  Future<void> printMultiBitmap(List<dynamic> imgs,
       {IminPictureStyle? pictureStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (pictureStyle != null) {
@@ -331,13 +336,19 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         arguments.putIfAbsent("width", () => pictureStyle.width);
         arguments.putIfAbsent("height", () => pictureStyle.height);
       }
-    }
+    } 
     arguments.putIfAbsent("bitmaps", () => imgs);
-    await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
+    if(imgs is List<Uint8List>) {
+      await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
+    } else {
+       arguments.putIfAbsent("multiBitmap", () => 1);
+      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
+    }
+   
   }
 
   @override
-  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+  Future<void> printSingleBitmapBlackWhite(dynamic img,
       {IminBaseStyle? baseStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (baseStyle != null) {
@@ -347,8 +358,12 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
     }
     arguments.putIfAbsent("bitmap", () => img);
-    await methodChannel.invokeMethod<void>(
-        'printSingleBitmapBlackWhite', arguments);
+    if (img is Uint8List) {
+      await methodChannel.invokeMethod<void>('printSingleBitmapBlackWhite', arguments);
+    } else {
+       arguments.putIfAbsent("blackWhite", () => 1);
+      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
+    }
   }
 
   @override

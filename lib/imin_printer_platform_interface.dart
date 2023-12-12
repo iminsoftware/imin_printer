@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -93,12 +92,12 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('printSingleBitmap() has not been implemented.');
   }
 
-  Future<void> printMultiBitmap(List<Uint8List> imgs,
+  Future<void> printMultiBitmap(List<dynamic> imgs,
       {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError('printMultiBitmap() has not been implemented.');
   }
 
-  Future<void> printSingleBitmapBlackWhite(Uint8List img,
+  Future<void> printSingleBitmapBlackWhite(dynamic img,
       {IminBaseStyle? baseStyle}) {
     throw UnimplementedError(
         'printSingleBitmapBlackWhite() has not been implemented.');

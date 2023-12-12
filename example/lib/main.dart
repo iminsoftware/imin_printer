@@ -189,9 +189,15 @@ class _MyAppState extends State<MyApp> {
                       onPressed: () async {
                         // Uint8List byte =
                         //     await readFileBytes('assets/images/logo.png');
-                        // await iminPrinter.printSingleBitmap(byte);
-                
-                        await iminPrinter.printSingleBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                        // await iminPrinter.printSingleBitmap(byte,
+                        //     pictureStyle: IminPictureStyle(
+                        //       alignment: IminPrintAlign.center,
+                        //       width: 50,
+                        //       height: 20,
+                        //     ));
+
+                        await iminPrinter.printSingleBitmap(
+                            'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
                             pictureStyle: IminPictureStyle(
                               alignment: IminPrintAlign.center,
                               width: 50,
@@ -258,14 +264,23 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('print barCode')),
                   ElevatedButton(
                       onPressed: () async {
-                        Uint8List byte1 =
-                            await _getImageFromAsset('assets/images/logo.png');
-                        Uint8List byte2 =
-                            await _getImageFromAsset('assets/images/logo.png');
+                        // Uint8List byte1 =
+                        //     await _getImageFromAsset('assets/images/logo.png');
+                        // Uint8List byte2 =
+                        //     await _getImageFromAsset('assets/images/logo.png');
 
-                        await iminPrinter.printMultiBitmap([byte1, byte2],
+                        // await iminPrinter.printMultiBitmap([byte1, byte2],
+                        //     pictureStyle: IminPictureStyle(
+                        //         alignment: IminPrintAlign.left));
+                        await iminPrinter.printMultiBitmap([
+                          'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                          'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png'
+                        ],
                             pictureStyle: IminPictureStyle(
-                                alignment: IminPrintAlign.left));
+                              alignment: IminPrintAlign.center,
+                              width: 50,
+                              height: 20,
+                            ));
                       },
                       child: const Text('print multiBitmap'))
                 ],

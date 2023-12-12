@@ -3,24 +3,26 @@ package com.imin.printer.imin_printer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.app.Application;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 
-
-import com.imin.library.IminSDKManager;
 import com.imin.library.SystemPropManager;
+import com.imin.printer.PrinterHelper;
 import com.imin.printerlib.Callback;
 import com.imin.printerlib.IminPrintUtils;
-import com.imin.printerlib.print.PrintUtils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import android.graphics.Typeface;
+import android.content.Context;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -29,13 +31,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * IminPrinterPlugin
@@ -53,21 +48,22 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
-        iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
         _context = flutterPluginBinding.getApplicationContext();
 
-        String deviceModel = SystemPropManager.getModel();
-
-        // if(Build.MODEL.equals("W27_Pro")|| Build.MODEL.equals("I23D01")|| Build.MODEL.equals("I23M01")|| Build.MODEL.equals("I23M02")) {
-        //     //初始化2.0的SDK。其他机型初始化1.0的SDK
-            
-        // }
-        if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
-            connectType = IminPrintUtils.PrintConnectType.SPI;
+        if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+            //初始化 2.0 的 SDK。
+            PrinterHelper.getInstance().initPrinterService(Utils.getInstance().getContext());
         } else {
-            connectType = IminPrintUtils.PrintConnectType.USB;
+            //初始化 1.0 SDK
+            iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
+            String deviceModel = SystemPropManager.getModel();
+            if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
+                connectType = IminPrintUtils.PrintConnectType.SPI;
+            } else {
+                connectType = IminPrintUtils.PrintConnectType.USB;
+            }
+            iminPrintUtils.resetDevice();
         }
-        iminPrintUtils.resetDevice();
         channel.setMethodCallHandler(this);
     }
 
@@ -76,79 +72,95 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
             case "initPrinter":
-                iminPrintUtils.initPrinter(connectType);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.initPrinter(connectType);
+                }
                 result.success(true);
                 break;
             case "getPrinterStatus":
-                if (connectType.equals(IminPrintUtils.PrintConnectType.SPI)) {
-                    iminPrintUtils.getPrinterStatus(connectType, new Callback() {
-                        @Override
-                        public void callback(int status) {
-                            result.success(String.format("%d", status));
-                        }
-                    });
-                } else {
-                    int status = iminPrintUtils.getPrinterStatus(connectType);
-                    result.success(String.format("%d", status));
+                if (iminPrintUtils != null) {
+                    if (connectType.equals(IminPrintUtils.PrintConnectType.SPI)) {
+                        iminPrintUtils.getPrinterStatus(connectType, new Callback() {
+                            @Override
+                            public void callback(int status) {
+                                result.success(String.format("%d", status));
+                            }
+                        });
+                    } else {
+                        int status = iminPrintUtils.getPrinterStatus(connectType);
+                        result.success(String.format("%d", status));
+                    }
                 }
                 break;
             case "setTextSize":
                 int size = call.argument("size");
-                iminPrintUtils.setTextSize(size);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setTextSize(size);
+                }
                 result.success(true);
                 break;
             case "setTextTypeface":
                 int font = call.argument("font");
-                switch (font) {
-                    case 1:
-                        iminPrintUtils.setTextTypeface(Typeface.MONOSPACE);
-                        break;
-                    case 2:
-                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT_BOLD);
-                        break;
-                    case 3:
-                        iminPrintUtils.setTextTypeface(Typeface.SANS_SERIF);
-                        break;
-                    case 4:
-                        iminPrintUtils.setTextTypeface(Typeface.SERIF);
-                        break;
-                    default:
-                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT);
-                        break;
+                if (iminPrintUtils != null) {
+                    switch (font) {
+                        case 1:
+                            iminPrintUtils.setTextTypeface(Typeface.MONOSPACE);
+                            break;
+                        case 2:
+                            iminPrintUtils.setTextTypeface(Typeface.DEFAULT_BOLD);
+                            break;
+                        case 3:
+                            iminPrintUtils.setTextTypeface(Typeface.SANS_SERIF);
+                            break;
+                        case 4:
+                            iminPrintUtils.setTextTypeface(Typeface.SERIF);
+                            break;
+                        default:
+                            iminPrintUtils.setTextTypeface(Typeface.DEFAULT);
+                            break;
+                    }
                 }
                 result.success(true);
                 break;
             case "setTextStyle":
                 int style = call.argument("style");
-                switch (style) {
-                    case 1:
-                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT_BOLD);
-                        break;
-                    case 2:
-                        iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
-                        break;
-                    case 3:
-                        iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
-                        break;
-                    default:
-                        iminPrintUtils.setTextTypeface(Typeface.DEFAULT);
-                        break;
+                if (iminPrintUtils != null) {
+                    switch (style) {
+                        case 1:
+                            iminPrintUtils.setTextTypeface(Typeface.DEFAULT_BOLD);
+                            break;
+                        case 2:
+                            iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+                            break;
+                        case 3:
+                            iminPrintUtils.setTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+                            break;
+                        default:
+                            iminPrintUtils.setTextTypeface(Typeface.DEFAULT);
+                            break;
+                    }
                 }
                 result.success(true);
                 break;
             case "setTextWidth":
                 int textWidth = call.argument("width");
-                iminPrintUtils.setTextWidth(textWidth);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setTextWidth(textWidth);
+                }
                 result.success(true);
                 break;
             case "setAlignment":
                 int alignment = call.argument("alignment");
-                iminPrintUtils.setAlignment(alignment);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setAlignment(alignment);
+                }
                 result.success(true);
                 break;
             case "setTextLineSpacing":
                 float space = call.argument("space");
-                iminPrintUtils.setTextLineSpacing(space);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setTextLineSpacing(space);
+                }
                 result.success(true);
                 break;
             case "printColumnsText":
@@ -170,9 +182,9 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         colsAlign[i] = alignColumn;
                         colsFontSize[i] = fontSizeColumn;
                     }
-                    Log.e("IminPrinter", "printColumnsText == > " + Arrays.toString(colsText) + "    " + Arrays.toString(colsWidth)
-                            + "   " + Arrays.toString(colsAlign) + "     " + Arrays.toString(colsFontSize));
-                    iminPrintUtils.printColumnsText(colsText, colsWidth, colsAlign, colsFontSize);
+                    if (iminPrintUtils != null) {
+                        iminPrintUtils.printColumnsText(colsText, colsWidth, colsAlign, colsFontSize);
+                    }
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", err.getMessage());
@@ -180,154 +192,197 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "printText":
                 String text = call.argument("text");
-                iminPrintUtils.printText(text);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.printText(text);
+                }
                 result.success(true);
                 break;
             case "printAntiWhiteText":
                 String whiteText = call.argument("text");
-                Log.d("IminPrinter", whiteText);
-                iminPrintUtils.printAntiWhiteText(whiteText);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.printAntiWhiteText(whiteText);
+                }
                 result.success(true);
                 break;
             case "printAndLineFeed":
-                iminPrintUtils.printAndLineFeed();
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.printAndLineFeed();
+                }
                 result.success(true);
                 break;
             case "printAndFeedPaper":
                 int height = call.argument("height");
-                iminPrintUtils.printAndFeedPaper(height);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.printAndFeedPaper(height);
+                }
                 result.success(true);
                 break;
             case "partialCut":
-                iminPrintUtils.partialCut();
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.partialCut();
+                }
                 result.success(true);
                 break;
             case "printSingleBitmap":
                 try {
-                    if (call.argument("height") != null && call.argument("width") != null) {
-                        int imageWidth = call.argument("width");
-                        int imageHeight = call.argument("height");
-                        String img = call.argument("bitmap");
-                        Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit().get();
-                        Log.e("IminPrinter", "printSingleBitmap1:" + img);
-                        // if (bitmap.isRecycled()) {
-                        // } else {
-                        //     if (call.argument("alignment") != null) {
-                        //         int align = call.argument("alignment");
-                        //         iminPrintUtils.printSingleBitmap(bitmap, align);
-                        //     } else {
-                        //         iminPrintUtils.printSingleBitmap(bitmap);
-                        //     }
-                        // }
+                    byte[] img = call.argument("bitmap");
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                    if (call.argument("alignment") != null) {
+                        int align = call.argument("alignment");
+                        iminPrintUtils.printSingleBitmap(bitmap, align);
                     } else {
-                        byte[] img = call.argument("bitmap");
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-                        if (call.argument("alignment") != null) {
-                            int align = call.argument("alignment");
-                            iminPrintUtils.printSingleBitmap(bitmap, align);
-                        } else {
-                            iminPrintUtils.printSingleBitmap(bitmap);
-                        }
+                        iminPrintUtils.printSingleBitmap(bitmap);
                     }
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printSingleBitmap:" + err.getMessage());
                 }
                 break;
+            case "printBitmapToUrl":
+                try {
+                    if (call.argument("height") != null && call.argument("width") != null) {
+                        int imageWidth = call.argument("width");
+                        int imageHeight = call.argument("height");
+                        if (call.argument("alignment") != null) {
+                            int align = call.argument("alignment");
+                            if (call.argument("multiBitmap") != null) {
+                                ArrayList<String[]> multiBytes = call.argument("bitmaps");
+                                ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                                for (int i = 0; i < multiBytes.size(); i++) {
+                                    bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
+                                }
+                                if (iminPrintUtils != null) {
+                                    iminPrintUtils.printMultiBitmap(bitmaps, align);
+                                }
+                            } else {
+                                String img = call.argument("bitmap");
+                                Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                if (iminPrintUtils != null) {
+                                    iminPrintUtils.printSingleBitmap(bitmap, align);
+                                }
+                            }
+                        } else {
+                            if (call.argument("multiBitmap") != null) {
+                                ArrayList<String[]> multiBytes = call.argument("bitmaps");
+                                ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                                for (int i = 0; i < multiBytes.size(); i++) {
+                                    Log.d("IminPrinter", "printBitmapToUrl:" + multiBytes.get(i));
+                                    // bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
+                                }
+                                // if (iminPrintUtils != null) {
+                                //     iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                                // }
+                            } else {
+                                String img = call.argument("bitmap");
+                                Log.d("IminPrinter", "printBitmapToUrl:" + img);
+                                // Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                // if (iminPrintUtils != null) {
+                                //     if (call.argument("blackWhite") != null) {
+                                //         iminPrintUtils.printSingleBitmapBlackWhite(bitmap);
+                                //     } else {
+                                //         iminPrintUtils.printSingleBitmap(bitmap);
+
+                                //     }
+                                // }
+                            }
+                        }
+                    }
+                } catch (Exception err) {
+                    Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
+                }
+                break;
             case "printSingleBitmapBlackWhite":
-                //     if (call.argument("height") != null and call.argument("width") != null){
-                //     String blackWhiteBytes = call.argument("bitmap");
-                // } else{
-                //     byte[] blackWhiteBytes = call.argument("bitmap");
-                // }
-                // try {
-                //     if (call.argument("height") != null and call.argument("width") != null){
-                //         String imageWidth = call.argument("width");
-                //         String imageHeight = call.argument("height");
-                //         Bitmap blackWhiteBitmap = Glide.with(_context).asBitmap().load(blackWhiteBytes).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
-                //     } else{
-                //         Bitmap blackWhiteBitmap = BitmapFactory.decodeByteArray(blackWhiteBytes, 0, blackWhiteBytes.length);
-                //     }
-                //     iminPrintUtils.printSingleBitmap(blackWhiteBitmap);
-                //     result.success(true);
-                // } catch (Exception err) {
-                //     Log.e("IminPrinter", "printSingleBitmapBlackWhite:" + err.getMessage());
-                // }
+                byte[] blackWhiteBytes = call.argument("bitmap");
+                try {
+                    Bitmap blackWhiteBitmap = BitmapFactory.decodeByteArray(blackWhiteBytes, 0, blackWhiteBytes.length);
+                    if (iminPrintUtils != null) {
+                        iminPrintUtils.printSingleBitmapBlackWhite(blackWhiteBitmap);
+                    }
+                    result.success(true);
+                } catch (Exception err) {
+                    Log.e("IminPrinter", "printSingleBitmapBlackWhite:" + err.getMessage());
+                }
                 break;
             case "printMultiBitmap":
-                //     if (call.argument("height") != null and call.argument("width") != null){
-                //     ArrayList<String[]> multiBytes = call.argument("bitmaps");
-                // } else{
-                //     ArrayList<byte[]> multiBytes = call.argument("bitmaps");
-                // }
-                // try {
-                //     ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-                //     if (call.argument("height") != null and call.argument("width") != null){
-                //         String imageWidth = call.argument("width");
-                //         String imageHeight = call.argument("height");
-                //         for (int i = 0; i < multiBytes.size(); i++) {
-                //             bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
-                //         }
-                //     } else{
-                //         for (int i = 0; i < multiBytes.size(); i++) {
-                //             bitmaps.add(BitmapFactory.decodeByteArray(multiBytes.get(i), 0, multiBytes.get(i).length));
-                //         }
-                //     }
-                //     if (call.argument("alignment") != null) {
-                //         int multiAlign = call.argument("alignment");
-                //         iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
-                //     } else {
-                //         iminPrintUtils.printMultiBitmap(bitmaps, 0);
-                //     }
-                //     result.success(true);
-                // } catch (Exception err) {
-                //     Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
-                // }
+                ArrayList<byte[]> multiBytes = call.argument("bitmaps");
+                ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                try {
+                    for (int i = 0; i < multiBytes.size(); i++) {
+                        bitmaps.add(BitmapFactory.decodeByteArray(multiBytes.get(i), 0, multiBytes.get(i).length));
+                    }
+                    if (call.argument("alignment") != null) {
+                        int multiAlign = call.argument("alignment");
+                        iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
+                    } else {
+                        iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                    }
+                    result.success(true);
+                } catch (Exception err) {
+                    Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
+                }
 
                 break;
             case "setQrCodeSize":
                 int qrSize = call.argument("qrSize");
-                iminPrintUtils.setQrCodeSize(qrSize);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setQrCodeSize(qrSize);
+                }
                 result.success(true);
                 break;
             case "setLeftMargin":
                 int margin = call.argument("margin");
-                iminPrintUtils.setLeftMargin(margin);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setLeftMargin(margin);
+                }
                 result.success(true);
                 break;
             case "setQrCodeErrorCorrectionLev":
                 int level = call.argument("level");
-                iminPrintUtils.setQrCodeErrorCorrectionLev(level);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setQrCodeErrorCorrectionLev(level);
+                }
                 result.success(true);
                 break;
             case "printQrCode":
                 String qrStr = call.argument("data");
                 if (call.argument("alignment") != null) {
                     int alignmentMode = call.argument("alignment");
-                    iminPrintUtils.printQrCode(qrStr, alignmentMode);
+                    if (iminPrintUtils != null) {
+                        iminPrintUtils.printQrCode(qrStr, alignmentMode);
+                    }
                 } else {
-                    iminPrintUtils.printQrCode(qrStr);
+                    if (iminPrintUtils != null) {
+                        iminPrintUtils.printQrCode(qrStr);
+                    }
                 }
                 result.success(true);
                 break;
             case "setBarCodeWidth":
                 int barCodeWidth = call.argument("width");
-                iminPrintUtils.setBarCodeWidth(barCodeWidth);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setBarCodeWidth(barCodeWidth);
+                }
                 result.success(true);
                 break;
             case "setBarCodeHeight":
                 int barCodeHeight = call.argument("height");
-                iminPrintUtils.setBarCodeHeight(barCodeHeight);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setBarCodeHeight(barCodeHeight);
+                }
                 result.success(true);
                 break;
             case "setBarCodeContentPrintPos":
                 int barCodePosition = call.argument("position");
-                iminPrintUtils.setBarCodeContentPrintPos(barCodePosition);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setBarCodeContentPrintPos(barCodePosition);
+                }
                 result.success(true);
                 break;
             case "setPageFormat":
                 int formatStyle = call.argument("style");
-                iminPrintUtils.setPageFormat(formatStyle);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setPageFormat(formatStyle);
+                }
                 result.success(true);
                 break;
             case "printBarCode":
@@ -336,9 +391,13 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     int barCodeType = call.argument("type");
                     if (call.argument("align") != null) {
                         int barCodeAlign = call.argument("align");
-                        iminPrintUtils.printBarCode(barCodeType, barCodeContent, barCodeAlign);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printBarCode(barCodeType, barCodeContent, barCodeAlign);
+                        }
                     } else {
-                        iminPrintUtils.printBarCode(barCodeType, barCodeContent);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printBarCode(barCodeType, barCodeContent);
+                        }
                     }
                     result.success(true);
                 } catch (Exception e) {
@@ -408,50 +467,70 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setDoubleQRSize":
                 int doubleQRSize = call.argument("size");
-                iminPrintUtils.setDoubleQRSize(doubleQRSize);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQRSize(doubleQRSize);
+                }
                 result.success(true);
                 break;
             case "setDoubleQR1Level":
                 int doubleQR1Level = call.argument("level");
-                iminPrintUtils.setDoubleQR1Level(doubleQR1Level);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR1Level(doubleQR1Level);
+                }
                 result.success(true);
                 break;
             case "setDoubleQR2Level":
                 int doubleQR2Level = call.argument("level");
-                iminPrintUtils.setDoubleQR2Level(doubleQR2Level);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR2Level(doubleQR2Level);
+                }
                 result.success(true);
                 break;
             case "setDoubleQR1MarginLeft":
                 int doubleQR1MarginLeft = call.argument("leftMargin");
-                iminPrintUtils.setDoubleQR1MarginLeft(doubleQR1MarginLeft);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR1MarginLeft(doubleQR1MarginLeft);
+                }
                 result.success(true);
                 break;
             case "setDoubleQR2MarginLeft":
                 int doubleQR2MarginLeft = call.argument("leftMargin");
-                iminPrintUtils.setDoubleQR2MarginLeft(doubleQR2MarginLeft);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR2MarginLeft(doubleQR2MarginLeft);
+                }
                 result.success(true);
                 break;
             case "setDoubleQR1Version":
                 int doubleQR1Version = call.argument("version");
-                iminPrintUtils.setDoubleQR1Version(doubleQR1Version);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR1Version(doubleQR1Version);
+                }
                 break;
             case "setDoubleQR2Version":
                 int doubleQR2Version = call.argument("version");
-                iminPrintUtils.setDoubleQR2Version(doubleQR2Version);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setDoubleQR2Version(doubleQR2Version);
+                }
                 break;
             case "printDoubleQR":
                 String qrCode1Text = call.argument("qrCode1Text");
                 String qrCode2Text = call.argument("qrCode2Text");
-                iminPrintUtils.printDoubleQR(qrCode1Text, qrCode2Text);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.printDoubleQR(qrCode1Text, qrCode2Text);
+                }
                 result.success(true);
                 break;
             case "setInitIminPrinter":
                 boolean isDefault = call.argument("isDefault");
-                iminPrintUtils.setInitIminPrinter(isDefault);
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setInitIminPrinter(isDefault);
+                }
                 result.success(true);
                 break;
             case "resetDevice":
-                iminPrintUtils.resetDevice();
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.resetDevice();
+                }
                 result.success(true);
                 break;
             default:
