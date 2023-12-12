@@ -9,7 +9,7 @@ import android.graphics.Typeface;
 import android.app.Application;
 import android.annotation.SuppressLint;
 import android.content.Context;
-
+import android.os.Build;
 import androidx.annotation.NonNull;
 
 
@@ -57,6 +57,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
         _context = flutterPluginBinding.getApplicationContext();
 
         String deviceModel = SystemPropManager.getModel();
+
+        // if(Build.MODEL.equals("W27_Pro")|| Build.MODEL.equals("I23D01")|| Build.MODEL.equals("I23M01")|| Build.MODEL.equals("I23M02")) {
+        //     //初始化2.0的SDK。其他机型初始化1.0的SDK
+            
+        // }
         if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
             connectType = IminPrintUtils.PrintConnectType.SPI;
         } else {
@@ -292,7 +297,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setQrCodeErrorCorrectionLev":
                 int level = call.argument("level");
-                iminPrintUtils.setLeftMargin(level);
+                iminPrintUtils.setQrCodeErrorCorrectionLev(level);
                 result.success(true);
                 break;
             case "printQrCode":
