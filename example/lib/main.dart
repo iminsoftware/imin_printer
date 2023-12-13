@@ -200,8 +200,8 @@ class _MyAppState extends State<MyApp> {
                             'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
                             pictureStyle: IminPictureStyle(
                               alignment: IminPrintAlign.center,
-                              width: 50,
-                              height: 20,
+                              width: 250,
+                              height: 50,
                             ));
                       },
                       child: const Text('print singleBitmap in align'))
@@ -278,8 +278,8 @@ class _MyAppState extends State<MyApp> {
                         ],
                             pictureStyle: IminPictureStyle(
                               alignment: IminPrintAlign.center,
-                              width: 50,
-                              height: 20,
+                              width: 250,
+                              height: 30,
                             ));
                       },
                       child: const Text('print multiBitmap'))

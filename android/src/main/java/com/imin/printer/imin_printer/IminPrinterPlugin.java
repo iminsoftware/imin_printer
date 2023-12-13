@@ -239,57 +239,64 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 }
                 break;
             case "printBitmapToUrl":
-                try {
-                    if (call.argument("height") != null && call.argument("width") != null) {
-                        int imageWidth = call.argument("width");
-                        int imageHeight = call.argument("height");
-                        if (call.argument("alignment") != null) {
-                            int align = call.argument("alignment");
-                            if (call.argument("multiBitmap") != null) {
-                                ArrayList<String[]> multiBytes = call.argument("bitmaps");
-                                ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-                                for (int i = 0; i < multiBytes.size(); i++) {
-                                    bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
-                                }
-                                if (iminPrintUtils != null) {
-                                    iminPrintUtils.printMultiBitmap(bitmaps, align);
-                                }
-                            } else {
-                                String img = call.argument("bitmap");
-                                Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
-                                if (iminPrintUtils != null) {
-                                    iminPrintUtils.printSingleBitmap(bitmap, align);
-                                }
-                            }
-                        } else {
-                            if (call.argument("multiBitmap") != null) {
-                                ArrayList<String[]> multiBytes = call.argument("bitmaps");
-                                ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-                                for (int i = 0; i < multiBytes.size(); i++) {
-                                    Log.d("IminPrinter", "printBitmapToUrl:" + multiBytes.get(i));
-                                    // bitmaps.add(Glide.with(_context).asBitmap().load(multiBytes.get(i)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get())
-                                }
-                                // if (iminPrintUtils != null) {
-                                //     iminPrintUtils.printMultiBitmap(bitmaps, 0);
-                                // }
-                            } else {
-                                String img = call.argument("bitmap");
-                                Log.d("IminPrinter", "printBitmapToUrl:" + img);
-                                // Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
-                                // if (iminPrintUtils != null) {
-                                //     if (call.argument("blackWhite") != null) {
-                                //         iminPrintUtils.printSingleBitmapBlackWhite(bitmap);
-                                //     } else {
-                                //         iminPrintUtils.printSingleBitmap(bitmap);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (call.argument("height") != null && call.argument("width") != null) {
+                                int imageWidth = call.argument("width");
+                                int imageHeight = call.argument("height");
+                                if (call.argument("alignment") != null) {
+                                    int align = call.argument("alignment");
+                                    if (call.argument("multiBitmap") != null) {
+                                        ArrayList<String> multiBytes = call.argument("bitmaps");
+                                        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                                        for (int i = 0; i < multiBytes.size(); i++) {
+                                            String url = multiBytes.get(i);
+                                            Bitmap image = Glide.with(_context).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                            bitmaps.add(image);
+                                        }
+                                        if (iminPrintUtils != null) {
+                                            iminPrintUtils.printMultiBitmap(bitmaps, align);
+                                        }
+                                    } else {
+                                        String img = call.argument("bitmap");
+                                        Bitmap image = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                        if (iminPrintUtils != null) {
+                                            iminPrintUtils.printSingleBitmap(image, align);
+                                        }
+                                    }
+                                } else {
+                                    if (call.argument("multiBitmap") != null) {
+                                        ArrayList<String> multiBytes = call.argument("bitmaps");
+                                        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                                        for (int i = 0; i < multiBytes.size(); i++) {
+                                            String url = multiBytes.get(i);
+                                            Bitmap image = Glide.with(_context).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                            bitmaps.add(image);
+                                        }
+                                        if (iminPrintUtils != null) {
+                                            iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                                        }
+                                    } else {
+                                        String img = call.argument("bitmap");
+                                        Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                        if (iminPrintUtils != null) {
+                                            if (call.argument("blackWhite") != null) {
+                                                iminPrintUtils.printSingleBitmapBlackWhite(bitmap);
+                                            } else {
+                                                iminPrintUtils.printSingleBitmap(bitmap);
 
-                                //     }
-                                // }
+                                            }
+                                        }
+                                    }
+                                }
                             }
+                        } catch (Exception err) {
+                            Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
                         }
                     }
-                } catch (Exception err) {
-                    Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
-                }
+                }).start();
                 break;
             case "printSingleBitmapBlackWhite":
                 byte[] blackWhiteBytes = call.argument("bitmap");
