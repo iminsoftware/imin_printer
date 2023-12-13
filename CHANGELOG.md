@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.5
+- added printSingleBitmap And printMultiBitmap Supports network url printing  method
+
 ## 0.5.4
 - added setTextStyle method
 
