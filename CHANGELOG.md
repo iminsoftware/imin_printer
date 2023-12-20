@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.6
+- added openCashBox method
+
 ## 0.5.5
 - added printSingleBitmap And printMultiBitmap Supports network url printing  method
 
