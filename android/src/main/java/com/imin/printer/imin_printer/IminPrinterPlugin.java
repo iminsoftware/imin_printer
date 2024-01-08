@@ -74,6 +74,15 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
+            case "SDKTYPE":
+                if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+                    //初始化 2.0 的 SDK。
+                    result.success(true);
+                } else {
+                    //初始化 1.0 SDK
+                    result.success(false);
+                }
+                break;
             case "initPrinter":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.initPrinter(connectType);
