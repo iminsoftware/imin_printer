@@ -187,6 +187,14 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> resetDevice() {
     throw UnimplementedError('resetDevice() has not been implemented.');
   }
+  
+  Future<void> openCashBox () {
+      throw UnimplementedError('openCashBox() has not been implemented.');
+  }
+   
+  Future<void> initPrinterService() {
+   throw UnimplementedError('resetDevice() has not been implemented.');
+  }
 
   // Future<void> getPrinterSerialNumber() {
   //   throw UnimplementedError(

@@ -31,10 +31,13 @@ class MockIminPrinterPlatform
   Future<void> printColumnsText({required List<ColumnMaker> cols}) =>
       Future.value();
   @override
-  Future<void> printSingleBitmap(dynamic img, {IminPictureStyle? pictureStyle}) =>
+  Future<void> printSingleBitmap(dynamic img,
+          {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override
-  Future<void> printSingleBitmapBlackWhite(dynamic img, {IminBaseStyle? baseStyle }) => Future.value();
+  Future<void> printSingleBitmapBlackWhite(dynamic img,
+          {IminBaseStyle? baseStyle}) =>
+      Future.value();
   @override
   Future<void> printMultiBitmap(List<dynamic> imgs,
           {IminPictureStyle? pictureStyle}) =>
@@ -100,6 +103,11 @@ class MockIminPrinterPlatform
   Future<void> setInitIminPrinter(bool isDefaultPrinter) => Future.value();
   @override
   Future<void> resetDevice() => Future.value();
+  @override
+  Future<void> openCashBox() => Future.value();
+
+  @override
+  Future<void> initPrinterService() => Future.value();
 }
 
 void main() {
@@ -124,4 +132,5 @@ void main() {
 
     expect(await iminPrinterPlugin.getPrinterStatus(), '-1');
   });
+
 }

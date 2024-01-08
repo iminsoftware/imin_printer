@@ -454,6 +454,11 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     await methodChannel.invokeMethod<void>('setInitIminPrinter', arguments);
   }
 
+  @override 
+  Future<void> openCashBox() async {
+    await methodChannel.invokeMethod<void>('openCashBox');
+  }
+
   @override
   Future<void> resetDevice() async {
     await methodChannel.invokeMethod<void>('resetDevice');

@@ -528,9 +528,9 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 result.success(true);
                 break;
             case "openCashBox":
-                if (iminPrintUtils != null) {
-                   iminPrintUtils.openCashBox();
-                }
+                // if (iminPrintUtils != null) {
+                //    iminPrintUtils.openCashBox();
+                // }
                 result.success(true);
                 break;   
             case "setInitIminPrinter":

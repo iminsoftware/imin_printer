@@ -499,4 +499,7 @@ class IminPrinter {
   Future<void> resetDevice() {
     return IminPrinterPlatform.instance.resetDevice();
   }
+  Future<void> openCashBox() {
+    return IminPrinterPlatform.instance.openCashBox();
+  }
 }
