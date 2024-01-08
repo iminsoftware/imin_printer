@@ -10,7 +10,9 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
+import com.imin.library.IminSDKManager;
 import com.imin.library.SystemPropManager;
+import com.imin.printer.INeoPrinterCallback;
 import com.imin.printer.PrinterHelper;
 import com.imin.printerlib.Callback;
 import com.imin.printerlib.IminPrintUtils;
@@ -23,6 +25,7 @@ import java.util.Arrays;
 
 import android.graphics.Typeface;
 import android.content.Context;
+import android.os.RemoteException;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -74,8 +77,31 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "initPrinter":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.initPrinter(connectType);
+                    result.success(true);
+                }else {
+                    PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String result) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
                 }
-                result.success(true);
+
                 break;
             case "getPrinterStatus":
                 if (iminPrintUtils != null) {
@@ -90,6 +116,9 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         int status = iminPrintUtils.getPrinterStatus(connectType);
                         result.success(String.format("%d", status));
                     }
+                }else {
+                    int status = PrinterHelper.getInstance().getPrinterStatus();
+                    result.success(String.format("%d", status));
                 }
                 break;
             case "setTextSize":
@@ -190,10 +219,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     Log.e("IminPrinter", err.getMessage());
                 }
                 break;
-            case "printText":
+            case "printText"://
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text);
+                }else{
+
                 }
                 result.success(true);
                 break;
@@ -528,9 +559,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 result.success(true);
                 break;
             case "openCashBox":
-                // if (iminPrintUtils != null) {
-                //    iminPrintUtils.openCashBox();
-                // }
+                IminSDKManager.opencashBox();
                 result.success(true);
                 break;   
             case "setInitIminPrinter":
