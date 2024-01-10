@@ -195,9 +195,10 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 result.success(true);
                 break;
             case "setTextLineSpacing":
-                float space = call.argument("space");
+                double space = call.argument("space");
+                float c = ((Double)space).floatValue();
                 if (iminPrintUtils != null) {
-                    iminPrintUtils.setTextLineSpacing(space);
+                    iminPrintUtils.setTextLineSpacing(c);
                 }
                 result.success(true);
                 break;
@@ -930,15 +931,17 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setTextBitmapLineSpacing":
                 if (iminPrintUtils == null) {
-                    float lineHeight = call.argument("lineHeight");
-                    PrinterHelper.getInstance().setTextBitmapLineSpacing(lineHeight);
+                    double lineHeight = call.argument("lineHeight");
+                    float s = ((Double)lineHeight).floatValue();
+                    PrinterHelper.getInstance().setTextBitmapLineSpacing(s);
                 }
                 result.success(true);
                 break;
             case "setTextBitmapLetterSpacing":
                 if (iminPrintUtils == null) {
-                    float letterSpacing = call.argument("letterSpacing");
-                    PrinterHelper.getInstance().setTextBitmapLetterSpacing(letterSpacing);
+                    double letterSpacing = call.argument("letterSpacing");
+                    float a = ((Double)letterSpacing).floatValue();
+                    PrinterHelper.getInstance().setTextBitmapLetterSpacing(a);
                 }
                 result.success(true);
                 break;

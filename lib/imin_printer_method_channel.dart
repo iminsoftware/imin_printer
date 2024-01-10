@@ -672,7 +672,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
 
       if (style.lineHeight != null) {
-         logger.d('lineHeight');
+         logger.d('lineHeight', style.lineHeight);
         await setTextBitmapLineSpacing(style.lineHeight!);
       }
 
