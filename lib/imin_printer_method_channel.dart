@@ -473,6 +473,10 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> unBindService() async {
     await methodChannel.invokeMethod<void>('unBindService');
   }
+  @override
+  Future<void> initPrinterParams() async {
+    await methodChannel.invokeMethod<void>('initPrinterParams');
+  }
 
   @override
   Future<String?> getPrinterSerialNumber() async {

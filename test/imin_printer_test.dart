@@ -112,6 +112,8 @@ class MockIminPrinterPlatform
   @override
   Future<void> unBindService() => Future.value();
   @override
+  Future<String?> initPrinterParams() => Future.value();
+  @override
   Future<String?> getPrinterSerialNumber() => Future.value();
   @override
   Future<String?> getPrinterModelName() => Future.value();

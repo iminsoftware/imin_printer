@@ -1,7 +1,3 @@
-// import 'dart:typed_data';
-
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:imin_printer/enums.dart';
@@ -11,6 +7,7 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:imin_printer/imin_style.dart';
 import 'package:imin_printer_example/pages/v2/info.dart';
 import 'package:imin_printer_example/pages/v2/print_text_form.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({super.key});
@@ -21,12 +18,27 @@ class NewHome extends StatefulWidget {
 
 class _NewHomeState extends State<NewHome> {
   final iminPrinter = IminPrinter();
-
+ bool permissionStatus = false;
   @override
   void initState() {
     super.initState();
+    //  getMediaFilePermission();
   }
-
+  /// 获取媒体文件读写权限
+  Future<void> getMediaFilePermission() async {
+    Map<Permission, PermissionStatus> statuses =
+        await [Permission.manageExternalStorage].request();
+    if (!mounted) return;
+    //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不在提示
+    if (statuses[Permission.manageExternalStorage]!.isGranted) {
+      setState(() {
+        permissionStatus = true;
+      });
+    }
+    setState(() {
+      permissionStatus = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,16 +81,16 @@ class _NewHomeState extends State<NewHome> {
                   child: const Text('printer Status')),
               OutlinedButton(
                 onPressed: () async {
-                  await iminPrinter.resetDevice();
+                  await iminPrinter.initPrinterParams();
                 },
-                child: const Text('reset printer'),
+                child: const Text('initPrinterParams'),
               ),
-              OutlinedButton(
-                onPressed: () async {
-                  await iminPrinter.unBindService();
-                },
-                child: const Text('unbind printer'),
-              ),
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     await iminPrinter.unBindService();
+              //   },
+              //   child: const Text('unbind printer'),
+              // ),
               OutlinedButton(
                 onPressed: () async {
                   Navigator.push(
@@ -214,7 +226,7 @@ class _NewHomeState extends State<NewHome> {
                   await iminPrinter.printSingleBitmapColorChart(
                       'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
                       pictureStyle: IminPictureStyle(
-                        alignment: IminPrintAlign.left,
+                        alignment: IminPrintAlign.center,
                         width: 150,
                         height: 50,
                       ));
@@ -224,6 +236,18 @@ class _NewHomeState extends State<NewHome> {
             ],
           ),
         )));
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    debugPrint('----------------！！！！！deactivate  111！！！！----------------');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    debugPrint('----------------！！！！！dispose  111！！！！----------------');
   }
 }
 
@@ -1371,6 +1395,7 @@ Future<List<int>> customEscPos({bool? isCustom}) async {
 
   return bytes;
 }
+
 Future<Uint8List> readFileBytes(String path) async {
   ByteData fileData = await rootBundle.load(path);
   Uint8List fileUnit8List = fileData.buffer

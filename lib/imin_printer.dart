@@ -530,6 +530,9 @@ class IminPrinter {
   Future<void> unBindService() {
     return IminPrinterPlatform.instance.unBindService();
   }
+  Future<void> initPrinterParams() {
+    return IminPrinterPlatform.instance.initPrinterParams();
+  }
 
   Future<String?> getPrinterSerialNumber() {
     return IminPrinterPlatform.instance.getPrinterSerialNumber();

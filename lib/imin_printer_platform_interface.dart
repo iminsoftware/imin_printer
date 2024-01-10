@@ -201,7 +201,10 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> unBindService() {
     throw UnimplementedError('unBindService() has not been implemented.');
   }
-
+  Future<void> initPrinterParams() {
+    throw UnimplementedError(
+        'initPrinterParams() has not been implemented.');
+  }
   Future<String?> getPrinterSerialNumber() {
     throw UnimplementedError(
         'getPrinterSerialNumber() has not been implemented.');

@@ -603,7 +603,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "resetDevice":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.resetDevice();
-                } else {
+                }
+                result.success(true);
+                break;
+            case "initPrinterParams":
+                if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().initPrinterParams();
                 }
                 result.success(true);
