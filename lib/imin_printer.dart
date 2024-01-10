@@ -634,4 +634,8 @@ class IminPrinter {
   Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) {
     return IminPrinterPlatform.instance.printTextBitmap(text,  style: style);
   }
+  Future<void> printSingleBitmapColorChart(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
+    return IminPrinterPlatform.instance.printSingleBitmapColorChart(img, pictureStyle: pictureStyle);
+  }
 }

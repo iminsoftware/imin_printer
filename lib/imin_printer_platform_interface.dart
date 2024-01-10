@@ -289,9 +289,6 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> setCodeAlignment(IminPrintAlign alignment) {
     throw UnimplementedError('setCodeAlignment() has not been implemented.');
   }
-  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) {
-    throw UnimplementedError('printTextBitmap() has not been implemented.');
-  }
 
   Future<void> setTextBitmapTypeface(IminTypeface typeface) {
     throw UnimplementedError(
@@ -331,4 +328,13 @@ abstract class IminPrinterPlatform extends PlatformInterface {
         'setTextBitmapLetterSpacing() has not been implemented.');
   }
 
+  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) {
+    throw UnimplementedError('printTextBitmap() has not been implemented.');
+  }
+
+  Future<void> printSingleBitmapColorChart(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
+    throw UnimplementedError(
+        'printSingeBitmapColorChart() has not been implemented.');
+  }
 }

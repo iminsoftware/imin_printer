@@ -171,6 +171,9 @@ class MockIminPrinterPlatform
   Future<void> setTextBitmapLetterSpacing(double space) => Future.value();
   @override
   Future<void> setTextBitmapAntiWhite(bool antiWhite) => Future.value();
+  @override
+  Future<void> printSingleBitmapColorChart(dynamic img,
+      {IminPictureStyle? pictureStyle}) => Future.value();
 }
 
 void main() {

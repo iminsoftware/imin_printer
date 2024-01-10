@@ -654,29 +654,29 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         await setTextBitmapSize(style.fontSize!);
       }
       if (style.typeface != null) {
-          logger.d('typeface');
+        logger.d('typeface');
         await setTextBitmapTypeface(style.typeface!);
       }
       if (style.fontStyle != null) {
-             logger.d('fontStyle');
+        logger.d('fontStyle');
         await setTextBitmapStyle(style.fontStyle!);
       }
       if (style.throughline != null) {
-              logger.d('throughline');
+        logger.d('throughline');
         await setTextBitmapStrikeThru(style.throughline!);
       }
       if (style.underline != null) {
-           logger.d('underline');
+        logger.d('underline');
         await setTextBitmapUnderline(style.underline!);
       }
 
       if (style.lineHeight != null) {
-         logger.d('lineHeight', style.lineHeight);
+        logger.d('lineHeight', style.lineHeight);
         await setTextBitmapLineSpacing(style.lineHeight!);
       }
 
       if (style.letterSpacing != null) {
-         logger.d('letterSpacing');
+        logger.d('letterSpacing');
         await setTextBitmapLetterSpacing(style.letterSpacing!);
       }
 
@@ -693,6 +693,29 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
           'printTextBitmapWithAli', arguments);
     } else {
       await methodChannel.invokeMethod<void>('printTextBitmap', arguments);
+    }
+  }
+
+  @override
+  Future<void> printSingleBitmapColorChart(dynamic img,
+      {IminPictureStyle? pictureStyle}) async {
+    Map<String, dynamic> arguments = <String, dynamic>{};
+    if (pictureStyle != null) {
+      if (pictureStyle.alignment != null) {
+        arguments.putIfAbsent("alignment", () => pictureStyle.alignment?.index);
+      }
+      if (pictureStyle.width != null && pictureStyle.height != null) {
+        arguments.putIfAbsent("width", () => pictureStyle.width);
+        arguments.putIfAbsent("height", () => pictureStyle.height);
+      }
+    }
+    arguments.putIfAbsent("bitmap", () => img);
+    if (img is Uint8List) {
+      await methodChannel.invokeMethod<void>(
+          'printBitmapColorChart', arguments);
+    } else {
+      arguments.putIfAbsent("SingleBitmapColorChart", () => 1);
+      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
     }
   }
 }

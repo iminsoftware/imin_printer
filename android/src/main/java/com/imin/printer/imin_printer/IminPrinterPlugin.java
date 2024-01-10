@@ -88,27 +88,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     iminPrintUtils.initPrinter(connectType);
                     result.success(true);
                 } else {
-                    PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                        }
-
-                        @Override
-                        public void onReturnString(String result) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-
-                        }
-                    });
+                    PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), null);
                 }
 
                 break;
@@ -277,54 +257,14 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         if (iminPrintUtils != null) {
                             iminPrintUtils.printSingleBitmap(bitmap, align);
                         } else {
-                            PrinterHelper.getInstance().printBitmapWithAlign(bitmap, align, new INeoPrinterCallback() {
-                                @Override
-                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                }
-
-                                @Override
-                                public void onReturnString(String s) throws RemoteException {
-                                    result.success(s);
-                                }
-
-                                @Override
-                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                }
-
-                                @Override
-                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                }
-                            });
+                            PrinterHelper.getInstance().printBitmapWithAlign(bitmap, align, null);
                         }
 
                     } else {
                         if (iminPrintUtils != null) {
                             iminPrintUtils.printSingleBitmap(bitmap);
                         } else {
-                            PrinterHelper.getInstance().printBitmap(bitmap, new INeoPrinterCallback() {
-                                @Override
-                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                }
-
-                                @Override
-                                public void onReturnString(String s) throws RemoteException {
-                                    result.success(s);
-                                }
-
-                                @Override
-                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                }
-
-                                @Override
-                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                }
-                            });
+                            PrinterHelper.getInstance().printBitmap(bitmap, null);
                         }
 
                     }
@@ -354,27 +294,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                         if (iminPrintUtils != null) {
                                             iminPrintUtils.printMultiBitmap(bitmaps, align);
                                         } else {
-                                            PrinterHelper.getInstance().printMultiBitmapWithAlign(bitmaps, align, new INeoPrinterCallback() {
-                                                @Override
-                                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                                }
-
-                                                @Override
-                                                public void onReturnString(String s) throws RemoteException {
-                                                    result.success(s);
-                                                }
-
-                                                @Override
-                                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                                }
-
-                                                @Override
-                                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                                }
-                                            });
+                                            PrinterHelper.getInstance().printMultiBitmapWithAlign(bitmaps, align, null);
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
@@ -382,27 +302,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                         if (iminPrintUtils != null) {
                                             iminPrintUtils.printSingleBitmap(image, align);
                                         } else {
-                                            PrinterHelper.getInstance().printBitmapWithAlign(image, align, new INeoPrinterCallback() {
-                                                @Override
-                                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                                }
-
-                                                @Override
-                                                public void onReturnString(String s) throws RemoteException {
-                                                    result.success(s);
-                                                }
-
-                                                @Override
-                                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                                }
-
-                                                @Override
-                                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                                }
-                                            });
+                                            if (call.argument("SingleBitmapColorChart") != null) {
+                                                PrinterHelper.getInstance().printBitmapColorChartWithAlign(image, align, null);
+                                            } else {
+                                                PrinterHelper.getInstance().printBitmapWithAlign(image, align, null);
+                                            }
                                         }
                                     }
                                 } else {
@@ -415,29 +319,9 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                             bitmaps.add(image);
                                         }
                                         if (iminPrintUtils != null) {
-                                            iminPrintUtils.printMultiBitmap(bitmaps);
+                                            iminPrintUtils.printMultiBitmap(bitmaps, 0);
                                         } else {
-                                            PrinterHelper.getInstance().printMultiBitmap(bitmaps, new INeoPrinterCallback() {
-                                                @Override
-                                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                                }
-
-                                                @Override
-                                                public void onReturnString(String s) throws RemoteException {
-                                                    result.success(s);
-                                                }
-
-                                                @Override
-                                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                                }
-
-                                                @Override
-                                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                                }
-                                            });
+                                            PrinterHelper.getInstance().printMultiBitmap(bitmaps, null);
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
@@ -450,7 +334,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
 
                                             }
                                         } else {
-                                            PrinterHelper.getInstance().printBitmap(bitmap,null);
+                                            if (call.argument("SingleBitmapColorChart") != null) {
+                                                PrinterHelper.getInstance().printBitmapColorChart(bitmap, null);
+                                            } else {
+                                                PrinterHelper.getInstance().printBitmap(bitmap, null);
+                                            }
                                         }
                                     }
                                 }
@@ -482,15 +370,22 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                     if (call.argument("alignment") != null) {
                         int multiAlign = call.argument("alignment");
-                        iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printMultiBitmap(bitmaps, multiAlign);
+                        } else {
+                            PrinterHelper.getInstance().printMultiBitmapWithAlign(bitmaps, multiAlign, null);
+                        }
                     } else {
-                        iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                        } else {
+                            PrinterHelper.getInstance().printMultiBitmap(bitmaps, null);
+                        }
                     }
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
                 }
-
                 break;
             case "setQrCodeSize":
                 int qrSize = call.argument("qrSize");
@@ -936,54 +831,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "printerSelfChecking":
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().printerSelfChecking(
-                            new INeoPrinterCallback() {
-                                @Override
-                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                }
-
-                                @Override
-                                public void onReturnString(String s) throws RemoteException {
-                                    result.success(s);
-                                }
-
-                                @Override
-                                public void onRaiseException(int code, String msg) throws RemoteException {
-
-                                }
-
-                                @Override
-                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                }
-                            }
-                    );
+                    PrinterHelper.getInstance().printerSelfChecking(null);
                 }
                 break;
             case "sendRAWData":
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().sendRAWData((byte[]) call.argument("bytes"), new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                        }
-
-                        @Override
-                        public void onReturnString(String s) throws RemoteException {
-                            result.success(s);
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-
-                        }
-                    });
+                    PrinterHelper.getInstance().sendRAWData((byte[]) call.argument("bytes"), null);
                 }
                 result.success(true);
                 break;
@@ -1073,27 +926,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "printTextBitmap":
                 if (iminPrintUtils == null) {
                     String bitmapText = call.argument("text");
-                    PrinterHelper.getInstance().printTextBitmap(bitmapText, new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                        }
-
-                        @Override
-                        public void onReturnString(String s) throws RemoteException {
-                            result.success(s);
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-
-                        }
-                    });
+                    PrinterHelper.getInstance().printTextBitmap(bitmapText, null);
                 }
                 result.success(true);
                 break;
@@ -1101,27 +934,28 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 if (iminPrintUtils == null) {
                     String textBitmapString = call.argument("text");
                     int textBitmapAlign = call.argument("align");
-                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString, textBitmapAlign, new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString, textBitmapAlign, null);
+                }
+                result.success(true);
+                break;
+            case "printBitmapColorChart":
+                try {
+                    byte[] img = call.argument("bitmap");
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                    if (call.argument("alignment") != null) {
+                        int align = call.argument("alignment");
+                        if (iminPrintUtils == null) {
+                            PrinterHelper.getInstance().printBitmapColorChartWithAlign(bitmap, align, null);
                         }
 
-                        @Override
-                        public void onReturnString(String s) throws RemoteException {
-                            result.success(s);
+                    } else {
+                        if (iminPrintUtils == null) {
+                            PrinterHelper.getInstance().printBitmapColorChart(bitmap, null);
                         }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-
-                        }
-                    });
+                    }
+                    result.success(true);
+                } catch (Exception err) {
+                    Log.e("IminPrinter", "printBitmapColorChart:" + err.getMessage());
                 }
                 result.success(true);
                 break;
