@@ -74,7 +74,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
-            case "SDKTYPE":
+            case "sdkVersion":
                 if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
                     //初始化 2.0 的 SDK。
                     result.success(true);
@@ -87,7 +87,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 if (iminPrintUtils != null) {
                     iminPrintUtils.initPrinter(connectType);
                     result.success(true);
-                }else {
+                } else {
                     PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -125,7 +125,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         int status = iminPrintUtils.getPrinterStatus(connectType);
                         result.success(String.format("%d", status));
                     }
-                }else {
+                } else {
                     int status = PrinterHelper.getInstance().getPrinterStatus();
                     result.success(String.format("%d", status));
                 }
@@ -232,8 +232,6 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text);
-                }else{
-
                 }
                 result.success(true);
                 break;
@@ -247,6 +245,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "printAndLineFeed":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printAndLineFeed();
+                } else {
+                    PrinterHelper.getInstance().printAndLineFeed();
                 }
                 result.success(true);
                 break;
@@ -254,12 +254,16 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int height = call.argument("height");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printAndFeedPaper(height);
+                } else {
+                    PrinterHelper.getInstance().printAndFeedPaper(height);
                 }
                 result.success(true);
                 break;
             case "partialCut":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.partialCut();
+                } else {
+                    PrinterHelper.getInstance().partialCut();
                 }
                 result.success(true);
                 break;
@@ -568,9 +572,13 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 result.success(true);
                 break;
             case "openCashBox":
-                IminSDKManager.opencashBox();
+                if (iminPrintUtils != null) {
+                    IminSDKManager.opencashBox();
+                } else {
+                    PrinterHelper.getInstance().openDrawer();
+                }
                 result.success(true);
-                break;   
+                break;
             case "setInitIminPrinter":
                 boolean isDefault = call.argument("isDefault");
                 if (iminPrintUtils != null) {
@@ -581,6 +589,418 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "resetDevice":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.resetDevice();
+                } else {
+                    PrinterHelper.getInstance().initPrinterParams();
+                }
+                result.success(true);
+                break;
+            case "unBindService":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().deInitPrinterService(Utils.getInstance().getContext());
+                }
+                result.success(true);
+                break;
+            case "getPrinterSerialNumber":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterSerialNumber(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getPrinterModelName":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterModelName(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getPrinterThermalHead":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterThermalHead(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getPrinterFirmwareVersion":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterFirmwareVersion(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getServiceVersion":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getServiceVersion());
+                }
+                break;
+            case "getPrinterHardwareVersion":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterHardwareVersion(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getUsbPrinterVidPid":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getUsbPrinterVidPid());
+                }
+                break;
+            case "getUsbDevicesName":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getUsbDevicesName());
+                }
+                break;
+            case "getPrinterDensity":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterDensity());
+                }
+                break;
+            case "getPrinterPaperDistance":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterPaperDistance(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getPrinterPaperType":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterPaperType());
+                }
+                break;
+            case "getPrinterCutTimes":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterCutTimes(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                break;
+            case "getPrinterMode":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterMode());
+                }
+                break;
+            case "getDrawerStatus":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getDrawerStatus());
+                }
+                break;
+            case "getOpenDrawerTimes":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getOpenDrawerTimes());
+                }
+                break;
+            case "printerSelfChecking":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().printerSelfChecking(
+                            new INeoPrinterCallback() {
+                                @Override
+                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                }
+
+                                @Override
+                                public void onReturnString(String s) throws RemoteException {
+                                    result.success(s);
+                                }
+
+                                @Override
+                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                }
+
+                                @Override
+                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                }
+                            }
+                    );
+                }
+                break;
+            case "sendRAWData":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().sendRAWData((byte[]) call.argument("bytes"), new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                result.success(true);
+                break;
+            case "setCodeAlignment":
+                if (iminPrintUtils == null) {
+                    int align = call.argument("align");
+                    PrinterHelper.getInstance().setCodeAlignment(align);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapTypeface":
+                if (iminPrintUtils == null) {
+                    int textBitmapFont = call.argument("font");
+                    switch (textBitmapFont) {
+                        case 1:
+                            PrinterHelper.getInstance().setTextBitmapTypeface("Typeface.MONOSPACE");
+                            break;
+                        case 2:
+                            PrinterHelper.getInstance().setTextBitmapTypeface("Typeface.DEFAULT_BOLD");
+                            break;
+                        case 3:
+                            PrinterHelper.getInstance().setTextBitmapTypeface("Typeface.SANS_SERIF");
+                            break;
+                        case 4:
+                            PrinterHelper.getInstance().setTextBitmapTypeface("Typeface.SERIF");
+                            break;
+                        default:
+                            PrinterHelper.getInstance().setTextBitmapTypeface("Typeface.DEFAULT");
+                            break;
+                    }
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapSize":
+                if (iminPrintUtils == null) {
+                    int textBitmapSize = call.argument("size");
+                    PrinterHelper.getInstance().setTextBitmapSize(textBitmapSize);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapStyle":
+                if (iminPrintUtils == null) {
+                    int textBitmapStyle = call.argument("style");
+                    if (iminPrintUtils != null) {
+                        PrinterHelper.getInstance().setTextBitmapStyle(textBitmapStyle);
+                    }
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapStrikeThru":
+                if (iminPrintUtils == null) {
+                    boolean strikeThru = call.argument("strikeThru");
+                    PrinterHelper.getInstance().setTextBitmapStrikeThru(strikeThru);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapUnderline":
+                if (iminPrintUtils == null) {
+                    boolean haveUnderline = call.argument("haveUnderline");
+                    PrinterHelper.getInstance().setTextBitmapUnderline(haveUnderline);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapLineSpacing":
+                if (iminPrintUtils == null) {
+                    float lineHeight = call.argument("lineHeight");
+                    PrinterHelper.getInstance().setTextBitmapLineSpacing(lineHeight);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapLetterSpacing":
+                if (iminPrintUtils == null) {
+                    float letterSpacing = call.argument("letterSpacing");
+                    PrinterHelper.getInstance().setTextBitmapLetterSpacing(letterSpacing);
+                }
+                result.success(true);
+                break;
+            case "setTextBitmapAntiWhite":
+                if (iminPrintUtils == null) {
+                    boolean antiWhite = call.argument("antiWhite");
+                    PrinterHelper.getInstance().setTextBitmapAntiWhite(antiWhite);
+                }
+                result.success(true);
+                break;
+            case "printTextBitmap":
+                if (iminPrintUtils == null) {
+                    String bitmapText = call.argument("text");
+                    PrinterHelper.getInstance().printTextBitmap(bitmapText, new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+                result.success(true);
+                break;
+            case "printTextBitmapWithAli":
+                if (iminPrintUtils == null) {
+                    String textBitmapString = call.argument("text");
+                    int textBitmapAlign = call.argument("align");
+                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString, textBitmapAlign, new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
                 }
                 result.success(true);
                 break;

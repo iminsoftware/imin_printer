@@ -1,26 +1,12 @@
 // import 'dart:io';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter/services.dart';
-import 'package:imin_printer_example/pages/v2/vertical/home.dart';
-// import 'package:imin_printer_example/pages/v1/home.dart';
-// import 'package:flutter/services.dart';
+import 'package:imin_printer/imin_printer.dart';
+import 'package:imin_printer_example/pages/v2/home.dart';
+import 'package:imin_printer_example/pages/v1/home.dart';
 
-// import 'package:imin_printer/enums.dart';
-// import 'package:imin_printer/imin_style.dart';
-// import 'package:imin_printer/column_maker.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await SystemChrome.setPreferredOrientations(
-  //     [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeRight]);
   runApp(const MyApp());
-  //   /// Android状态栏透明
-  // if (Platform.isAndroid) {
-  //   SystemUiOverlayStyle systemUiOverlayStyle =
-  //       const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-  //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  // }
 }
 
 class MyApp extends StatefulWidget {
@@ -30,9 +16,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final iminPrinter = IminPrinter();
+  bool? version = false;
   @override
   void initState() {
     super.initState();
+    getDeviceUseSDKVersion();
+  }
+
+  /// 获取设备应该使用哪个版本SDK
+  Future<void> getDeviceUseSDKVersion() async {
+    bool? v = await iminPrinter.getUseSdkVersion();
+    setState(() {
+      version = v;
+    });
   }
 
   @override
@@ -40,11 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          // primaryColor: Colors.green,
-          //  primarySwatch: Colors.yellow,
-          ),
-      home: const VerticalHome(),
+      home: version == true ? const NewHome() : const Home() ,
     );
   }
 }

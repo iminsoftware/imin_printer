@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('打印测试'),
+          title: const Text('v1 Print Test'),
         ),
         body: SingleChildScrollView(
             child: Column(

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'imin_printer_platform_interface.dart';
 import 'enums.dart';
 import 'imin_style.dart';
@@ -7,6 +9,18 @@ import 'package:logger/logger.dart';
 var logger = Logger();
 
 class IminPrinter {
+  /// Get what version of sdk is the current device using
+  ///
+  /// {@tool snippet}
+  ///
+  ///  ```dart
+  /// iminPrinter.getUseSdkVersion()
+  /// ```
+  /// {@end-tool}
+  Future<bool?> getUseSdkVersion() {
+    return IminPrinterPlatform.instance.getUseSdkVersion();
+  }
+
   /// Reset the printer’s logic program (for example: layout settings, bold and other style settings), but do not clear the buffer data, so unfinished print jobs will continue after reset.
   ///
   /// {@tool snippet}
@@ -179,6 +193,7 @@ class IminPrinter {
   ///
   ///  ```dart
   /// iminPrinter.printAndFeedPaper(100)
+  /// height ->0 <value < 1016
   /// ```
   /// {@end-tool}
   Future<void> printAndFeedPaper(int height) {
@@ -499,7 +514,124 @@ class IminPrinter {
   Future<void> resetDevice() {
     return IminPrinterPlatform.instance.resetDevice();
   }
+
+  /// open cash box
+  ///
+  /// {@tool snippet}
+  ///
+  ///  ```dart
+  /// iminPrinter.openCashBox()
+  /// ```
+  /// {@end-tool}
   Future<void> openCashBox() {
     return IminPrinterPlatform.instance.openCashBox();
+  }
+
+  Future<void> unBindService() {
+    return IminPrinterPlatform.instance.unBindService();
+  }
+
+  Future<String?> getPrinterSerialNumber() {
+    return IminPrinterPlatform.instance.getPrinterSerialNumber();
+  }
+
+  Future<String?> getPrinterModelName() {
+    return IminPrinterPlatform.instance.getPrinterModelName();
+  }
+
+  Future<String?> getPrinterThermalHead() {
+    return IminPrinterPlatform.instance.getPrinterThermalHead();
+  }
+
+  Future<String?> getPrinterFirmwareVersion() {
+    return IminPrinterPlatform.instance.getPrinterFirmwareVersion();
+  }
+
+  Future<String?> getServiceVersion() {
+    return IminPrinterPlatform.instance.getServiceVersion();
+  }
+
+  Future<String?> getPrinterHardwareVersion() {
+    return IminPrinterPlatform.instance.getPrinterHardwareVersion();
+  }
+
+  Future<String?> getUsbPrinterVidPid() {
+    return IminPrinterPlatform.instance.getUsbPrinterVidPid();
+  }
+
+  Future<String?> getUsbDevicesName() {
+    return IminPrinterPlatform.instance.getUsbDevicesName();
+  }
+
+  Future<int?> getPrinterDensity() {
+    return IminPrinterPlatform.instance.getPrinterDensity();
+  }
+
+  Future<String?> getPrinterPaperDistance() {
+    return IminPrinterPlatform.instance.getPrinterPaperDistance();
+  }
+
+  Future<int?> getPrinterPaperType() {
+    return IminPrinterPlatform.instance.getPrinterPaperType();
+  }
+
+  Future<String?> getPrinterCutTimes() {
+    return IminPrinterPlatform.instance.getPrinterCutTimes();
+  }
+
+  Future<int?> getPrinterMode() {
+    return IminPrinterPlatform.instance.getPrinterMode();
+  }
+
+  Future<bool?> getDrawerStatus() {
+    return IminPrinterPlatform.instance.getDrawerStatus();
+  }
+
+  Future<int?> getOpenDrawerTimes() {
+    return IminPrinterPlatform.instance.getOpenDrawerTimes();
+  }
+
+  Future<void> printerSelfChecking() {
+    return IminPrinterPlatform.instance.printerSelfChecking();
+  }
+
+  Future<void> sendRAWData(Uint8List bytes) {
+    return IminPrinterPlatform.instance.sendRAWData(bytes);
+  }
+
+  Future<void> fullCut() {
+    return IminPrinterPlatform.instance.fullCut();
+  }
+
+  Future<void> setCodeAlignment(IminPrintAlign alignment) {
+    return IminPrinterPlatform.instance.setCodeAlignment(alignment);
+  }
+
+  Future<void> setTextBitmapTypeface(IminTypeface typeface) {
+    return IminPrinterPlatform.instance.setTextBitmapTypeface(typeface);
+  }
+  Future<void> setTextBitmapSize(int size) {
+    return IminPrinterPlatform.instance.setTextBitmapSize(size);
+  }
+  Future<void> setTextBitmapStyle(IminFontStyle style) {
+    return IminPrinterPlatform.instance.setTextBitmapStyle(style);
+  }
+  Future<void> setTextBitmapStrikeThru(bool strikeThru) {
+    return IminPrinterPlatform.instance.setTextBitmapStrikeThru(strikeThru);
+  }
+  Future<void> setTextBitmapUnderline(bool haveUnderline) {
+    return IminPrinterPlatform.instance.setTextBitmapUnderline(haveUnderline);
+  }
+  Future<void>  setTextBitmapLineSpacing(double lineHeight) {
+    return IminPrinterPlatform.instance.setTextBitmapLineSpacing(lineHeight);
+  }
+  Future<void>  setTextBitmapLetterSpacing(double space)  {
+    return IminPrinterPlatform.instance.setTextBitmapLineSpacing(space);
+  }
+  Future<void> setTextBitmapAntiWhite(bool antiWhite)  {
+    return IminPrinterPlatform.instance.setTextBitmapAntiWhite(antiWhite);
+  }
+  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) {
+    return IminPrinterPlatform.instance.printTextBitmap(text,  style: style);
   }
 }

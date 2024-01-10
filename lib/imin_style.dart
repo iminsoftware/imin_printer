@@ -19,6 +19,31 @@ class IminTextStyle {
       this.typeface});
 }
 
+class IminTextPictureStyle {
+  bool? wordWrap;
+  int? fontSize;
+  IminTypeface? typeface;
+  IminFontStyle? fontStyle;
+  IminPrintAlign? align;
+  double? letterSpacing;
+  bool? underline;
+  bool? throughline;
+  double? lineHeight;
+  bool? reverseWhite;
+
+  IminTextPictureStyle(
+      {this.wordWrap,
+      this.fontSize,
+      this.align,
+      this.fontStyle,
+      this.letterSpacing,
+      this.underline,
+      this.throughline,
+      this.reverseWhite,
+      this.lineHeight,
+      this.typeface});
+}
+
 class IminQrCodeStyle {
   int? qrSize;
   IminPrintAlign? align;
@@ -53,5 +78,6 @@ class IminBaseStyle {
 
 class IminPictureStyle extends IminBaseStyle {
   IminPrintAlign? alignment;
-  IminPictureStyle({this.alignment, width, height}) : super(width:width, height:height);
+  IminPictureStyle({this.alignment, width, height})
+      : super(width: width, height: height);
 }

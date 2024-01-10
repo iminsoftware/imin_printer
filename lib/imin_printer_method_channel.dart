@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+// import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'enums.dart';
@@ -14,6 +15,11 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('imin_printer');
+
+  @override
+  Future<bool?> getUseSdkVersion() async {
+    return await methodChannel.invokeMethod<bool>('sdkVersion');
+  }
 
   @override
   Future<bool?> initPrinter() async {
@@ -454,7 +460,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     await methodChannel.invokeMethod<void>('setInitIminPrinter', arguments);
   }
 
-  @override 
+  @override
   Future<void> openCashBox() async {
     await methodChannel.invokeMethod<void>('openCashBox');
   }
@@ -464,22 +470,230 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     await methodChannel.invokeMethod<void>('resetDevice');
   }
 
-  // @override
-  // Future<void> getPrinterSerialNumber() async {
-  //   await methodChannel.invokeMethod<void>('getPrinterSerialNumber');
-  // }
+  @override
+  Future<void> unBindService() async {
+    await methodChannel.invokeMethod<void>('unBindService');
+  }
 
-  // @override
-  // Future<void> getPrinterModelName() async {
-  //   await methodChannel.invokeMethod<void>('getPrinterModelName');
-  // }
+  @override
+  Future<String?> getPrinterSerialNumber() async {
+    return await methodChannel.invokeMethod<String>('getPrinterSerialNumber');
+  }
 
-  // @override
-  // Future<void> getPrinterThermalHead() async {
-  //   await methodChannel.invokeMethod<void>('getPrinterThermalHead');
-  // }
-  // @override
-  // Future<void> getPrinterFirmwareVersion () async {
-  //   await methodChannel.invokeMethod<void>('getPrinterFirmwareVersion');
-  // }
+  @override
+  Future<String?> getPrinterModelName() async {
+    return await methodChannel.invokeMethod<String>('getPrinterModelName');
+  }
+
+  @override
+  Future<String?> getPrinterThermalHead() async {
+    return await methodChannel.invokeMethod<String>('getPrinterThermalHead');
+  }
+
+  @override
+  Future<String?> getPrinterFirmwareVersion() async {
+    return await methodChannel
+        .invokeMethod<String>('getPrinterFirmwareVersion');
+  }
+
+  @override
+  Future<String?> getServiceVersion() async {
+    return await methodChannel.invokeMethod<String>('getServiceVersion');
+  }
+
+  @override
+  Future<String?> getPrinterHardwareVersion() async {
+    return await methodChannel
+        .invokeMethod<String>('getPrinterHardwareVersion');
+  }
+
+  @override
+  Future<String?> getUsbPrinterVidPid() async {
+    return await methodChannel.invokeMethod<String>('getUsbPrinterVidPid');
+  }
+
+  @override
+  Future<String?> getUsbDevicesName() async {
+    return await methodChannel.invokeMethod<String>('getUsbDevicesName');
+  }
+
+  @override
+  Future<int?> getPrinterDensity() async {
+    return await methodChannel.invokeMethod<int>('getPrinterDensity');
+  }
+
+  @override
+  Future<String?> getPrinterPaperDistance() async {
+    return await methodChannel.invokeMethod<String>('getPrinterPaperDistance');
+  }
+
+  @override
+  Future<int?> getPrinterPaperType() async {
+    return await methodChannel.invokeMethod<int>('getPrinterPaperType');
+  }
+
+  @override
+  Future<String?> getPrinterCutTimes() async {
+    return await methodChannel.invokeMethod<String>('getPrinterCutTimes');
+  }
+
+  @override
+  Future<int?> getPrinterMode() async {
+    return await methodChannel.invokeMethod<int>('getPrinterMode');
+  }
+
+  @override
+  Future<bool?> getDrawerStatus() async {
+    return await methodChannel.invokeMethod<bool>('getDrawerStatus');
+  }
+
+  @override
+  Future<int?> getOpenDrawerTimes() async {
+    return await methodChannel.invokeMethod<int>('getOpenDrawerTimes');
+  }
+
+  @override
+  Future<void> printerSelfChecking() async {
+    await methodChannel.invokeMethod<void>('printerSelfChecking');
+  }
+
+  @override
+  Future<void> sendRAWData(Uint8List bytes) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"bytes": bytes};
+    await methodChannel.invokeMethod<void>('sendRAWData', arguments);
+  }
+
+  @override
+  Future<void> fullCut() async {
+    await methodChannel.invokeMethod<void>('fullCut');
+  }
+
+  @override
+  Future<void> setCodeAlignment(IminPrintAlign alignment) async {
+    await methodChannel.invokeMethod<void>('setCodeAlignment');
+  }
+
+  @override
+  Future<void> setTextBitmapTypeface(IminTypeface typeface) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "font": typeface.index,
+    };
+    await methodChannel.invokeMethod<void>('setTextBitmapTypeface', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapSize(int size) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "size": size,
+    };
+    await methodChannel.invokeMethod<void>('setTextBitmapSize', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapStyle(IminFontStyle style) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "style": style.index,
+    };
+    await methodChannel.invokeMethod<void>('setTextBitmapStyle', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapStrikeThru(bool strikeThru) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "strikeThru": strikeThru,
+    };
+    await methodChannel.invokeMethod<void>(
+        'setTextBitmapStrikeThru', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapUnderline(bool haveUnderline) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "haveUnderline": haveUnderline,
+    };
+    await methodChannel.invokeMethod<void>('setTextBitmapUnderline', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapLineSpacing(double lineHeight) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "lineHeight": lineHeight,
+    };
+    await methodChannel.invokeMethod<void>(
+        'setTextBitmapLineSpacing', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapLetterSpacing(double space) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "letterSpacing": space,
+    };
+    await methodChannel.invokeMethod<void>(
+        'setTextBitmapLetterSpacing', arguments);
+  }
+
+  @override
+  Future<void> setTextBitmapAntiWhite(bool antiWhite) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "antiWhite": antiWhite,
+    };
+    await methodChannel.invokeMethod<void>('setTextBitmapAntiWhite', arguments);
+  }
+
+  @override
+  Future<void> printTextBitmap(String text,
+      {IminTextPictureStyle? style}) async {
+    Map<String, dynamic> arguments = <String, dynamic>{};
+    if (style != null) {
+      if (style.wordWrap != null && style.wordWrap == false) {
+        arguments.putIfAbsent('text', () => text);
+      } else {
+        arguments.putIfAbsent('text', () => '$text\n');
+      }
+      if (style.fontSize != null) {
+        logger.d('fontSize');
+        await setTextBitmapSize(style.fontSize!);
+      }
+      if (style.typeface != null) {
+          logger.d('typeface');
+        await setTextBitmapTypeface(style.typeface!);
+      }
+      if (style.fontStyle != null) {
+             logger.d('fontStyle');
+        await setTextBitmapStyle(style.fontStyle!);
+      }
+      if (style.throughline != null) {
+              logger.d('throughline');
+        await setTextBitmapStrikeThru(style.throughline!);
+      }
+      if (style.underline != null) {
+           logger.d('underline');
+        await setTextBitmapUnderline(style.underline!);
+      }
+
+      if (style.lineHeight != null) {
+         logger.d('lineHeight');
+        await setTextBitmapLineSpacing(style.lineHeight!);
+      }
+
+      if (style.letterSpacing != null) {
+         logger.d('letterSpacing');
+        await setTextBitmapLetterSpacing(style.letterSpacing!);
+      }
+
+      if (style.reverseWhite != null) {
+        logger.d('reverseWhite');
+        await setTextBitmapAntiWhite(style.reverseWhite!);
+      }
+    } else {
+      arguments.putIfAbsent('text', () => '$text\n');
+    }
+    if (style != null && style.align != null) {
+      arguments.putIfAbsent('align', () => style.align!.index);
+      await methodChannel.invokeMethod<void>(
+          'printTextBitmapWithAli', arguments);
+    } else {
+      await methodChannel.invokeMethod<void>('printTextBitmap', arguments);
+    }
+  }
 }

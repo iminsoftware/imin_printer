@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:imin_printer/imin_printer.dart';
 import 'package:imin_printer/enums.dart';
@@ -10,6 +12,8 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockIminPrinterPlatform
     with MockPlatformInterfaceMixin
     implements IminPrinterPlatform {
+  @override
+  Future<bool?> getUseSdkVersion() => Future.value(true);
   @override
   Future<bool?> initPrinter() => Future.value(true);
   @override
@@ -105,9 +109,68 @@ class MockIminPrinterPlatform
   Future<void> resetDevice() => Future.value();
   @override
   Future<void> openCashBox() => Future.value();
-
   @override
-  Future<void> initPrinterService() => Future.value();
+  Future<void> unBindService() => Future.value();
+  @override
+  Future<String?> getPrinterSerialNumber() => Future.value();
+  @override
+  Future<String?> getPrinterModelName() => Future.value();
+  @override
+  Future<String?> getPrinterThermalHead() => Future.value();
+  @override
+  Future<String?> getPrinterFirmwareVersion() => Future.value();
+  @override
+  Future<String?> getServiceVersion() => Future.value();
+  @override
+  Future<String?> getPrinterHardwareVersion() => Future.value();
+  @override
+  Future<String?> getUsbPrinterVidPid() => Future.value();
+  @override
+  Future<String?> getUsbDevicesName() => Future.value();
+  @override
+  Future<int?> getPrinterDensity() => Future.value();
+  @override
+  Future<String?> setPrinterDensity(IminPrinterDensity density) => Future.value();
+  @override
+  Future<String?> getPrinterPaperDistance() => Future.value();
+  @override
+  Future<int?> getPrinterPaperType() => Future.value();
+  @override
+  Future<String?> getPrinterCutTimes() => Future.value();
+  @override
+  Future<int?> getPrinterMode() => Future.value();
+  @override
+  Future<String?> setPrinterMode() => Future.value();
+  @override
+  Future<bool?> getDrawerStatus() => Future.value();
+  @override
+  Future<int?> getOpenDrawerTimes() => Future.value();
+  @override
+  Future<void> printerSelfChecking() => Future.value();
+  @override
+  Future<void> sendRAWData(Uint8List bytes) => Future.value();
+  @override
+  Future<void> fullCut() => Future.value();
+  @override
+  Future<void> setCodeAlignment(IminPrintAlign alignment) => Future.value();
+  @override
+  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) => Future.value();
+  @override
+  Future<void> setTextBitmapTypeface(IminTypeface typeface) => Future.value();
+  @override
+  Future<void> setTextBitmapSize(int size) => Future.value();
+  @override
+  Future<void> setTextBitmapStyle(IminFontStyle style) => Future.value();
+  @override
+  Future<void> setTextBitmapStrikeThru(bool strikeThru) => Future.value();
+  @override
+  Future<void> setTextBitmapUnderline(bool haveUnderline) => Future.value();
+  @override
+  Future<void> setTextBitmapLineSpacing(double lineHeight) => Future.value();
+  @override
+  Future<void> setTextBitmapLetterSpacing(double space) => Future.value();
+  @override
+  Future<void> setTextBitmapAntiWhite(bool antiWhite) => Future.value();
 }
 
 void main() {
@@ -132,5 +195,4 @@ void main() {
 
     expect(await iminPrinterPlugin.getPrinterStatus(), '-1');
   });
-
 }
