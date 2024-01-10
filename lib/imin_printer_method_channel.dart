@@ -325,7 +325,6 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     if (img is Uint8List) {
       await methodChannel.invokeMethod<void>('printSingleBitmap', arguments);
     } else {
-      // logger.d('日志', img);
       await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
     }
   }

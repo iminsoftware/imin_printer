@@ -268,6 +268,7 @@ class _PrintTextSettingPageState extends State<PrintTextSettingPage> {
                           align: align,
                           fontStyle: fontStyle,
                           typeface: typeface,
+                          letterSpacing: letterSpacing != '' ? double.parse(letterSpacing) : null,
                           lineHeight: lineHeight != '' ? double.parse(lineHeight) : null,
                           underline: underline,
                           throughline: throughline,

@@ -330,4 +330,5 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError(
         'setTextBitmapLetterSpacing() has not been implemented.');
   }
+
 }

@@ -1212,25 +1212,25 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('sendRAWData'),
               ),
-                OutlinedButton(
+              OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.printAndLineFeed();
                 },
                 child: const Text('printAndLineFeed'),
               ),
-                OutlinedButton(
+              OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('printAndFeedPaper'),
               ),
-                OutlinedButton(
+              OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.partialCut();
                 },
                 child: const Text('partialCut'),
               ),
-                OutlinedButton(
+              OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.setCodeAlignment(IminPrintAlign.center);
                 },
@@ -1238,11 +1238,11 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                      Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const PrintTextSettingPage(type: 'Printer Text Setting')),
+                        builder: (context) => const PrintTextSettingPage(
+                            type: 'Printer Text Setting')),
                   );
                   // await iminPrinter.printTextBitmap('iMin advocates the core values of "Integrity, Customer First, Invention&Creation, Patience”, using cloud-based technology to help businesses to get  access to the Internet and also increases their data base, by providing more solutions so that their business can take a step further. Through their efficiency enhancement, cost improvement, service innovation, and  better services for consumers, these aspect will drives the entire industry development.', style: IminTextPictureStyle(wordWrap: true, reverseWhite: true));
                 },
@@ -1250,9 +1250,46 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                  await iminPrinter.printTextBitmap('居中', style: IminTextPictureStyle(wordWrap: false, align: IminPrintAlign.center));
+                  // Uint8List byte =
+                  //     await readFileBytes('assets/images/logo.png');
+                  // await iminPrinter.printSingleBitmap(byte,
+                  //     pictureStyle: IminPictureStyle(
+                  //       alignment: IminPrintAlign.center,
+                  //       width: 50,
+                  //       height: 20,
+                  //     ));
+
+                  await iminPrinter.printSingleBitmap(
+                      'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.right,
+                        width: 150,
+                        height: 50,
+                      ));
                 },
-                child: const Text('printTextBitmapWithAli'),
+                child: const Text('print singleBitmap'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // Uint8List byte1 =
+                  //     await _getImageFromAsset('assets/images/logo.png');
+                  // Uint8List byte2 =
+                  //     await _getImageFromAsset('assets/images/logo.png');
+
+                  // await iminPrinter.printMultiBitmap([byte1, byte2],
+                  //     pictureStyle: IminPictureStyle(
+                  //         alignment: IminPrintAlign.left));
+                  await iminPrinter.printMultiBitmap([
+                    'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                    'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png'
+                  ],
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.left,
+                        width: 250,
+                        height: 30,
+                      ));
+                },
+                child: const Text('print multiBitmap'),
               ),
             ],
           ),

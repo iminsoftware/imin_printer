@@ -196,7 +196,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setTextLineSpacing":
                 double space = call.argument("space");
-                float c = ((Double)space).floatValue();
+                float c = ((Double) space).floatValue();
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setTextLineSpacing(c);
                 }
@@ -274,9 +274,59 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
                     if (call.argument("alignment") != null) {
                         int align = call.argument("alignment");
-                        iminPrintUtils.printSingleBitmap(bitmap, align);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printSingleBitmap(bitmap, align);
+                        } else {
+                            PrinterHelper.getInstance().printBitmapWithAlign(bitmap, align, new INeoPrinterCallback() {
+                                @Override
+                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                }
+
+                                @Override
+                                public void onReturnString(String s) throws RemoteException {
+                                    result.success(s);
+                                }
+
+                                @Override
+                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                }
+
+                                @Override
+                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                }
+                            });
+                        }
+
                     } else {
-                        iminPrintUtils.printSingleBitmap(bitmap);
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printSingleBitmap(bitmap);
+                        } else {
+                            PrinterHelper.getInstance().printBitmap(bitmap, new INeoPrinterCallback() {
+                                @Override
+                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                }
+
+                                @Override
+                                public void onReturnString(String s) throws RemoteException {
+                                    result.success(s);
+                                }
+
+                                @Override
+                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                }
+
+                                @Override
+                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                }
+                            });
+                        }
+
                     }
                     result.success(true);
                 } catch (Exception err) {
@@ -303,12 +353,56 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                         }
                                         if (iminPrintUtils != null) {
                                             iminPrintUtils.printMultiBitmap(bitmaps, align);
+                                        } else {
+                                            PrinterHelper.getInstance().printMultiBitmapWithAlign(bitmaps, align, new INeoPrinterCallback() {
+                                                @Override
+                                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                                }
+
+                                                @Override
+                                                public void onReturnString(String s) throws RemoteException {
+                                                    result.success(s);
+                                                }
+
+                                                @Override
+                                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                                }
+
+                                                @Override
+                                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                                }
+                                            });
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
                                         Bitmap image = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
                                         if (iminPrintUtils != null) {
                                             iminPrintUtils.printSingleBitmap(image, align);
+                                        } else {
+                                            PrinterHelper.getInstance().printBitmapWithAlign(image, align, new INeoPrinterCallback() {
+                                                @Override
+                                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                                }
+
+                                                @Override
+                                                public void onReturnString(String s) throws RemoteException {
+                                                    result.success(s);
+                                                }
+
+                                                @Override
+                                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                                }
+
+                                                @Override
+                                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                                }
+                                            });
                                         }
                                     }
                                 } else {
@@ -321,7 +415,29 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                             bitmaps.add(image);
                                         }
                                         if (iminPrintUtils != null) {
-                                            iminPrintUtils.printMultiBitmap(bitmaps, 0);
+                                            iminPrintUtils.printMultiBitmap(bitmaps);
+                                        } else {
+                                            PrinterHelper.getInstance().printMultiBitmap(bitmaps, new INeoPrinterCallback() {
+                                                @Override
+                                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                                }
+
+                                                @Override
+                                                public void onReturnString(String s) throws RemoteException {
+                                                    result.success(s);
+                                                }
+
+                                                @Override
+                                                public void onRaiseException(int code, String msg) throws RemoteException {
+
+                                                }
+
+                                                @Override
+                                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                                }
+                                            });
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
@@ -333,6 +449,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                                 iminPrintUtils.printSingleBitmap(bitmap);
 
                                             }
+                                        } else {
+                                            PrinterHelper.getInstance().printBitmap(bitmap,null);
                                         }
                                     }
                                 }
@@ -932,7 +1050,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "setTextBitmapLineSpacing":
                 if (iminPrintUtils == null) {
                     double lineHeight = call.argument("lineHeight");
-                    float s = ((Double)lineHeight).floatValue();
+                    float s = ((Double) lineHeight).floatValue();
                     PrinterHelper.getInstance().setTextBitmapLineSpacing(s);
                 }
                 result.success(true);
@@ -940,7 +1058,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "setTextBitmapLetterSpacing":
                 if (iminPrintUtils == null) {
                     double letterSpacing = call.argument("letterSpacing");
-                    float a = ((Double)letterSpacing).floatValue();
+                    float a = ((Double) letterSpacing).floatValue();
                     PrinterHelper.getInstance().setTextBitmapLetterSpacing(a);
                 }
                 result.success(true);
