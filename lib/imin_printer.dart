@@ -530,6 +530,7 @@ class IminPrinter {
   Future<void> unBindService() {
     return IminPrinterPlatform.instance.unBindService();
   }
+
   Future<void> initPrinterParams() {
     return IminPrinterPlatform.instance.initPrinterParams();
   }
@@ -613,32 +614,46 @@ class IminPrinter {
   Future<void> setTextBitmapTypeface(IminTypeface typeface) {
     return IminPrinterPlatform.instance.setTextBitmapTypeface(typeface);
   }
+
   Future<void> setTextBitmapSize(int size) {
     return IminPrinterPlatform.instance.setTextBitmapSize(size);
   }
+
   Future<void> setTextBitmapStyle(IminFontStyle style) {
     return IminPrinterPlatform.instance.setTextBitmapStyle(style);
   }
+
   Future<void> setTextBitmapStrikeThru(bool strikeThru) {
     return IminPrinterPlatform.instance.setTextBitmapStrikeThru(strikeThru);
   }
+
   Future<void> setTextBitmapUnderline(bool haveUnderline) {
     return IminPrinterPlatform.instance.setTextBitmapUnderline(haveUnderline);
   }
-  Future<void>  setTextBitmapLineSpacing(double lineHeight) {
+
+  Future<void> setTextBitmapLineSpacing(double lineHeight) {
     return IminPrinterPlatform.instance.setTextBitmapLineSpacing(lineHeight);
   }
-  Future<void>  setTextBitmapLetterSpacing(double space)  {
+
+  Future<void> setTextBitmapLetterSpacing(double space) {
     return IminPrinterPlatform.instance.setTextBitmapLineSpacing(space);
   }
-  Future<void> setTextBitmapAntiWhite(bool antiWhite)  {
+
+  Future<void> setTextBitmapAntiWhite(bool antiWhite) {
     return IminPrinterPlatform.instance.setTextBitmapAntiWhite(antiWhite);
   }
+
   Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) {
-    return IminPrinterPlatform.instance.printTextBitmap(text,  style: style);
+    return IminPrinterPlatform.instance.printTextBitmap(text, style: style);
   }
+
   Future<void> printSingleBitmapColorChart(dynamic img,
       {IminPictureStyle? pictureStyle}) {
-    return IminPrinterPlatform.instance.printSingleBitmapColorChart(img, pictureStyle: pictureStyle);
+    return IminPrinterPlatform.instance
+        .printSingleBitmapColorChart(img, pictureStyle: pictureStyle);
+  }
+
+  Future<void> printColumnsString({required List<ColumnMaker> cols}) {
+    return IminPrinterPlatform.instance.printColumnsString(cols: cols);
   }
 }

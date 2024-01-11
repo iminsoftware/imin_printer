@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:imin_printer/column_maker.dart';
 import 'package:imin_printer/enums.dart';
 import 'package:imin_printer/imin_printer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -235,9 +236,9 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('print bitmapColorChart'),
               ),
-               OutlinedButton(
+              OutlinedButton(
                 onPressed: () async {
-                    Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PrintSettingPage(
@@ -245,6 +246,170 @@ class _NewHomeState extends State<NewHome> {
                   );
                 },
                 child: const Text('print barCode'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '语文',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '88',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A-',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '陈老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '数学',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '100',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A+',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '周老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '物理',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '100',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A+',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '张老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '英语',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '96',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A+',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '吴老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '化学',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '95',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A-',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '冯老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                  await iminPrinter.printColumnsText(cols: [
+                    ColumnMaker(
+                        text: '政治',
+                        width: 100,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '65',
+                        width: 70,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'B-',
+                        width: 50,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '冯老师',
+                        width: 120,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                },
+                child: const Text('print ColumnsText'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printColumnsString(cols: [
+                    ColumnMaker(
+                        text: '语文',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '88',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'A-',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '陈老师',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                  ]);
+                },
+                child: const Text('print ColumnsString'),
               )
             ],
           ),

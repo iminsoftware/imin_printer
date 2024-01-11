@@ -201,10 +201,11 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> unBindService() {
     throw UnimplementedError('unBindService() has not been implemented.');
   }
+
   Future<void> initPrinterParams() {
-    throw UnimplementedError(
-        'initPrinterParams() has not been implemented.');
+    throw UnimplementedError('initPrinterParams() has not been implemented.');
   }
+
   Future<String?> getPrinterSerialNumber() {
     throw UnimplementedError(
         'getPrinterSerialNumber() has not been implemented.');
@@ -339,5 +340,9 @@ abstract class IminPrinterPlatform extends PlatformInterface {
       {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError(
         'printSingeBitmapColorChart() has not been implemented.');
+  }
+
+  Future<void> printColumnsString({required List<ColumnMaker> cols}) {
+    throw UnimplementedError('printColumnsString() has not been implemented.');
   }
 }

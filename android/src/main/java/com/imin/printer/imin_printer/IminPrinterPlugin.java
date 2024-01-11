@@ -203,6 +203,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                     if (iminPrintUtils != null) {
                         iminPrintUtils.printColumnsText(colsText, colsWidth, colsAlign, colsFontSize);
+                    } else {
+                        PrinterHelper.getInstance().printColumnsText(colsText, colsWidth, colsAlign, colsFontSize, null);
                     }
                     result.success(true);
                 } catch (Exception err) {
@@ -213,6 +215,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text);
+                } else {
+                    PrinterHelper.getInstance().printTextBitmap(text, null);
                 }
                 result.success(true);
                 break;
@@ -465,27 +469,15 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         if (iminPrintUtils != null) {
                             iminPrintUtils.printBarCode(barCodeType, barCodeContent, barCodeAlign);
                         } else {
-                            PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                        }
-
-                        @Override
-                        public void onReturnString(String s) throws RemoteException {
-                            result.success(s);
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-                             
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-
-                        }
-                    });
+                            if (call.argument("position") != null && call.argument("height") != null && call.argument("width") != null) {
+                                int barCodeFullPosition = call.argument("position");
+                                int barCodeFullHeight = call.argument("height");
+                                int barCodeFullWidth = call.argument("width");
+                                Log.d("TAG", "printBarCode:  barCodeContent: " + barCodeContent + " barCodeType:" + barCodeType + " barCodeAlign:" + barCodeAlign + "position:" + barCodeFullPosition + "barCodeHeight:" + barCodeFullHeight + "barCodeWidth:" + barCodeFullWidth);
+                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeAlign, barCodeFullPosition, barCodeFullHeight, barCodeFullWidth, null);
+                            } else {
+                                PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, null);
+                            }
                         }
                     } else {
                         if (iminPrintUtils != null) {
@@ -493,27 +485,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         } else {
                             Log.d("IminPrinter:printBarCode", "barCodeType:" + barCodeType);
                             Log.d("IminPrinter:printBarCode", "barCodeContent:" + barCodeContent);
-                            PrinterHelper.getInstance().printBarCode(barCodeContent, barCodeType, new INeoPrinterCallback() {
-                                @Override
-                                public void onRunResult(boolean isSuccess) throws RemoteException {
-                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
-                                }
-
-                                @Override
-                                public void onReturnString(String s) throws RemoteException {
-                                    result.success(s);
-                                }
-
-                                @Override
-                                public void onRaiseException(int code, String msg) throws RemoteException {
-                                  Log.e("IminPrinter:printBarCode", "errmsg:" + msg);
-                                }
-
-                                @Override
-                                public void onPrintResult(int code, String msg) throws RemoteException {
-
-                                }
-                            });
+                            PrinterHelper.getInstance().printBarCode(barCodeContent, barCodeType, null);
                         }
                     }
                     result.success(true);
@@ -979,13 +951,6 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 }
                 result.success(true);
                 break;
-            case "printTextBitmap":
-                if (iminPrintUtils == null) {
-                    String bitmapText = call.argument("text");
-                    PrinterHelper.getInstance().printTextBitmap(bitmapText, null);
-                }
-                result.success(true);
-                break;
             case "printTextBitmapWithAli":
                 if (iminPrintUtils == null) {
                     String textBitmapString = call.argument("text");
@@ -1012,6 +977,34 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printBitmapColorChart:" + err.getMessage());
+                }
+                result.success(true);
+                break;
+            case "printColumnsString":
+                String colsString = call.argument("cols");
+                try {
+                    JSONArray cols = new JSONArray(colsString);
+                    String[] colsText = new String[cols.length()];
+                    int[] colsWidth = new int[cols.length()];
+                    int[] colsAlign = new int[cols.length()];
+                    int[] colsFontSize = new int[cols.length()];
+                    for (int i = 0; i < cols.length(); i++) {
+                        JSONObject col = cols.getJSONObject(i);
+                        String textColumn = col.getString("text");
+                        int widthColumn = col.getInt("width");
+                        int alignColumn = col.getInt("align");
+                        int fontSizeColumn = col.getInt("fontSize");
+                        colsText[i] = textColumn;
+                        colsWidth[i] = widthColumn;
+                        colsAlign[i] = alignColumn;
+                        colsFontSize[i] = fontSizeColumn;
+                    }
+                    if (iminPrintUtils == null) {
+                        PrinterHelper.getInstance().printColumnsString(colsText, colsWidth, colsAlign, colsFontSize, null);
+                    }
+                    result.success(true);
+                } catch (Exception err) {
+                    Log.e("IminPrinter", err.getMessage());
                 }
                 result.success(true);
                 break;

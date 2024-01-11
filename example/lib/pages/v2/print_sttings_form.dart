@@ -305,18 +305,21 @@ class BarCodeSettingComponent extends StatefulWidget {
 
 class _BarCodeSettingComponentState extends State<BarCodeSettingComponent> {
   final iminPrinter = IminPrinter();
-  dynamic content;
+  String barCodeContent = '';
   String barCodeWidth = '';
   dynamic barCodeHeight = '';
   dynamic align;
   dynamic barCodeTextPos;
   dynamic barCodeType;
+  final TextEditingController barContentController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    if(mounted) {
+    barContentController.text = '1234567890121';
+    if (mounted) {
       setState(() {
         barCodeType = IminBarcodeType.jan13;
+        barCodeContent = barContentController.text;
       });
     }
   }
@@ -327,9 +330,10 @@ class _BarCodeSettingComponentState extends State<BarCodeSettingComponent> {
       TextField(
         onChanged: (value) {
           setState(() {
-            content = value;
+            barCodeContent = value;
           });
         },
+        controller: barContentController,
         decoration: const InputDecoration(
             hintText: 'Please enter content', labelText: "BarCode Content"),
       ),
@@ -351,7 +355,6 @@ class _BarCodeSettingComponentState extends State<BarCodeSettingComponent> {
         decoration: const InputDecoration(
             hintText: '24<= height<= 250', labelText: "BarCode Height"),
       ),
-      
       DropdownButtonFormField(
           hint: const Text('Please select'),
           decoration: const InputDecoration(labelText: "BarCode Type"),
@@ -457,9 +460,8 @@ class _BarCodeSettingComponentState extends State<BarCodeSettingComponent> {
                   width: barCodeWidth != '' ? int.parse(barCodeWidth) : null,
                   height: barCodeHeight != '' ? int.parse(barCodeHeight) : null,
                   align: align,
-                  position: barCodeTextPos
-                );
-              iminPrinter.printBarCode(barCodeType, content,
+                  position: barCodeTextPos);
+              iminPrinter.printBarCode(barCodeType, barCodeContent,
                   style: barcodeStyle);
             }),
       )

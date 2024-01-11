@@ -132,7 +132,8 @@ class MockIminPrinterPlatform
   @override
   Future<int?> getPrinterDensity() => Future.value();
   @override
-  Future<String?> setPrinterDensity(IminPrinterDensity density) => Future.value();
+  Future<String?> setPrinterDensity(IminPrinterDensity density) =>
+      Future.value();
   @override
   Future<String?> getPrinterPaperDistance() => Future.value();
   @override
@@ -156,7 +157,8 @@ class MockIminPrinterPlatform
   @override
   Future<void> setCodeAlignment(IminPrintAlign alignment) => Future.value();
   @override
-  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) => Future.value();
+  Future<void> printTextBitmap(String text, {IminTextPictureStyle? style}) =>
+      Future.value();
   @override
   Future<void> setTextBitmapTypeface(IminTypeface typeface) => Future.value();
   @override
@@ -175,7 +177,11 @@ class MockIminPrinterPlatform
   Future<void> setTextBitmapAntiWhite(bool antiWhite) => Future.value();
   @override
   Future<void> printSingleBitmapColorChart(dynamic img,
-      {IminPictureStyle? pictureStyle}) => Future.value();
+          {IminPictureStyle? pictureStyle}) =>
+      Future.value();
+  @override
+  Future<void> printColumnsString({required List<ColumnMaker> cols}) =>
+      Future.value();
 }
 
 void main() {

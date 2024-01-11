@@ -58,7 +58,8 @@ class IminBarCodeStyle extends IminBaseStyle {
   IminBarcodeTextPos? position;
   IminPrintAlign? align;
 
-  IminBarCodeStyle({this.align, this.position, int? height, int? width});
+  IminBarCodeStyle({this.align, this.position, height, width})
+      : super(width: width, height: height);
 }
 
 class IminDoubleQRCodeStyle {

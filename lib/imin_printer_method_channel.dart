@@ -223,17 +223,27 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       "type": barCodeType.type
     };
     if (style != null) {
-      if (style.align != null) {
+      if (style.align != null &&
+          style.height != null &&
+          style.width != null &&
+          style.position != null) {
+        arguments.putIfAbsent('width', () => style.width);
         arguments.putIfAbsent('align', () => style.align?.index);
-      }
-      if (style.height != null) {
-        await setBarCodeHeight(style.height!);
-      }
-      if (style.width != null) {
-        await setBarCodeWidth(style.width!);
-      }
-      if (style.position != null) {
-        await setBarCodeContentPrintPos(style.position!);
+        arguments.putIfAbsent('height', () => style.height);
+        arguments.putIfAbsent('position', () => style.position?.position);
+      } else {
+        if (style.align != null) {
+          arguments.putIfAbsent('align', () => style.align?.index);
+        }
+        if (style.height != null) {
+          await setBarCodeHeight(style.height!);
+        }
+        if (style.width != null) {
+          await setBarCodeWidth(style.width!);
+        }
+        if (style.position != null) {
+          await setBarCodeContentPrintPos(style.position!);
+        }
       }
     }
     logger.d('printBarCode: $arguments');
@@ -474,6 +484,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> unBindService() async {
     await methodChannel.invokeMethod<void>('unBindService');
   }
+
   @override
   Future<void> initPrinterParams() async {
     await methodChannel.invokeMethod<void>('initPrinterParams');
@@ -697,7 +708,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       await methodChannel.invokeMethod<void>(
           'printTextBitmapWithAli', arguments);
     } else {
-      await methodChannel.invokeMethod<void>('printTextBitmap', arguments);
+      await methodChannel.invokeMethod<void>('printText', arguments);
     }
   }
 
@@ -722,5 +733,15 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       arguments.putIfAbsent("SingleBitmapColorChart", () => 1);
       await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
     }
+  }
+
+  @override
+  Future<void> printColumnsString({required List<ColumnMaker> cols}) async {
+    final jsonCols = List<Map<String, String>>.from(
+        cols.map<Map<String, String>>((ColumnMaker col) => col.toJson()));
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "cols": json.encode(jsonCols)
+    };
+    await methodChannel.invokeMethod<void>('printColumnsString', arguments);
   }
 }
