@@ -236,6 +236,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         await setBarCodeContentPrintPos(style.position!);
       }
     }
+    logger.d('printBarCode: $arguments');
     await methodChannel.invokeMethod<void>('printBarCode', arguments);
   }
 

@@ -69,7 +69,8 @@ enum IminBarcodeType {
   code39(4),
   itf(5),
   codabar(6),
-  code128(73);
+  code93(7),
+  code128(8);
 
   final int type;
   const IminBarcodeType(this.type);

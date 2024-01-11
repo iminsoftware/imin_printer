@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:imin_printer/imin_style.dart';
 import 'package:imin_printer_example/pages/v2/info.dart';
-import 'package:imin_printer_example/pages/v2/print_text_form.dart';
+import 'package:imin_printer_example/pages/v2/print_sttings_form.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NewHome extends StatefulWidget {
@@ -18,12 +18,13 @@ class NewHome extends StatefulWidget {
 
 class _NewHomeState extends State<NewHome> {
   final iminPrinter = IminPrinter();
- bool permissionStatus = false;
+  bool permissionStatus = false;
   @override
   void initState() {
     super.initState();
     //  getMediaFilePermission();
   }
+
   /// 获取媒体文件读写权限
   Future<void> getMediaFilePermission() async {
     Map<Permission, PermissionStatus> statuses =
@@ -39,6 +40,7 @@ class _NewHomeState extends State<NewHome> {
       permissionStatus = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +165,7 @@ class _NewHomeState extends State<NewHome> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PrintTextSettingPage(
+                        builder: (context) => const PrintSettingPage(
                             type: 'Printer Text Setting')),
                   );
                 },
@@ -233,6 +235,17 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('print bitmapColorChart'),
               ),
+               OutlinedButton(
+                onPressed: () async {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PrintSettingPage(
+                            type: 'Printer BarCode Setting')),
+                  );
+                },
+                child: const Text('print barCode'),
+              )
             ],
           ),
         )));
@@ -247,6 +260,7 @@ class _NewHomeState extends State<NewHome> {
   @override
   void dispose() {
     super.dispose();
+    iminPrinter.unBindService();
     debugPrint('----------------！！！！！dispose  111！！！！----------------');
   }
 }

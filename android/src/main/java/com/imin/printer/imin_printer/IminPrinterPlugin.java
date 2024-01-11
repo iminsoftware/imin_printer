@@ -426,6 +426,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int barCodeWidth = call.argument("width");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setBarCodeWidth(barCodeWidth);
+                } else {
+                    PrinterHelper.getInstance().setBarCodeWidth(barCodeWidth);
                 }
                 result.success(true);
                 break;
@@ -433,6 +435,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int barCodeHeight = call.argument("height");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setBarCodeHeight(barCodeHeight);
+                } else {
+                    PrinterHelper.getInstance().setBarCodeHeight(barCodeHeight);
                 }
                 result.success(true);
                 break;
@@ -440,6 +444,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int barCodePosition = call.argument("position");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setBarCodeContentPrintPos(barCodePosition);
+                } else {
+                    PrinterHelper.getInstance().setBarCodeContentPrintPos(barCodePosition);
                 }
                 result.success(true);
                 break;
@@ -458,10 +464,56 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                         int barCodeAlign = call.argument("align");
                         if (iminPrintUtils != null) {
                             iminPrintUtils.printBarCode(barCodeType, barCodeContent, barCodeAlign);
+                        } else {
+                            PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+                             
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
                         }
                     } else {
                         if (iminPrintUtils != null) {
                             iminPrintUtils.printBarCode(barCodeType, barCodeContent);
+                        } else {
+                            Log.d("IminPrinter:printBarCode", "barCodeType:" + barCodeType);
+                            Log.d("IminPrinter:printBarCode", "barCodeContent:" + barCodeContent);
+                            PrinterHelper.getInstance().printBarCode(barCodeContent, barCodeType, new INeoPrinterCallback() {
+                                @Override
+                                public void onRunResult(boolean isSuccess) throws RemoteException {
+                                    result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+                                }
+
+                                @Override
+                                public void onReturnString(String s) throws RemoteException {
+                                    result.success(s);
+                                }
+
+                                @Override
+                                public void onRaiseException(int code, String msg) throws RemoteException {
+                                  Log.e("IminPrinter:printBarCode", "errmsg:" + msg);
+                                }
+
+                                @Override
+                                public void onPrintResult(int code, String msg) throws RemoteException {
+
+                                }
+                            });
                         }
                     }
                     result.success(true);
