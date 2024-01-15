@@ -13,11 +13,13 @@ class MockIminPrinterPlatform
     with MockPlatformInterfaceMixin
     implements IminPrinterPlatform {
   @override
+  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) => Future.value();
+  @override
   Future<bool?> getUseSdkVersion() => Future.value(true);
   @override
   Future<bool?> initPrinter() => Future.value(true);
   @override
-  Future<String?> getPrinterStatus() => Future.value('-1');
+  Future<Map<String, dynamic>> getPrinterStatus() => Future.value({"code": 0, "msg": 'sdsd'});
   @override
   Future<void> setTextSize(int size) => Future.value();
   @override

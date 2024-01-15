@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
-// import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'enums.dart';
@@ -16,6 +16,13 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('imin_printer');
 
+  final eventChannel = const EventChannel('imin_printer_event');
+
+  @override
+  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) async {
+    eventChannel.receiveBroadcastStream().listen(onEvent,onError: onError);
+  }
+
   @override
   Future<bool?> getUseSdkVersion() async {
     return await methodChannel.invokeMethod<bool>('sdkVersion');
@@ -28,10 +35,14 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
-  Future<String?> getPrinterStatus() async {
+  Future<Map<String, dynamic>> getPrinterStatus() async {
     final code = await methodChannel.invokeMethod<String>('getPrinterStatus');
     logger.d('code $code');
-    return PrinterStatus.getValue(code ?? '-1');
+    Map<String, dynamic> printerStatus = <String, dynamic>{
+      "code": code,
+      "msg": PrinterStatus.getValue(code ?? '-1')
+    };
+    return printerStatus;
   }
 
   @override
@@ -293,18 +304,31 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> printQrCode(String data, {IminQrCodeStyle? qrCodeStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (qrCodeStyle != null) {
-      if (qrCodeStyle.align != null) {
+      if (qrCodeStyle.align != null &&
+          qrCodeStyle.qrSize != null &&
+          qrCodeStyle.leftMargin != null &&
+          qrCodeStyle.errorCorrectionLevel != null) {
         arguments.putIfAbsent("alignment", () => qrCodeStyle.align?.index);
-      }
-      if (qrCodeStyle.qrSize != null) {
-        await setQrCodeSize(qrCodeStyle.qrSize!);
-      }
+        arguments.putIfAbsent("qrSize", () => qrCodeStyle.qrSize!);
+        arguments.putIfAbsent(
+            "level", () => qrCodeStyle.errorCorrectionLevel?.level);
+        if (qrCodeStyle.leftMargin != null) {
+          await setLeftMargin(qrCodeStyle.leftMargin!);
+        }
+      } else {
+        if (qrCodeStyle.align != null) {
+          arguments.putIfAbsent("alignment", () => qrCodeStyle.align?.index);
+        }
+        if (qrCodeStyle.qrSize != null) {
+          await setQrCodeSize(qrCodeStyle.qrSize!);
+        }
 
-      if (qrCodeStyle.leftMargin != null) {
-        await setLeftMargin(qrCodeStyle.leftMargin!);
-      }
-      if (qrCodeStyle.errorCorrectionLevel != null) {
-        await setQrCodeErrorCorrectionLev(qrCodeStyle.errorCorrectionLevel!);
+        if (qrCodeStyle.leftMargin != null) {
+          await setLeftMargin(qrCodeStyle.leftMargin!);
+        }
+        if (qrCodeStyle.errorCorrectionLevel != null) {
+          await setQrCodeErrorCorrectionLev(qrCodeStyle.errorCorrectionLevel!);
+        }
       }
     }
     arguments.putIfAbsent("data", () => data);

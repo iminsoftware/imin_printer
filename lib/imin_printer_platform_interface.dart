@@ -28,6 +28,9 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) {
+     throw UnimplementedError('listenerEvent() has not been implemented.');
+  }
   Future<bool?> getUseSdkVersion() {
     throw UnimplementedError('getUseSdkVersion() has not been implemented.');
   }
@@ -36,7 +39,7 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('initPrinter() has not been implemented.');
   }
 
-  Future<String?> getPrinterStatus() {
+  Future<Map<String, dynamic>> getPrinterStatus() {
     throw UnimplementedError('getPrinterStatus() has not been implemented.');
   }
 

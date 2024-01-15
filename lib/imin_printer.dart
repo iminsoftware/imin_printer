@@ -9,6 +9,9 @@ import 'package:logger/logger.dart';
 var logger = Logger();
 
 class IminPrinter {
+  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) {
+    return IminPrinterPlatform.instance.listenerEvent(onEvent, onError: onEvent );
+  }
   /// Get what version of sdk is the current device using
   ///
   /// {@tool snippet}
@@ -41,7 +44,7 @@ class IminPrinter {
   /// iminPrinter.getPrinterStatus()
   /// ```
   /// {@end-tool}
-  Future<String?> getPrinterStatus() {
+  Future<Map<String, dynamic>> getPrinterStatus() {
     return IminPrinterPlatform.instance.getPrinterStatus();
   }
 

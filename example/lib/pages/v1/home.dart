@@ -65,9 +65,9 @@ class _HomeState extends State<Home> {
                         }),
                     ElevatedButton(
                         onPressed: () async {
-                          String? state = await iminPrinter.getPrinterStatus();
+                          Map<String, dynamic>? state = await iminPrinter.getPrinterStatus();
                           Fluttertoast.showToast(
-                              msg: state ?? '',
+                              msg: state['msg'],
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.BOTTOM, // 消息框弹出的位置
                               // timeInSecForIos: 1,  // 消息框持续的时间（目前的版本只有ios有效）

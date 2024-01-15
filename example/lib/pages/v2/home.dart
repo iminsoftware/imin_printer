@@ -24,6 +24,9 @@ class _NewHomeState extends State<NewHome> {
   void initState() {
     super.initState();
     //  getMediaFilePermission();
+    iminPrinter.listenerEvent((data){
+      debugPrint('listenerEvent: $data');
+    });
   }
 
   /// 获取媒体文件读写权限
@@ -31,6 +34,7 @@ class _NewHomeState extends State<NewHome> {
     Map<Permission, PermissionStatus> statuses =
         await [Permission.manageExternalStorage].request();
     if (!mounted) return;
+    // debugPrint('initState: ${ await iminPrinter.listenerEvent()}');
     //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不在提示
     if (statuses[Permission.manageExternalStorage]!.isGranted) {
       setState(() {
@@ -71,9 +75,9 @@ class _NewHomeState extends State<NewHome> {
                   child: const Text('init Printer')),
               OutlinedButton(
                   onPressed: () async {
-                    String? state = await iminPrinter.getPrinterStatus();
+                    Map<String, dynamic> state = await iminPrinter.getPrinterStatus();
                     Fluttertoast.showToast(
-                        msg: state ?? '',
+                        msg: state['msg'],
                         toastLength: Toast.LENGTH_LONG,
                         gravity: ToastGravity.BOTTOM, // 消息框弹出的位置
                         // timeInSecForIos: 1,  // 消息框持续的时间（目前的版本只有ios有效）
@@ -410,6 +414,30 @@ class _NewHomeState extends State<NewHome> {
                   ]);
                 },
                 child: const Text('print ColumnsString'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printQrCode('https://www.imin.sg',
+                      qrCodeStyle: IminQrCodeStyle(
+                          errorCorrectionLevel:
+                              IminQrcodeCorrectionLevel.levelH,
+                          qrSize: 4,
+                          align: IminPrintAlign.center));
+                },
+                child: const Text('print Qrcode'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printDoubleQR(
+                      qrCode1: IminDoubleQRCodeStyle(
+                        text: 'www.imin.sg',
+                      ),
+                      qrCode2: IminDoubleQRCodeStyle(
+                        text: 'www.google.com',
+                      ),
+                      doubleQRSize: 5);
+                },
+                child: const Text('print DoubleQR'),
               )
             ],
           ),

@@ -34,24 +34,39 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.EventSink;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
+
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
+
 
 /**
  * IminPrinterPlugin
  */
-public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
+public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, StreamHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
     private IminPrintUtils iminPrintUtils;
+    private EventChannel eventChannel;
     private Context _context;
     private IminPrintUtils.PrintConnectType connectType = IminPrintUtils.PrintConnectType.USB;
+    private EventSink eventSink;
+    private static final String ACTION_PRITER_STATUS_CHANGE = "com.imin.printerservice.PRITER_STATUS_CHANGE";
+    private static final String ACTION_POGOPIN_STATUS_CHANGE = "com.imin.printerservice.PRITER_CONNECT_STATUS_CHANGE";
+    private static final String ACTION_PRITER_STATUS = "status";
+    private BroadcastReceiver chargingStateChangeReceiver;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
+        eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
 
         if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
             //初始化 2.0 的 SDK。
@@ -67,6 +82,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             }
             iminPrintUtils.resetDevice();
         }
+        eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
     }
 
@@ -395,6 +411,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int qrSize = call.argument("qrSize");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setQrCodeSize(qrSize);
+                } else {
+                    PrinterHelper.getInstance().setQrCodeSize(qrSize);
                 }
                 result.success(true);
                 break;
@@ -402,6 +420,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int margin = call.argument("margin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setLeftMargin(margin);
+                } else {
+                    PrinterHelper.getInstance().setLeftMargin(margin);
                 }
                 result.success(true);
                 break;
@@ -409,6 +429,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setQrCodeErrorCorrectionLev(level);
+                } else {
+                    PrinterHelper.getInstance().setQrCodeErrorCorrectionLev(level);
                 }
                 result.success(true);
                 break;
@@ -418,10 +440,20 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     int alignmentMode = call.argument("alignment");
                     if (iminPrintUtils != null) {
                         iminPrintUtils.printQrCode(qrStr, alignmentMode);
+                    } else {
+                        if (call.argument("qrSize") != null && call.argument("level") != null) {
+                            int qrFullSize = call.argument("qrSize");
+                            int qrFullLevel = call.argument("level");
+                            PrinterHelper.getInstance().printQRCodeWithFull(qrStr, qrFullSize, qrFullLevel, alignmentMode, null);
+                        } else {
+                            PrinterHelper.getInstance().printQrCodeWithAlign(qrStr, alignmentMode, null);
+                        }
                     }
                 } else {
                     if (iminPrintUtils != null) {
                         iminPrintUtils.printQrCode(qrStr);
+                    } else {
+                        PrinterHelper.getInstance().printQrCode(qrStr, null);
                     }
                 }
                 result.success(true);
@@ -473,8 +505,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 int barCodeFullPosition = call.argument("position");
                                 int barCodeFullHeight = call.argument("height");
                                 int barCodeFullWidth = call.argument("width");
-                                Log.d("TAG", "printBarCode:  barCodeContent: " + barCodeContent + " barCodeType:" + barCodeType + " barCodeAlign:" + barCodeAlign + "position:" + barCodeFullPosition + "barCodeHeight:" + barCodeFullHeight + "barCodeWidth:" + barCodeFullWidth);
-                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeAlign, barCodeFullPosition, barCodeFullHeight, barCodeFullWidth, null);
+                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeFullWidth, barCodeFullHeight, barCodeAlign, barCodeFullPosition, null);
                             } else {
                                 PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, null);
                             }
@@ -558,6 +589,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQRSize = call.argument("size");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQRSize(doubleQRSize);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQRSize(doubleQRSize);
                 }
                 result.success(true);
                 break;
@@ -565,6 +598,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR1Level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1Level(doubleQR1Level);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1Level(doubleQR1Level);
                 }
                 result.success(true);
                 break;
@@ -572,6 +607,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR2Level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2Level(doubleQR2Level);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2Level(doubleQR2Level);
                 }
                 result.success(true);
                 break;
@@ -579,6 +616,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR1MarginLeft = call.argument("leftMargin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1MarginLeft(doubleQR1MarginLeft);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1MarginLeft(doubleQR1MarginLeft);
                 }
                 result.success(true);
                 break;
@@ -586,6 +625,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR2MarginLeft = call.argument("leftMargin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2MarginLeft(doubleQR2MarginLeft);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2MarginLeft(doubleQR2MarginLeft);
                 }
                 result.success(true);
                 break;
@@ -1008,14 +1049,47 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 }
                 result.success(true);
                 break;
+            case "getPrinterIsUpdateStatus":
+                if (iminPrintUtils == null) {
+                    // result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus(null));
+                }
+                result.success(true);
             default:
                 result.notImplemented();
                 break;
         }
     }
 
+    private BroadcastReceiver createChargingStateChangeReceiver(EventChannel.EventSink events) {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int status = intent.getIntExtra(ACTION_PRITER_STATUS, -1);
+                events.success(status);
+            }
+        };
+    }
+
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
+
+    @Override
+    public void onListen(Object argument, EventChannel.EventSink events) {
+        eventSink = events;
+        chargingStateChangeReceiver = createChargingStateChangeReceiver(eventSink);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_PRITER_STATUS_CHANGE);
+        intentFilter.addAction(ACTION_POGOPIN_STATUS_CHANGE);
+        _context.registerReceiver(chargingStateChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onCancel(Object argument) {
+        _context.unregisterReceiver(chargingStateChangeReceiver);
+        eventSink = null;
+        chargingStateChangeReceiver = null;
+    }
+
 }
