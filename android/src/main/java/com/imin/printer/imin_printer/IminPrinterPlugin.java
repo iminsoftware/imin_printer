@@ -1064,6 +1064,23 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 result.success(true);
                 break;
 
+            case "printBuffer"://事务打印测试用1，2，3
+                if (iminPrintUtils == null) {
+                    int bufferIndex = call.argument("bufferIndex");
+                    Log.d(TAG, "bufferIndex  " + bufferIndex);
+                    if (bufferIndex == 0) {
+
+                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getBaiduTestBytes(), null);
+                    } else if (bufferIndex == 1) {
+
+                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getErlmoData(), null);
+                    } else if (bufferIndex == 2) {
+                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getMeituanBill(), null);
+                    }
+                }
+                result.success(true);
+                break;
+
             case "commitPrinterBuffer"://提交事务打印
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().commitPrinterBuffer(new INeoPrinterCallback() {
