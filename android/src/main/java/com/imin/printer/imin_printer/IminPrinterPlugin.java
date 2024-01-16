@@ -60,6 +60,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private static final String ACTION_PRITER_STATUS_CHANGE = "com.imin.printerservice.PRITER_STATUS_CHANGE";
     private static final String ACTION_POGOPIN_STATUS_CHANGE = "com.imin.printerservice.PRITER_CONNECT_STATUS_CHANGE";
     private static final String ACTION_PRITER_STATUS = "status";
+    private static final String TAG = "IminPrinterPlugin";
     private BroadcastReceiver chargingStateChangeReceiver;
 
     @Override
@@ -1051,9 +1052,53 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getPrinterIsUpdateStatus":
                 if (iminPrintUtils == null) {
-                    // result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus(null));
+                     result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus());
                 }
                 result.success(true);
+                break;
+
+            case "enterPrinterBuffer"://进入事务模式
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().enterPrinterBuffer(true);
+                }
+                result.success(true);
+                break;
+
+            case "commitPrinterBuffer"://提交事务打印
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().commitPrinterBuffer(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onReturnString(String result) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+                            // code 0=事务打印成功， 2=事务模式开始发打印数据给打印机 ， 其它=打印失败
+                            Log.d(TAG, "code  " + code + "  , msg= " + msg);
+                        }
+                    });
+                }
+                result.success(true);
+                break;
+
+            case "exitPrinterBuffer"://exit事务模式
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().exitPrinterBuffer(true);
+                }
+                result.success(true);
+                break;
+
             default:
                 result.notImplemented();
                 break;
