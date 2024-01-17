@@ -269,6 +269,14 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
                 result.success(true);
                 break;
+            case "fullCut":
+                if (iminPrintUtils != null) {
+                    //TODO
+                } else {
+                    PrinterHelper.getInstance().fullCut();
+                }
+                result.success(true);
+                break;
             case "printSingleBitmap":
                 try {
                     byte[] img = call.argument("bitmap");
@@ -635,19 +643,27 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 int doubleQR1Version = call.argument("version");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1Version(doubleQR1Version);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1Version(doubleQR1Version);
                 }
+                result.success(true);
                 break;
             case "setDoubleQR2Version":
                 int doubleQR2Version = call.argument("version");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2Version(doubleQR2Version);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2Version(doubleQR2Version);
                 }
+                result.success(true);
                 break;
             case "printDoubleQR":
                 String qrCode1Text = call.argument("qrCode1Text");
                 String qrCode2Text = call.argument("qrCode2Text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printDoubleQR(qrCode1Text, qrCode2Text);
+                } else {
+                    PrinterHelper.getInstance().printDoubleQR(qrCode1Text, qrCode2Text, null);
                 }
                 result.success(true);
                 break;
@@ -990,6 +1006,13 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (iminPrintUtils == null) {
                     boolean antiWhite = call.argument("antiWhite");
                     PrinterHelper.getInstance().setTextBitmapAntiWhite(antiWhite);
+                }
+                result.success(true);
+                break;
+            case "printTextBitmap":
+                if (iminPrintUtils == null) {
+                    String textStr = call.argument("text");
+                    PrinterHelper.getInstance().printTextBitmap(textStr + "\n", null);
                 }
                 result.success(true);
                 break;
