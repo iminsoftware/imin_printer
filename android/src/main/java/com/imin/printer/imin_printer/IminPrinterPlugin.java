@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.graphics.Typeface;
 import android.content.Context;
@@ -700,6 +701,105 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
                 result.success(true);
                 break;
+
+            case "getFontCodepage"://1. codepage
+                if (iminPrintUtils == null) {
+                    List<String> fontCodepage = PrinterHelper.getInstance().getFontCodepage();
+                    result.success(fontCodepage);
+                }
+                break;
+            case "setFontCodepage":
+                if (iminPrintUtils == null) {
+                    int codepage = call.argument("codepage");//从getFontCodepage 列表的脚标（0、1、3...）
+                    PrinterHelper.getInstance().setFontCodepage(codepage);
+                }
+                result.success(true);
+                break;
+            case "getCurCodepage":
+                if (iminPrintUtils == null) {
+                    String curCodepage = PrinterHelper.getInstance().getCurCodepage();
+                    result.success(curCodepage);
+                }
+                break;
+
+            case "getEncodeList"://2. encode
+                if (iminPrintUtils == null) {
+                    List<String> encodeList = PrinterHelper.getInstance().getEncodeList();
+                    result.success(encodeList);
+                }
+                break;
+            case "setPrinterEncode":
+                if (iminPrintUtils == null) {
+                    int encode = call.argument("encode");
+                    PrinterHelper.getInstance().setPrinterEncode(encode);
+                }
+                result.success(true);
+                break;
+            case "getCurEncode":
+                if (iminPrintUtils == null) {
+                    String curEncode = PrinterHelper.getInstance().getCurEncode();
+                    result.success(curEncode);
+                }
+                break;
+
+            case "getPrinterDensityList"://3. density
+                if (iminPrintUtils == null) {
+                    List<String> printerDensityList = PrinterHelper.getInstance().getPrinterDensityList();
+                    result.success(printerDensityList);
+                }
+                break;
+            case "setPrinterDensity":
+                if (iminPrintUtils == null) {
+                    int density = call.argument("density");
+                    PrinterHelper.getInstance().setPrinterDensity(density);
+                }
+                result.success(true);
+                break;
+            case "getPrinterDensity":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterDensity());
+                }
+                break;
+
+            case "getPrinterSpeedList"://4. speed
+                if (iminPrintUtils == null) {
+                    List<String> printerSpeedList = PrinterHelper.getInstance().getPrinterSpeedList();
+                    result.success(printerSpeedList);
+                }
+                break;
+            case "setPrinterSpeed":
+                if (iminPrintUtils == null) {
+                    int speed = call.argument("speed");
+                    PrinterHelper.getInstance().setPrinterSpeed(speed);
+                }
+                result.success(true);
+                break;
+            case "getPrinterSpeedList":
+                if (iminPrintUtils == null) {
+                    int printerSpeed = PrinterHelper.getInstance().getPrinterSpeed();
+                    result.success(printerSpeed);
+                }
+                break;
+
+            case "getPrinterPaperTypeList"://5. Paper width
+                if (iminPrintUtils == null) {
+                    List<String> printerPaperTypeList = PrinterHelper.getInstance().getPrinterPaperTypeList();
+                    result.success(printerPaperTypeList);
+                }
+                break;
+            case "setPageFormat":
+                if (iminPrintUtils == null) {
+                    int paperType = call.argument("paperType");
+                    PrinterHelper.getInstance().setPageFormat(paperType);
+                }
+                result.success(true);
+                break;
+            case "getPrinterPaperType":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterPaperType());
+                }
+                break;
+
             case "getPrinterSerialNumber":
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().getPrinterSerialNumber(new INeoPrinterCallback() {
@@ -840,11 +940,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(PrinterHelper.getInstance().getUsbDevicesName());
                 }
                 break;
-            case "getPrinterDensity":
-                if (iminPrintUtils == null) {
-                    result.success(PrinterHelper.getInstance().getPrinterDensity());
-                }
-                break;
+
             case "getPrinterPaperDistance":
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().getPrinterPaperDistance(new INeoPrinterCallback() {
@@ -870,11 +966,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     });
                 }
                 break;
-            case "getPrinterPaperType":
-                if (iminPrintUtils == null) {
-                    result.success(PrinterHelper.getInstance().getPrinterPaperType());
-                }
-                break;
+
             case "getPrinterCutTimes":
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().getPrinterCutTimes(new INeoPrinterCallback() {
