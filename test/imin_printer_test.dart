@@ -13,13 +13,15 @@ class MockIminPrinterPlatform
     with MockPlatformInterfaceMixin
     implements IminPrinterPlatform {
   @override
-  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) => Future.value();
+  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) =>
+      Future.value();
   @override
   Future<bool?> getUseSdkVersion() => Future.value(true);
   @override
   Future<bool?> initPrinter() => Future.value(true);
   @override
-  Future<Map<String, dynamic>> getPrinterStatus() => Future.value({"code": 0, "msg": 'sdsd'});
+  Future<Map<String, dynamic>> getPrinterStatus() =>
+      Future.value({"code": 0, "msg": 'sdsd'});
   @override
   Future<void> setTextSize(int size) => Future.value();
   @override
@@ -184,6 +186,12 @@ class MockIminPrinterPlatform
   @override
   Future<void> printColumnsString({required List<ColumnMaker> cols}) =>
       Future.value();
+  @override
+  Future<void> enterPrinterBuffer(bool isClean) => Future.value();
+  @override
+  Future<void> commitPrinterBuffer() => Future.value();
+  @override
+  Future<void> exitPrinterBuffer(bool isCommit) => Future.value();
 }
 
 void main() {

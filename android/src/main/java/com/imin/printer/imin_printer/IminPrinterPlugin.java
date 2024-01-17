@@ -1051,67 +1051,46 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 result.success(true);
                 break;
             case "getPrinterIsUpdateStatus":
-                if (iminPrintUtils == null) {
-                     result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus());
-                }
+                // if (iminPrintUtils == null) {
+                //      result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus());
+                // }
                 result.success(true);
                 break;
 
             case "enterPrinterBuffer"://进入事务模式
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().enterPrinterBuffer(true);
+                    boolean isClean = call.argument("isClean");
+                    PrinterHelper.getInstance().enterPrinterBuffer(isClean);
                 }
                 result.success(true);
                 break;
+            // case "printBuffer"://事务打印测试用1，2，3
+            //     if (iminPrintUtils == null) {
+            //         int bufferIndex = call.argument("bufferIndex");
+            //         Log.d(TAG, "bufferIndex  " + bufferIndex);
+            //         if (bufferIndex == 0) {
 
-            case "printBuffer"://事务打印测试用1，2，3
-                if (iminPrintUtils == null) {
-                    int bufferIndex = call.argument("bufferIndex");
-                    Log.d(TAG, "bufferIndex  " + bufferIndex);
-                    if (bufferIndex == 0) {
+            //             PrinterHelper.getInstance().sendRAWData(BytesUtils.getBaiduTestBytes(), null);
+            //         } else if (bufferIndex == 1) {
 
-                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getBaiduTestBytes(), null);
-                    } else if (bufferIndex == 1) {
-
-                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getErlmoData(), null);
-                    } else if (bufferIndex == 2) {
-                        PrinterHelper.getInstance().sendRAWData(BytesUtils.getMeituanBill(), null);
-                    }
-                }
-                result.success(true);
-                break;
-
+            //             PrinterHelper.getInstance().sendRAWData(BytesUtils.getErlmoData(), null);
+            //         } else if (bufferIndex == 2) {
+            //             PrinterHelper.getInstance().sendRAWData(BytesUtils.getMeituanBill(), null);
+            //         }
+            //     }
+            //     result.success(true);
+            //     break;
             case "commitPrinterBuffer"://提交事务打印
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().commitPrinterBuffer(new INeoPrinterCallback() {
-                        @Override
-                        public void onRunResult(boolean isSuccess) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onReturnString(String result) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void onPrintResult(int code, String msg) throws RemoteException {
-                            // code 0=事务打印成功， 2=事务模式开始发打印数据给打印机 ， 其它=打印失败
-                            Log.d(TAG, "code  " + code + "  , msg= " + msg);
-                        }
-                    });
+                    PrinterHelper.getInstance().commitPrinterBuffer(null);
                 }
                 result.success(true);
                 break;
 
             case "exitPrinterBuffer"://exit事务模式
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().exitPrinterBuffer(true);
+                    boolean isCommit = call.argument("isCommit");
+                    PrinterHelper.getInstance().exitPrinterBuffer(isCommit);
                 }
                 result.success(true);
                 break;

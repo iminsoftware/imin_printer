@@ -10,6 +10,8 @@ import 'package:imin_printer_example/pages/v2/info.dart';
 import 'package:imin_printer_example/pages/v2/print_sttings_form.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'transaction_print.dart';
+
 class NewHome extends StatefulWidget {
   const NewHome({super.key});
   final String title = '打印测试';
@@ -438,7 +440,19 @@ class _NewHomeState extends State<NewHome> {
                       doubleQRSize: 5);
                 },
                 child: const Text('print DoubleQR'),
-              )
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const TransactionPrintPage()),
+                  );
+                },
+                child: const Text('transaction printing'),
+              ),
+
             ],
           ),
         )));

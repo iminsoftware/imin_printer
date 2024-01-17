@@ -29,8 +29,9 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   }
 
   Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) {
-     throw UnimplementedError('listenerEvent() has not been implemented.');
+    throw UnimplementedError('listenerEvent() has not been implemented.');
   }
+
   Future<bool?> getUseSdkVersion() {
     throw UnimplementedError('getUseSdkVersion() has not been implemented.');
   }
@@ -347,5 +348,15 @@ abstract class IminPrinterPlatform extends PlatformInterface {
 
   Future<void> printColumnsString({required List<ColumnMaker> cols}) {
     throw UnimplementedError('printColumnsString() has not been implemented.');
+  }
+
+  Future<void> enterPrinterBuffer(bool isClean) {
+    throw UnimplementedError('enterPrinterBuffer() has not been implemented.');
+  }
+  Future<void> commitPrinterBuffer() {
+    throw UnimplementedError('commitPrinterBuffer() has not been implemented.');
+  }
+  Future<void> exitPrinterBuffer(bool isCommit) {
+    throw UnimplementedError('exitPrinterBuffer() has not been implemented.');
   }
 }

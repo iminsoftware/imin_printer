@@ -20,7 +20,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) async {
-    eventChannel.receiveBroadcastStream().listen(onEvent,onError: onError);
+    eventChannel.receiveBroadcastStream().listen(onEvent, onError: onError);
   }
 
   @override
@@ -767,5 +767,21 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       "cols": json.encode(jsonCols)
     };
     await methodChannel.invokeMethod<void>('printColumnsString', arguments);
+  }
+
+  @override
+  Future<void> enterPrinterBuffer(bool isClean) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"isClean": isClean};
+    await methodChannel.invokeMethod<void>('enterPrinterBuffer', arguments);
+  }
+
+  @override
+  Future<void> commitPrinterBuffer() async {
+    await methodChannel.invokeMethod<void>('commitPrinterBuffer');
+  }
+  @override
+  Future<void> exitPrinterBuffer(bool isCommit) async {
+     Map<String, dynamic> arguments = <String, dynamic>{"isCommit": isCommit };
+    await methodChannel.invokeMethod<void>('exitPrinterBuffer', arguments);
   }
 }

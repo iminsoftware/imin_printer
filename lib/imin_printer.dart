@@ -659,4 +659,14 @@ class IminPrinter {
   Future<void> printColumnsString({required List<ColumnMaker> cols}) {
     return IminPrinterPlatform.instance.printColumnsString(cols: cols);
   }
+  Future<void> enterPrinterBuffer(bool isClean) {
+    return IminPrinterPlatform.instance.enterPrinterBuffer(isClean);
+  }
+  Future<void> commitPrinterBuffer() {
+    return IminPrinterPlatform.instance.commitPrinterBuffer();
+  }
+  Future<void> exitPrinterBuffer(bool isCommit) {
+    return IminPrinterPlatform.instance.exitPrinterBuffer(isCommit);
+  }
+
 }
