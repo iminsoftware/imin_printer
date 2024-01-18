@@ -192,6 +192,26 @@ class MockIminPrinterPlatform
   Future<void> commitPrinterBuffer() => Future.value();
   @override
   Future<void> exitPrinterBuffer(bool isCommit) => Future.value();
+  @override
+  Future<List<String>?> getFontCodepage() => Future.value();
+  @override
+  Future<void> setFontCodepage(int codepage) => Future.value();
+  @override
+  Future<String?> getCurCodepage() => Future.value();
+  @override
+  Future<List<String>?> getEncodeList() => Future.value();
+  @override
+  Future<String?> getCurEncode() => Future.value();
+  @override
+  Future<List<String>?> getPrinterDensityList() => Future.value();
+  @override
+  Future<List<String>?> getPrinterSpeedList() => Future.value();
+  @override
+  Future<void> setPrinterSpeed(int speed) => Future.value();
+  @override
+  Future<int?> getPrinterSpeed() => Future.value();
+  @override
+  Future<List<String>?> getPrinterPaperTypeList() => Future.value();
 }
 
 void main() {

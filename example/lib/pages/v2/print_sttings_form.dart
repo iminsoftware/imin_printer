@@ -44,27 +44,40 @@ class _TextSettingComponentState extends State<TextSettingComponent> {
   dynamic align;
   dynamic typeface;
   dynamic fontStyle;
-  final TextEditingController descController = TextEditingController();
-  String descriptionCount = '';
+  TextEditingController descController = TextEditingController();
+  String descriptionCount =
+      'iMin advocates the core values of "Integrity, Customer First, Invention&Creation, Patience”, using cloud-based technology to help businesses to get  access to the Internet and also increases their data base, by providing more solutions so that their business can take a step further. Through their efficiency enhancement, cost improvement, service innovation, and  better services for consumers, these aspect will drives the entire industry development.';
+  final focusNode = FocusNode();
   String letterSpacing = '';
   String lineHeight = '';
   String fontSize = '';
   @override
   void initState() {
-    descController.text =
-        'iMin advocates the core values of "Integrity, Customer First, Invention&Creation, Patience”, using cloud-based technology to help businesses to get  access to the Internet and also increases their data base, by providing more solutions so that their business can take a step further. Through their efficiency enhancement, cost improvement, service innovation, and  better services for consumers, these aspect will drives the entire industry development.';
-    descController.selection =
-        TextSelection(baseOffset: 0, extentOffset: descController.text.length);
+    descController = TextEditingController.fromValue(TextEditingValue(
+        text: descriptionCount,
+        selection: TextSelection.fromPosition(
+          TextPosition(
+              offset: descriptionCount.length,
+              affinity: TextAffinity.downstream),
+        )));
+    focusNode.requestFocus();
+    // descController.selection =
+    //     TextSelection(baseOffset: 0, extentOffset: descController.text.length);
     super.initState();
-    init();
+    // init();
   }
 
-  Future<void> init() async {
-    if (mounted) {
-      setState(() {
-        descriptionCount = descController.text;
-      });
-    }
+  // Future<void> init() async {
+  //   if (mounted) {
+  //     setState(() {
+  //       descriptionCount = descController.text;
+  //     });
+  //   }
+  // }
+  @override
+  void dispose() {
+    focusNode.dispose(); // 释放资源
+    super.dispose();
   }
 
   @override
@@ -78,10 +91,11 @@ class _TextSettingComponentState extends State<TextSettingComponent> {
             descriptionCount = value;
           });
         },
+        focusNode: focusNode,
         decoration: InputDecoration(
             hintText: 'Please enter the printed text',
             prefixIcon: const Icon(Icons.description),
-            counterText: "${descriptionCount.length}/1000",
+            counterText: "${descController.text.length}/1000",
             labelText: "Text"),
         maxLines: 3,
         maxLength: 1000,

@@ -10,8 +10,10 @@ var logger = Logger();
 
 class IminPrinter {
   Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) {
-    return IminPrinterPlatform.instance.listenerEvent(onEvent, onError: onEvent );
+    return IminPrinterPlatform.instance
+        .listenerEvent(onEvent, onError: onEvent);
   }
+
   /// Get what version of sdk is the current device using
   ///
   /// {@tool snippet}
@@ -659,14 +661,56 @@ class IminPrinter {
   Future<void> printColumnsString({required List<ColumnMaker> cols}) {
     return IminPrinterPlatform.instance.printColumnsString(cols: cols);
   }
+
   Future<void> enterPrinterBuffer(bool isClean) {
     return IminPrinterPlatform.instance.enterPrinterBuffer(isClean);
   }
+
   Future<void> commitPrinterBuffer() {
     return IminPrinterPlatform.instance.commitPrinterBuffer();
   }
+
   Future<void> exitPrinterBuffer(bool isCommit) {
     return IminPrinterPlatform.instance.exitPrinterBuffer(isCommit);
   }
 
+  Future<List<String>?> getFontCodepage() {
+    return IminPrinterPlatform.instance.getFontCodepage();
+  }
+
+  Future<void> setFontCodepage(int codepage) {
+    return IminPrinterPlatform.instance.setFontCodepage(codepage);
+  }
+
+  Future<String?> getCurCodepage() {
+    return IminPrinterPlatform.instance.getCurCodepage();
+  }
+
+  Future<List<String>?> getEncodeList() {
+    return IminPrinterPlatform.instance.getEncodeList();
+  }
+
+  Future<String?> getCurEncode() {
+    return IminPrinterPlatform.instance.getCurEncode();
+  }
+
+  Future<List<String>?> getPrinterDensityList() {
+    return IminPrinterPlatform.instance.getPrinterDensityList();
+  }
+
+  Future<List<String>?> getPrinterSpeedList() {
+    return IminPrinterPlatform.instance.getPrinterSpeedList();
+  }
+
+  Future<void> setPrinterSpeed(int speed) {
+    return IminPrinterPlatform.instance.setPrinterSpeed(speed);
+  }
+
+  Future<int?> getPrinterSpeed() {
+    return IminPrinterPlatform.instance.getPrinterSpeed();
+  }
+
+  Future<List<String>?> getPrinterPaperTypeList() {
+    return IminPrinterPlatform.instance.getPrinterPaperTypeList();
+  }
 }

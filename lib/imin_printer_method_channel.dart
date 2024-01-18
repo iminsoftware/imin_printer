@@ -779,9 +779,60 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> commitPrinterBuffer() async {
     await methodChannel.invokeMethod<void>('commitPrinterBuffer');
   }
+
   @override
   Future<void> exitPrinterBuffer(bool isCommit) async {
-     Map<String, dynamic> arguments = <String, dynamic>{"isCommit": isCommit };
+    Map<String, dynamic> arguments = <String, dynamic>{"isCommit": isCommit};
     await methodChannel.invokeMethod<void>('exitPrinterBuffer', arguments);
+  }
+
+  @override
+  Future<List<String>?> getFontCodepage() async {
+    return await methodChannel.invokeMethod<List<String>>('getFontCodepage');
+  }
+
+  @override
+  Future<void> setFontCodepage(int codepage) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"codepage": codepage};
+    return await methodChannel.invokeMethod<void>('setFontCodepage', arguments);
+  }
+
+  @override
+  Future<String?> getCurCodepage() async {
+    return await methodChannel.invokeMethod<String>('getCurCodepage');
+  }
+
+  @override
+  Future<List<String>?> getEncodeList() async {
+    return await methodChannel.invokeMethod<List<String>>('getEncodeList');
+  }
+
+  @override
+  Future<List<String>?> getPrinterDensityList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterDensityList');
+  }
+
+  @override
+  Future<List<String>?> getPrinterSpeedList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterSpeedList');
+  }
+
+  @override
+  Future<void> setPrinterSpeed(int speed) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"speed": speed};
+    await methodChannel.invokeMethod<void>('setPrinterSpeed', arguments);
+  }
+
+  @override
+  Future<int?> getPrinterSpeed() async {
+    return await methodChannel.invokeMethod<int>('getPrinterSpeed');
+  }
+
+  @override
+  Future<List<String>?> getPrinterPaperTypeList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterPaperTypeList');
   }
 }

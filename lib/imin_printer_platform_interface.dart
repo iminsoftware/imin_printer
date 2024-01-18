@@ -353,10 +353,49 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> enterPrinterBuffer(bool isClean) {
     throw UnimplementedError('enterPrinterBuffer() has not been implemented.');
   }
+
   Future<void> commitPrinterBuffer() {
     throw UnimplementedError('commitPrinterBuffer() has not been implemented.');
   }
+
   Future<void> exitPrinterBuffer(bool isCommit) {
     throw UnimplementedError('exitPrinterBuffer() has not been implemented.');
   }
+
+  Future<List<String>?> getFontCodepage() {
+    throw UnimplementedError('getFontCodepage() has not been implemented.');
+  }
+
+  Future<void> setFontCodepage(int codepage) {
+    throw UnimplementedError('setFontCodepage() has not been implemented.');
+  }
+
+  Future<String?> getCurCodepage() {
+    throw UnimplementedError('getCurCodepage() has not been implemented.');
+  }
+
+  Future<List<String>?> getEncodeList() {
+    throw UnimplementedError('getEncodeList() has not been implemented.');
+  }
+
+  Future<String?> getCurEncode() {
+    throw UnimplementedError('getCurEncode() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterDensityList() {
+    throw UnimplementedError('getPrinterDensityList() has not been implemented.');
+  }
+  Future<List<String>?> getPrinterSpeedList() {
+    throw UnimplementedError('getPrinterSpeedList() has not been implemented.');
+  }
+  Future<void> setPrinterSpeed(int speed) {
+    throw UnimplementedError('setPrinterSpeed() has not been implemented.');
+  }
+  Future<int?> getPrinterSpeed() {
+    throw UnimplementedError('getPrinterSpeed() has not been implemented.');
+  }
+  Future<List<String>?> getPrinterPaperTypeList() {
+    throw UnimplementedError('getPrinterPaperTypeList() has not been implemented.');
+  }
+
 }
