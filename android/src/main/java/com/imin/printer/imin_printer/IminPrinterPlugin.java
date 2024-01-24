@@ -35,6 +35,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+
+
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.EventChannel.EventSink;
 import io.flutter.plugin.common.EventChannel.StreamHandler;
@@ -63,7 +65,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private static final String ACTION_PRITER_STATUS = "status";
     private static final String TAG = "IminPrinterPlugin";
     private BroadcastReceiver chargingStateChangeReceiver;
-
+   
+  
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
@@ -992,9 +995,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (iminPrintUtils == null) {
                     int textBitmapStyle = call.argument("style");
                     Log.d("setTextBitmapStyle", "setTextBitmapStyle: " + textBitmapStyle);
-                    if (iminPrintUtils != null) {
-                        PrinterHelper.getInstance().setTextBitmapStyle(textBitmapStyle);
-                    }
+                    PrinterHelper.getInstance().setTextBitmapStyle(textBitmapStyle);
                 }
                 result.success(true);
                 break;
@@ -1130,7 +1131,6 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
                 result.success(true);
                 break;
-
             default:
                 result.notImplemented();
                 break;
