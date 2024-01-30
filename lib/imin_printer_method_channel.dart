@@ -150,6 +150,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     }
   }
 
+
+
   @override
   Future<void> printAntiWhiteText(String text, {IminTextStyle? style}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
@@ -823,6 +825,12 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   @override
   Future<int?> getPrinterSpeed() async {
     return await methodChannel.invokeMethod<int>('getPrinterSpeed');
+  }
+
+  @override
+  Future<void> setPrinterEncode(int encode) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"encode": encode};
+     await methodChannel.invokeMethod<void>('setPrinterEncode', arguments);
   }
 
   @override

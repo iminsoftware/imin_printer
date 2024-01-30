@@ -30,6 +30,7 @@
   iminPrinter.printAndLineFeed();
 ```
 
+
 ## 走纸若干行,自定义高度
   - printAndFeedPaper()
     - 参数:
@@ -60,6 +61,234 @@
   iminPrinter.partialCut();
 ```
 
+## 设置对齐方式
+  - setAlignment
+    - 参数:
+      - IminPrintAlign alignment -> 对齐方式
+
+```dart
+  enum IminPrintAlign { left, center, right }
+```
+
+示例:
+```dart
+import 'package:imin_printer/enums.dart';  ///需要导入
+  iminPrinter.setAlignment(IminPrintAlign.center);
+```
+
+## 设置文字大小
+  - setTextSize()
+    - 参数:
+      - int size -> 字体大小
+
+示例:
+```dart
+  iminPrinter.setTextSize(25);
+```
+
+## 设置文字字体
+   - setTextTypeface()
+      - 参数:
+          - IminTypeface typeface -> 字体
+
+```dart
+enum IminTypeface {
+  typefaceDefault,
+  typefaceMonospace,
+  typefaceDefaultBold,
+  typefaceSansSerif,
+  typefaceSerif
+}
+```   
+
+示例:
+```dart
+import 'package:imin_printer/enums.dart';  ///需要导入
+
+ iminPrinter.setTextTypeface(IminTypeface.typefaceMonospace);
+```
+
+## 设置文字样式
+  - setTextStyle()
+      - 参数:
+          - IminFontStyle style -> 文字样式
+
+```dart
+  enum IminFontStyle { normal, bold, italic, boldItalic }
+```
+
+示例:
+```dart
+import 'package:imin_printer/enums.dart';  ///需要导入
+  
+  
+  iminPrinter.setTextStyle(IminFontStyle.bold);
+```
+
+## 设置文字行间距
+    - setTextLineSpacing()
+       - 参数:
+         - double space -> 行间距
+
+示例:
+```dart
+  iminPrinter.setTextLineSpacing(1.0f);
+```
+
+## 设置打印文字宽度
+  - setTextWidth()
+    - 参数:
+      - int width -> 宽度
+
+示例:
+```dart
+  iminPrinter.setTextWidth(200);
+```
+
+## 打印文字
+   - printText()
+     - 参数:
+       - String text -> 打印文字
+       - IminTextStyle style -> 打印文字相关设置项（可选）
+
+IminTextStyle 相关API:
+
+  | 属性 | 说明 | 类型 | 默认值  |
+  | ---- | ---- | ---- | ---- |
+  | wordWrap | 打印文字内容是否加入`\n`, `true`或者不设置自动加`\n`, 为`false`不加`\n` | bool  | 无 |
+  | fontSize | 打印文字大小 | int | 无 |
+  | space | 打印文字行间距 | double | 无 |
+  | width | 打印文字宽度 | int | 无 |
+  | typeface | 打印文字字体 | IminTypeface | 无 |
+  | fontStyle | 打印文字样式  | IminFontStyle | 无 |
+  | align | 打印文字对齐方式 | IminPrintAlign | 无 |
+
+```dart
+enum IminTypeface {
+  typefaceDefault,
+  typefaceMonospace,
+  typefaceDefaultBold,
+  typefaceSansSerif,
+  typefaceSerif
+}
+enum IminFontStyle { normal, bold, italic, boldItalic }
+
+enum IminPrintAlign { left, center, right }
+```
+
+示例:
+```dart
+import 'package:imin_printer/imin_style.dart';  ///需要导入
+import 'package:imin_printer/enums.dart';  ///需要导入
+
+///简单使用
+iminPrinter.printText("Hello World");
+
+///设置打印文字相关设置项
+iminPrinter.printText("Hello World", IminTextStyle(
+  fontSize: 20,
+  space: 1.0f,
+  width: 100,
+  typeface: IminTypeface.typefaceDefaultBold,
+  fontStyle: IminFontStyle.boldItalic,
+  align: IminPrintAlign.center
+));
+
+```
+
+## 打印反白文字
+  - printAntiWhiteText()
+    - 参数:
+       - String text -> 打印文字
+       - IminTextStyle style -> 打印文字相关设置项（可选）
+
+IminTextStyle 相关API:
+
+  | 属性 | 说明 | 类型 | 默认值  |
+  | ---- | ---- | ---- | ---- |
+  | wordWrap | 打印文字内容是否加入`\n`, `true`或者不设置自动加`\n`, 为`false`不加`\n` | bool  | 无 |
+  | fontSize | 打印文字大小 | int | 无 |
+  | space | 打印文字行间距 | double | 无 |
+  | width | 打印文字宽度 | int | 无 |
+  | typeface | 打印文字字体 | IminTypeface | 无 |
+  | fontStyle | 打印文字样式  | IminFontStyle | 无 |
+  | align | 打印文字对齐方式 | IminPrintAlign | 无 |
+
+```dart
+enum IminTypeface {
+  typefaceDefault,
+  typefaceMonospace,
+  typefaceDefaultBold,
+  typefaceSansSerif,
+  typefaceSerif
+}
+enum IminFontStyle { normal, bold, italic, boldItalic }
+
+enum IminPrintAlign { left, center, right }
+```
+
+示例:
+```dart
+import 'package:imin_printer/imin_style.dart';  ///需要导入
+import 'package:imin_printer/enums.dart';  ///需要导入
+
+///简单使用
+iminPrinter.printAntiWhiteText("Hello World");
+
+///设置打印文字相关设置项
+iminPrinter.printAntiWhiteText("Hello World", IminTextStyle(
+  fontSize: 20,
+  space: 1.0f,
+  width: 100,
+  typeface: IminTypeface.typefaceDefaultBold,
+  fontStyle: IminFontStyle.boldItalic,
+  align: IminPrintAlign.center
+));
+
+```
+
+
+## 打印表格
+  - printColumnsText()
+      - 参数:
+        - List<ColumnMaker> cols -> 列数组
+
+ColumnMaker 相关API:
+
+  | 属性 | 说明 | 类型 | 默认值  |
+  | ---- | ---- | ---- | ---- |
+  | text | 列内容 | String  | 无 |
+  | width | 列宽度 | int | 无 |
+  | align | 列对齐方式 | IminPrintAlign | 无 |
+  | fontSize | 字体大小 | int | 无 |
+
+示例:
+```dart
+import 'package:imin_printer/column_maker.dart'; ///需要导入
+import 'package:imin_printer/enums.dart'; ///需要导入
+
+
+   iminPrinter.printColumnsText(cols: [
+      ColumnMaker(
+          text: '1',
+          width: 1,
+          fontSize: 26,
+          align: IminPrintAlign.center),
+      ColumnMaker(
+          text: 'iMin',
+          width: 2,
+          fontSize: 26,
+          align: IminPrintAlign.left),
+      ColumnMaker(
+          text: 'iMin',
+          width: 1,
+          fontSize: 26,
+          align: IminPrintAlign.right)
+    ])
+
+```
+
+
 ## 打印单张图片
  - printSingleBitmap()
    - 参数:
@@ -71,7 +300,7 @@ IminPictureStyle 相关API:
   | 属性 | 说明 | 类型 | 默认值  |
   | ---- | ---- | ---- | ---- |
   | width | 图片的宽度 | int  | 无 |
-  | height | 图片的宽度 | int| 无 |
+  | height | 图片的高度 | int| 无 |
   | alignment | 打印的图片对齐方式 | enum IminPrintAlign { left, center, right }  | 无 |
 
 
@@ -118,7 +347,7 @@ IminPictureStyle 相关API:
   | 属性 | 说明 | 类型 | 默认值  |
   | ---- | ---- | ---- | ---- |
   | width | 图片的宽度 | int  | 无 |
-  | height | 图片的宽度 | int| 无 |
+  | height | 图片的高度 | int| 无 |
   | alignment | 打印的图片对齐方式 | enum IminPrintAlign { left, center, right }  | 无 |
 
 ```dart
@@ -165,7 +394,7 @@ IminBaseStyle 相关API:
 | 属性 | 说明 | 类型 | 默认值  |
 | ---- | ----| ----| ---- |
 | width | 图片的宽度 | int  | 无 |
-| height | 图片的宽度 | int| 无 |
+| height | 图片的高度 | int| 无 |
 
 示例:
 ```dart
@@ -283,6 +512,7 @@ iminPrinter.setDoubleQRSize(4);
 ```dart
 iminPrinter.setDoubleQR1Level(2);
 ```
+
 ## 设置双二维码(QR2)误差
   - setDoubleQR2Level()
      - 参数:
@@ -404,4 +634,125 @@ enum IminBarcodeTextPos {
 import 'package:imin_printer/enums.dart';
 
   iminPrinter.setBarCodeContentPrintPos(IminBarcodeTextPos.textAbove);
+```
+
+## 打印条形码
+  - printBarCode()
+    - 参数:
+       - IminBarcodeType barCodeType -> 条形码类型。
+       - String barCodeContent -> 条形码内容。
+       - IminBarCodeStyle style -> 条形码样式相关设置项（可选）。
+  
+IminBarCodeStyle 相关API:
+  | 属性 | 描述 | 类型 | 默认值 |
+  | --- | --- | --- | --- |
+  | width | 条形码宽度 | int | 无 |
+  | height | 条形码高度 | int | 无 |
+  | position | 条形码内容打印位置 | IminBarcodeTextPos | 无 |
+  | align | 条形码对齐方式 | IminPrintAlign | 无 |
+
+
+```dart
+enum IminBarcodeTextPos {
+  noText(0),
+  textAbove(1),
+  textBelow(2),
+  both(3);
+}
+
+enum IminPrintAlign { left, center, right }
+
+enum IminBarcodeType {
+  upcA(0),
+  upcE(1),
+  jan13(2),
+  jan8(3),
+  code39(4),
+  itf(5),
+  codabar(6),
+  code93(7),
+  code128(8);
+}
+```
+
+示例:
+```dart
+import 'package:imin_printer/imin_style.dart';
+import 'package:imin_printer/enums.dart';
+
+  /// 简单使用
+   iminPrinter.printBarCode(IminBarcodeType.jan13, "0123456789012",);
+
+  /// 设置条形码样式
+     iminPrinter.printBarCode(
+          IminBarcodeType.jan13, "0123456789012",
+          style: IminBarCodeStyle(
+               width: 150,
+               height: 50,
+              align: IminPrintAlign.center,
+              position: IminBarcodeTextPos.textAbove));
+```
+
+
+## 打印条形码设置格式
+   - printBarCodeToBitmapFormat()
+       - 参数:
+          - String barCodeContent -> 条形码内容。
+          - int width -> 条形码宽度。
+          - int height -> 条形码高度。
+          - IminBarCodeToBitmapFormat codeFormat -> 条形码格式。
+
+```dart
+enum IminBarCodeToBitmapFormat {
+  aztec,
+  codabar,
+  code39,
+  code93,
+  code128,
+  dataMatrix,
+  ean13,
+  itf,
+  maxicode,
+  pdf417,
+  qrCode,
+  rss14,
+  rssExpanded,
+  upcA,
+  upcE,
+  upcEanExteNsion;
+}
+```
+
+示例:
+```dart
+import 'package:imin_printer/enums.dart';
+
+ iminPrinter.printBarCodeToBitmapFormat( "0123456789012", 100, 50, IminBarCodeToBitmapFormat.code39);
+
+```
+
+
+## 打开钱箱
+  - openCashBox()
+     - 无参数:
+
+```dart
+  iminPrinter.openCashBox();
+```
+
+## 复位打印机
+  - resetDevice()
+    -  无参数:
+
+```dart
+  iminPrinter.resetDevice();
+```
+
+## 设置初始化打印机
+  - setInitIminPrinter
+      - 参数:
+         - bool isDefault -> 是否默认设置。
+
+```dart
+  iminPrinter.setInitIminPrinter(true);
 ```

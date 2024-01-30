@@ -34,6 +34,9 @@ class MockIminPrinterPlatform
   Future<void> printAntiWhiteText(String text, {IminTextStyle? style}) =>
       Future.value();
   @override
+  Future<void> setPrinterEncode(int encode) =>
+      Future.value();
+  @override
   Future<void> printColumnsText({required List<ColumnMaker> cols}) =>
       Future.value();
   @override

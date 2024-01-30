@@ -10,4 +10,4 @@ iMin products have two types of built-in printers：
   - 58mm 58mm paper width, without cutting knife, such as D1, D1 Pro, M2 Max equipped with this printer
 
 
-App developers can use flutter mode to call the built-in thermal printer to view[Quick start](/quickstart)Understand the details.
+App developers can use flutter mode to call the built-in thermal printer to view[Quick start](/v2/quickstart.md)Understand the details.

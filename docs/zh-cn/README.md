@@ -10,4 +10,4 @@ iMin 产品的内置打印机⼀共有 2 种规格：
   - 58mm 纸张宽度，不带切⼑，如 D1、D1 Pro、M2 Max 搭载了这种打印机
 
 
-App 开发者可以使⽤flutter⽅式调⽤内置热敏打印机 查看[快速开始](/zh-cn/quickstart.md)了解详情。
+App 开发者可以使⽤flutter⽅式调⽤内置热敏打印机 查看[快速开始](/zh-cn/quickstart)了解详情。

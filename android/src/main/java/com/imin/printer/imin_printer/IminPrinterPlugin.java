@@ -227,8 +227,6 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text);
-                } else {
-                    PrinterHelper.getInstance().printTextBitmap(text, null);
                 }
                 result.success(true);
                 break;

@@ -699,4 +699,8 @@ class IminPrinter {
   Future<List<String>?> getPrinterPaperTypeList() {
     return IminPrinterPlatform.instance.getPrinterPaperTypeList();
   }
+
+  Future<void> setPrinterEncode(int encode) {
+    return IminPrinterPlatform.instance.setPrinterEncode(encode);
+  }
 }

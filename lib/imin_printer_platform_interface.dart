@@ -393,5 +393,8 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<List<String>?> getPrinterPaperTypeList() {
     throw UnimplementedError('getPrinterPaperTypeList() has not been implemented.');
   }
+  Future<void> setPrinterEncode(int encode) {
+    throw UnimplementedError('setPrinterEncode() has not been implemented.');
+  }
 
 }

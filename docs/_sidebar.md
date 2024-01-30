@@ -1,3 +1,5 @@
-* 入门
+* introduction
 
- * [快速开始](quickstart.md) 
+ * [Quick Start](quickstart.md) 
+
+ * [Document](/api)

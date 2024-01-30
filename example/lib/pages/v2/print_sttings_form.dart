@@ -107,7 +107,7 @@ class _TextSettingComponentState extends State<TextSettingComponent> {
           });
         },
         decoration: const InputDecoration(
-            hintText: '1<=spacing<=255', labelText: "Letter Spacing"),
+            hintText: '1<=spacing<=60', labelText: "Letter Spacing"),
       ),
       TextField(
         onChanged: (value) {
