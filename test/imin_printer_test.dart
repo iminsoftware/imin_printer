@@ -12,11 +12,9 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockIminPrinterPlatform
     with MockPlatformInterfaceMixin
     implements IminPrinterPlatform {
+    
   @override
-  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) =>
-      Future.value();
-  @override
-  Future<bool?> getUseSdkVersion() => Future.value(true);
+  Stream<dynamic> initEventChannel() => const Stream.empty();
   @override
   Future<bool?> initPrinter() => Future.value(true);
   @override

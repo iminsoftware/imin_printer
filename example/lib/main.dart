@@ -21,16 +21,25 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getDeviceUseSDKVersion();
+      iminPrinter.receiveBroadcastStream.listen((event) {
+      debugPrint('broadcastStream: ${event['action'] }');
+      if(event['action'] == 'printer_sdk_version') {
+            setState(() {
+              version = event['status'];
+            });
+      }
+    });
+    // getDeviceUseSDKVersion();
   }
 
-  /// 获取设备应该使用哪个版本SDK
-  Future<void> getDeviceUseSDKVersion() async {
-    bool? v = await iminPrinter.getUseSdkVersion();
-    setState(() {
-      version = v;
-    });
-  }
+  // /// 获取设备应该使用哪个版本SDK
+  // Future<void> getDeviceUseSDKVersion() async {
+  //   bool? v = await iminPrinter.getUseSdkVersion();
+  //   setState(() {
+  //     version = v;
+  //   });
+
+  // }
 
   @override
   Widget build(BuildContext context) {

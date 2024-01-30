@@ -19,13 +19,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   final eventChannel = const EventChannel('imin_printer_event');
 
   @override
-  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) async {
-    eventChannel.receiveBroadcastStream().listen(onEvent, onError: onError);
-  }
-
-  @override
-  Future<bool?> getUseSdkVersion() async {
-    return await methodChannel.invokeMethod<bool>('sdkVersion');
+  Stream<dynamic> initEventChannel() {
+    return eventChannel.receiveBroadcastStream();
   }
 
   @override

@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
 import 'imin_printer_platform_interface.dart';
 import 'enums.dart';
 import 'imin_style.dart';
@@ -9,21 +8,8 @@ import 'package:logger/logger.dart';
 var logger = Logger();
 
 class IminPrinter {
-  Future<void> listenerEvent(dynamic onEvent, {dynamic onError}) {
-    return IminPrinterPlatform.instance
-        .listenerEvent(onEvent, onError: onEvent);
-  }
-
-  /// Get what version of sdk is the current device using
-  ///
-  /// {@tool snippet}
-  ///
-  ///  ```dart
-  /// iminPrinter.getUseSdkVersion()
-  /// ```
-  /// {@end-tool}
-  Future<bool?> getUseSdkVersion() {
-    return IminPrinterPlatform.instance.getUseSdkVersion();
+  Stream<dynamic> get receiveBroadcastStream {
+    return IminPrinterPlatform.instance.initEventChannel();
   }
 
   /// Reset the printer’s logic program (for example: layout settings, bold and other style settings), but do not clear the buffer data, so unfinished print jobs will continue after reset.

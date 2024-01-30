@@ -26,9 +26,7 @@ class _NewHomeState extends State<NewHome> {
   void initState() {
     super.initState();
     //  getMediaFilePermission();
-    iminPrinter.listenerEvent((data){
-      debugPrint('listenerEvent: $data');
-    });
+    if (!mounted) return;
   }
 
   /// 获取媒体文件读写权限
@@ -77,7 +75,8 @@ class _NewHomeState extends State<NewHome> {
                   child: const Text('init Printer')),
               OutlinedButton(
                   onPressed: () async {
-                    Map<String, dynamic> state = await iminPrinter.getPrinterStatus();
+                    Map<String, dynamic> state =
+                        await iminPrinter.getPrinterStatus();
                     Fluttertoast.showToast(
                         msg: state['msg'],
                         toastLength: Toast.LENGTH_LONG,
@@ -443,16 +442,14 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                    Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const TransactionPrintPage()),
+                        builder: (context) => const TransactionPrintPage()),
                   );
                 },
                 child: const Text('transaction printing'),
               ),
-
             ],
           ),
         )));
