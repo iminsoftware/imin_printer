@@ -1152,7 +1152,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private void getUsePrinterSdkVersion(EventChannel.EventSink events) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("action", "printer_sdk_version");
-         if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") ||   || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+         if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
             //初始化 2.0 的 SDK。
             result.put("status", true);
         } else {
