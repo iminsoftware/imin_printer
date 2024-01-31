@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
       iminPrinter.receiveBroadcastStream.listen((event) {
-      debugPrint('broadcastStream: ${event['action'] }');
+      debugPrint('broadcastStream: ${event['status'] }');
       if(event['action'] == 'printer_sdk_version') {
             setState(() {
               version = event['status'];
