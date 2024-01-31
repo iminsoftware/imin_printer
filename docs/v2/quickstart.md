@@ -34,7 +34,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState  extends State<MyApp> {
   final iminPrinter = IminPrinter();
   @override
   void initState() {

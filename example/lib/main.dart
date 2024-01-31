@@ -29,17 +29,7 @@ class _MyAppState extends State<MyApp> {
             });
       }
     });
-    // getDeviceUseSDKVersion();
   }
-
-  // /// 获取设备应该使用哪个版本SDK
-  // Future<void> getDeviceUseSDKVersion() async {
-  //   bool? v = await iminPrinter.getUseSdkVersion();
-  //   setState(() {
-  //     version = v;
-  //   });
-
-  // }
 
   @override
   Widget build(BuildContext context) {
