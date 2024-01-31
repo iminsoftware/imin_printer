@@ -162,6 +162,12 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
+                  await iminPrinter.fullCut();
+                },
+                child: const Text('fullCut'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
                   await iminPrinter.setCodeAlignment(IminPrintAlign.center);
                 },
                 child: const Text('setCodeAlignment'),
@@ -422,8 +428,8 @@ class _NewHomeState extends State<NewHome> {
                       qrCodeStyle: IminQrCodeStyle(
                           errorCorrectionLevel:
                               IminQrcodeCorrectionLevel.levelH,
-                          qrSize: 4,
-                          align: IminPrintAlign.center));
+                          qrSize: 5,
+                         ));
                 },
                 child: const Text('print Qrcode'),
               ),

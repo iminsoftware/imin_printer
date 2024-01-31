@@ -606,7 +606,10 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setCodeAlignment(IminPrintAlign alignment) async {
-    await methodChannel.invokeMethod<void>('setCodeAlignment');
+      Map<String, dynamic> arguments = <String, dynamic>{
+      "align": alignment.index,
+    };
+    await methodChannel.invokeMethod<void>('setCodeAlignment',arguments);
   }
 
   @override
@@ -729,7 +732,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       await methodChannel.invokeMethod<void>(
           'printTextBitmapWithAli', arguments);
     } else {
-      await methodChannel.invokeMethod<void>('printText', arguments);
+      await methodChannel.invokeMethod<void>('printTextBitmap', arguments);
     }
   }
 

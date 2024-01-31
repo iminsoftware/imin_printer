@@ -946,6 +946,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             case "setCodeAlignment":
                 if (iminPrintUtils == null) {
                     int align = call.argument("align");
+                    Log.d("TAG", "setCodeAlignment: " + align);
                     PrinterHelper.getInstance().setCodeAlignment(align);
                 }
                 result.success(true);
@@ -1028,7 +1029,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             case "printTextBitmap":
                 if (iminPrintUtils == null) {
                     String textStr = call.argument("text");
-                    PrinterHelper.getInstance().printTextBitmap(textStr + "\n", null);
+                    PrinterHelper.getInstance().printTextBitmap(textStr, null);
                 }
                 result.success(true);
                 break;
