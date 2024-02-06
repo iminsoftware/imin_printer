@@ -1,6 +1,6 @@
 name: imin_printer
 description: It is used to print text, pictures, two-dimensional code, bar code and other functions sdk in imin printer using Android system
-version: 0.6.0
+version: 0.6.2
 homepage: https://github.com/iminsoftware/imin_printer
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  logger: ^1.1.0
+  logger: ^2.0.0
 
 dev_dependencies:
   flutter_test:

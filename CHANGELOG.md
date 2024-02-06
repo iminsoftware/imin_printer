@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.2
+-Upgrade Logger to V2.0.0
+
 ## 0.6.0
 - Added 1.0 and 2.0 printing apis
 - Compatible with iMin devices that use the 1.0 print api and the 2.0 print api
