@@ -14,6 +14,8 @@ class MockIminPrinterPlatform
     implements IminPrinterPlatform {
     
   @override
+  Future<String?> getSdkVersion() => Future.value('1.0.0');
+  @override
   Stream<dynamic> initEventChannel() => const Stream.empty();
   @override
   Future<bool?> initPrinter() => Future.value(true);

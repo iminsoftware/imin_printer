@@ -4,7 +4,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
+import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
@@ -59,24 +59,27 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private Context _context;
     private IminPrintUtils.PrintConnectType connectType = IminPrintUtils.PrintConnectType.USB;
     private EventSink eventSink;
+    private String[] modelArry = {"W27_Pro", "I23M01", "I23M02", "I23D01", "D4-503 Pro", "D4-504 Pro", "D4-505 Pro", "MS2-11", "MS2-12", "MS1-15"};
+    private String sdkVersion = "1.0.0";
     private static final String ACTION_PRITER_STATUS_CHANGE = "com.imin.printerservice.PRITER_STATUS_CHANGE";
     private static final String ACTION_POGOPIN_STATUS_CHANGE = "com.imin.printerservice.PRITER_CONNECT_STATUS_CHANGE";
     private static final String ACTION_PRITER_STATUS = "status";
     private static final String TAG = "IminPrinterPlugin";
     private BroadcastReceiver chargingStateChangeReceiver;
 
-
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
         eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
-        if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+        List<String> modelList = Arrays.asList(modelArry);
+        if (modelList.contains(Build.MODEL)) {
             //初始化 2.0 的 SDK。
-            PrinterHelper.getInstance().initPrinterService(Utils.getInstance().getContext());
+            PrinterHelper.getInstance().initPrinterService(_context);
+            sdkVersion = "2.0.0";
         } else {
             //初始化 1.0 SDK
-            iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
+            iminPrintUtils = IminPrintUtils.getInstance(_context);
             String deviceModel = Utils.getInstance().getModel();
             if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
                 connectType = IminPrintUtils.PrintConnectType.SPI;
@@ -84,22 +87,27 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 connectType = IminPrintUtils.PrintConnectType.USB;
             }
             iminPrintUtils.resetDevice();
+            sdkVersion = "1.0.0";
         }
         eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
-
+     
     }
 
     @SuppressLint("NewApi")
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
+            case "getSdkVersion":
+                result.success(sdkVersion);
+                break;
             case "initPrinter":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.initPrinter(connectType);
                     result.success(true);
                 } else {
-                    PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), null);
+                    Log.d(TAG, _context.getPackageName());
+                    PrinterHelper.getInstance().initPrinter(_context.getPackageName(), null);
                 }
                 break;
             case "getPrinterStatus":
@@ -221,17 +229,19 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     Log.e("IminPrinter", err.getMessage());
                 }
                 break;
-            case "printText"://
+            case "printText":
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
-                    iminPrintUtils.printText(text);
+                    iminPrintUtils.printText(text + "\n");
+                } else {
+                   PrinterHelper.getInstance().printText(text + "\n", null);
                 }
                 result.success(true);
                 break;
             case "printAntiWhiteText":
                 String whiteText = call.argument("text");
                 if (iminPrintUtils != null) {
-                    iminPrintUtils.printAntiWhiteText(whiteText);
+                    iminPrintUtils.printAntiWhiteText(whiteText + "\n");
                 }
                 result.success(true);
                 break;
@@ -628,7 +638,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "unBindService":
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().deInitPrinterService(Utils.getInstance().getContext());
+                    PrinterHelper.getInstance().deInitPrinterService(_context);
                 }
                 result.success(true);
                 break;
@@ -1027,7 +1037,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             case "printTextBitmap":
                 if (iminPrintUtils == null) {
                     String textStr = call.argument("text");
-                    PrinterHelper.getInstance().printTextBitmap(textStr, null);
+                    PrinterHelper.getInstance().printTextBitmap(textStr + "\n", null);
                 }
                 result.success(true);
                 break;
@@ -1035,10 +1045,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (iminPrintUtils == null) {
                     String textBitmapString = call.argument("text");
                     int textBitmapAlign = call.argument("align");
-                    Log.d("sdsd", "打印文字对齐方式textBitmapString" + textBitmapString);
-                    Log.d("sdsd", "打印文字对齐方式textBitmapAlign" + textBitmapAlign);
-
-                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString, textBitmapAlign, null);
+                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString + "\n", textBitmapAlign, null);
                 }
                 result.success(true);
                 break;
@@ -1148,24 +1155,10 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         channel.setMethodCallHandler(null);
     }
 
-    private void getUsePrinterSdkVersion(EventChannel.EventSink events) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("action", "printer_sdk_version");
-        if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
-            //初始化 2.0 的 SDK。
-            result.put("status", true);
-        } else {
-            //初始化 1.0 SDK
-            result.put("status", false);
-        }
-        events.success(result);
-    }
-
     @Override
     public void onListen(Object argument, EventChannel.EventSink events) {
         eventSink = events;
         chargingStateChangeReceiver = createChargingStateChangeReceiver(eventSink);
-        getUsePrinterSdkVersion(eventSink);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PRITER_STATUS_CHANGE);
         intentFilter.addAction(ACTION_POGOPIN_STATUS_CHANGE);

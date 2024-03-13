@@ -19,6 +19,11 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   final eventChannel = const EventChannel('imin_printer_event');
 
   @override
+  Future<String?> getSdkVersion() async {
+    return await methodChannel.invokeMethod<String>('getSdkVersion');
+  }
+
+  @override
   Stream<dynamic> initEventChannel() {
     return eventChannel.receiveBroadcastStream();
   }
@@ -149,8 +154,6 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
     }
   }
-
-
 
   @override
   Future<void> printAntiWhiteText(String text, {IminTextStyle? style}) async {
@@ -303,7 +306,6 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     if (qrCodeStyle != null) {
       if (qrCodeStyle.align != null &&
           qrCodeStyle.qrSize != null &&
-          qrCodeStyle.leftMargin != null &&
           qrCodeStyle.errorCorrectionLevel != null) {
         arguments.putIfAbsent("alignment", () => qrCodeStyle.align?.index);
         arguments.putIfAbsent("qrSize", () => qrCodeStyle.qrSize!);
@@ -606,10 +608,10 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setCodeAlignment(IminPrintAlign alignment) async {
-      Map<String, dynamic> arguments = <String, dynamic>{
+    Map<String, dynamic> arguments = <String, dynamic>{
       "align": alignment.index,
     };
-    await methodChannel.invokeMethod<void>('setCodeAlignment',arguments);
+    await methodChannel.invokeMethod<void>('setCodeAlignment', arguments);
   }
 
   @override
@@ -833,7 +835,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   @override
   Future<void> setPrinterEncode(int encode) async {
     Map<String, dynamic> arguments = <String, dynamic>{"encode": encode};
-     await methodChannel.invokeMethod<void>('setPrinterEncode', arguments);
+    await methodChannel.invokeMethod<void>('setPrinterEncode', arguments);
   }
 
   @override

@@ -126,9 +126,9 @@ import 'package:imin_printer/enums.dart';  ///需要导入
 ```
 
 ## 设置文字行间距
-    - setTextLineSpacing()
+  - setTextLineSpacing()
        - 参数:
-         - double space -> 行间距
+          - double space -> 行间距
 
 示例:
 ```dart

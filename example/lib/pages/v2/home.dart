@@ -139,6 +139,7 @@ class _NewHomeState extends State<NewHome> {
                   debugPrint('escPos: $escPos');
 
                   await iminPrinter.sendRAWData(Uint8List.fromList(escPos));
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('sendRAWData'),
               ),
@@ -157,12 +158,14 @@ class _NewHomeState extends State<NewHome> {
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.partialCut();
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('partialCut'),
               ),
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.fullCut();
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('fullCut'),
               ),
@@ -201,6 +204,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print singleBitmap'),
               ),
@@ -223,6 +227,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 250,
                         height: 30,
                       ));
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print multiBitmap'),
               ),
@@ -244,6 +249,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print bitmapColorChart'),
               ),
@@ -392,6 +398,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
+                   await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsText'),
               ),
@@ -419,6 +426,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsString'),
               ),
@@ -430,6 +438,7 @@ class _NewHomeState extends State<NewHome> {
                               IminQrcodeCorrectionLevel.levelH,
                           qrSize: 5,
                          ));
+                           await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print Qrcode'),
               ),
@@ -443,6 +452,7 @@ class _NewHomeState extends State<NewHome> {
                         text: 'www.google.com',
                       ),
                       doubleQRSize: 5);
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print DoubleQR'),
               ),

@@ -304,6 +304,7 @@ class _TextSettingComponentState extends State<TextSettingComponent> {
                       underline: underline,
                       throughline: throughline,
                       reverseWhite: reverseWhite));
+               iminPrinter.printAndLineFeed();
             }),
       )
     ]);

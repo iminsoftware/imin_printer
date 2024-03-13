@@ -14,6 +14,10 @@ class _TransactionPrintPageState extends State<TransactionPrintPage> {
   bool firstTicket = false;
   bool secondTicket = false;
   bool thirdlyTicket = false;
+  bool isOpenTransaction = false;
+  List<int>? thirdlyTicketData;
+  List<int>? secondTicketData;
+  List<int>? firstTicketData;
   @override
   void initState() {
     super.initState();
@@ -47,10 +51,16 @@ class _TransactionPrintPageState extends State<TransactionPrintPage> {
                           setState(() {
                             firstTicket = value!;
                           });
-                          final List<int> firstTicketData =
+                          if (firstTicket) {
+                            firstTicketData =
                               await getBaiduTestBytes();
-                          await iminPrinter
-                              .sendRAWData(Uint8List.fromList(firstTicketData));
+                            if (!isOpenTransaction) {
+                              await iminPrinter.sendRAWData(
+                                  Uint8List.fromList(firstTicketData!));
+                            }
+                          } else {
+                            firstTicketData = null;
+                          }
                         }),
                     const Text('ticket 1')
                   ],
@@ -67,10 +77,15 @@ class _TransactionPrintPageState extends State<TransactionPrintPage> {
                           setState(() {
                             secondTicket = value!;
                           });
-                          final List<int> secondTicketData =
-                              await getMeituanBill();
-                          await iminPrinter.sendRAWData(
-                              Uint8List.fromList(secondTicketData));
+                          if (secondTicket) {
+                            secondTicketData = await getMeituanBill();
+                            if (!isOpenTransaction) {
+                              await iminPrinter.sendRAWData(
+                                  Uint8List.fromList(secondTicketData!));
+                            }
+                          } else {
+                            secondTicketData = null;
+                          }
                         }),
                     const Text('ticket 2')
                   ],
@@ -87,10 +102,15 @@ class _TransactionPrintPageState extends State<TransactionPrintPage> {
                           setState(() {
                             thirdlyTicket = value!;
                           });
-                          final List<int> thirdlyTicketData =
-                              await getErlmoData();
-                          await iminPrinter.sendRAWData(
-                              Uint8List.fromList(thirdlyTicketData));
+                          if (thirdlyTicket) {
+                            thirdlyTicketData = await getErlmoData();
+                            if (!isOpenTransaction) {
+                              await iminPrinter.sendRAWData(
+                                  Uint8List.fromList(thirdlyTicketData!));
+                            }
+                          } else {
+                            thirdlyTicketData = null;
+                          }
                         }),
                     const Text('ticket 3')
                   ],
@@ -100,13 +120,29 @@ class _TransactionPrintPageState extends State<TransactionPrintPage> {
           ),
           ElevatedButton(
             onPressed: () {
+              setState(() {
+                isOpenTransaction = true;
+              });
               iminPrinter.enterPrinterBuffer(true);
             },
             child: const Text('start transaction Print'),
           ),
           ElevatedButton(
-            onPressed: () {
-              iminPrinter.commitPrinterBuffer();
+            onPressed: () async {
+              debugPrint('commit transaction');
+              if (thirdlyTicketData != null) {
+                await iminPrinter
+                    .sendRAWData(Uint8List.fromList(thirdlyTicketData!));
+              }
+              if (secondTicketData != null) {
+                await iminPrinter
+                    .sendRAWData(Uint8List.fromList(secondTicketData!));
+              }
+              if (firstTicketData != null) {
+                await iminPrinter
+                    .sendRAWData(Uint8List.fromList(firstTicketData!));
+              }
+              await iminPrinter.commitPrinterBuffer();
             },
             child: const Text('commit transaction'),
           ),
