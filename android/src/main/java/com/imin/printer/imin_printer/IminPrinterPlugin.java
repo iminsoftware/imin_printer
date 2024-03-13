@@ -10,8 +10,6 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import com.imin.library.IminSDKManager;
-import com.imin.library.SystemPropManager;
 import com.imin.printer.INeoPrinterCallback;
 import com.imin.printer.PrinterHelper;
 import com.imin.printerlib.Callback;
@@ -82,7 +80,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         } else {
             //初始化 1.0 SDK
             iminPrintUtils = IminPrintUtils.getInstance(_context);
-            String deviceModel = SystemPropManager.getModel();
+            String deviceModel = Utils.getInstance().getModel();
             if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
                 connectType = IminPrintUtils.PrintConnectType.SPI;
             } else {
@@ -613,7 +611,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "openCashBox":
                 if (iminPrintUtils != null) {
-                    IminSDKManager.opencashBox();
+                    Utils.getInstance().opencashBox();
                 } else {
                     PrinterHelper.getInstance().openDrawer();
                 }
