@@ -10,8 +10,6 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import com.imin.library.IminSDKManager;
-import com.imin.library.SystemPropManager;
 import com.imin.printer.INeoPrinterCallback;
 import com.imin.printer.PrinterHelper;
 import com.imin.printerlib.Callback;
@@ -79,7 +77,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         } else {
             //初始化 1.0 SDK
             iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
-            String deviceModel = SystemPropManager.getModel();
+            String deviceModel = Utils.getInstance().getModel();
             if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
                 connectType = IminPrintUtils.PrintConnectType.SPI;
             } else {
@@ -89,7 +87,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         }
         eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
-     
+
     }
 
     @SuppressLint("NewApi")
@@ -603,7 +601,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "openCashBox":
                 if (iminPrintUtils != null) {
-                    IminSDKManager.opencashBox();
+                    Utils.getInstance().opencashBox();
                 } else {
                     PrinterHelper.getInstance().openDrawer();
                 }
@@ -1153,7 +1151,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private void getUsePrinterSdkVersion(EventChannel.EventSink events) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("action", "printer_sdk_version");
-         if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+        if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
             //初始化 2.0 的 SDK。
             result.put("status", true);
         } else {
