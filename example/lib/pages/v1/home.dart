@@ -96,6 +96,7 @@ class _HomeState extends State<Home> {
                           await iminPrinter.printText('居中',
                               style:
                                   IminTextStyle(align: IminPrintAlign.center));
+                                  await iminPrinter.printAndFeedPaper(100);
                         },
                         child: const Text('text alignment'))
                   ]),
@@ -110,6 +111,7 @@ class _HomeState extends State<Home> {
                       onPressed: () async {
                         await iminPrinter.printText('测试字体大小',
                             style: IminTextStyle(fontSize: 25));
+                            await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('Text fontSize')),
                   ElevatedButton(
@@ -117,6 +119,7 @@ class _HomeState extends State<Home> {
                         await iminPrinter.printText('测试打印字体',
                             style: IminTextStyle(
                                 typeface: IminTypeface.typefaceMonospace));
+                                await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('Text typeface'))
                 ],
@@ -144,6 +147,7 @@ class _HomeState extends State<Home> {
                                 fontSize: 25,
                                 // typeface: IminTypeface.typefaceDefault
                                 fontStyle: IminFontStyle.italic));
+                                await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('Text style')),
                   ElevatedButton(
@@ -155,6 +159,7 @@ class _HomeState extends State<Home> {
                               height: 50,
                             )
                         );
+                        await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('print singleBitmap'))
                 ],
@@ -206,8 +211,9 @@ class _HomeState extends State<Home> {
                             pictureStyle: IminPictureStyle(
                               alignment: IminPrintAlign.center,
                               width: 250,
-                              height: 50,
+                              height: 70,
                             ));
+                        await iminPrinter.printAndFeedPaper(200);
                       },
                       child: const Text('print singleBitmap in align'))
                 ],
@@ -226,27 +232,29 @@ class _HomeState extends State<Home> {
                                     IminQrcodeCorrectionLevel.levelH,
                                 qrSize: 4,
                                 align: IminPrintAlign.left));
+                                await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('print QrCode')),
                   ElevatedButton(
                       onPressed: () async {
                         await iminPrinter.printColumnsText(cols: [
                           ColumnMaker(
-                              text: '1',
+                              text: '张三',
                               width: 1,
                               fontSize: 26,
                               align: IminPrintAlign.center),
                           ColumnMaker(
-                              text: 'iMin',
+                              text: '50',
                               width: 2,
                               fontSize: 26,
                               align: IminPrintAlign.left),
                           ColumnMaker(
-                              text: 'iMin',
+                              text: 'A+',
                               width: 1,
                               fontSize: 26,
                               align: IminPrintAlign.right)
                         ]);
+                        await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('print ColumnsText'))
                 ],
@@ -265,6 +273,7 @@ class _HomeState extends State<Home> {
                             style: IminBarCodeStyle(
                                 align: IminPrintAlign.center,
                                 position: IminBarcodeTextPos.textAbove));
+                                await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('print barCode')),
                   ElevatedButton(
@@ -286,6 +295,7 @@ class _HomeState extends State<Home> {
                               width: 250,
                               height: 30,
                             ));
+                            await iminPrinter.printAndFeedPaper(100);
                       },
                       child: const Text('print multiBitmap'))
                 ],
@@ -313,6 +323,7 @@ class _HomeState extends State<Home> {
                                 text: 'www.google.com',
                               ),
                               doubleQRSize: 5);
+                              await iminPrinter.printAndFeedPaper(100);
                         },
                         child: const Text('print DoubleQR'))
                   ]),
