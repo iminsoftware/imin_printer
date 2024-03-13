@@ -17,26 +17,25 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final iminPrinter = IminPrinter();
-  bool? version = false;
+  String version = '1.0.0';
   @override
   void initState() {
     super.initState();
-      iminPrinter.receiveBroadcastStream.listen((event) {
-      debugPrint('broadcastStream: ${event['status'] }');
-      if(event['action'] == 'printer_sdk_version') {
-            setState(() {
-              version = event['status'];
-            });
-      }
-    });
+     getSdkVersion();
   }
-
+  Future<void> getSdkVersion() async {
+     final sdkVersion = await iminPrinter.getSdkVersion();
+     if (!mounted) return;
+      setState( () {
+          version = sdkVersion!;
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: version == true ? const NewHome() : const Home() ,
+      home: version == '2.0.0' ? const NewHome() : const Home() ,
     );
   }
 }

@@ -1,9 +1,12 @@
 # Changelog
 
+# 0.6.1
+ - Fixed bug
+
 ## 0.6.0
 - Added 1.0 and 2.0 printing apis
 - Compatible with iMin devices that use the 1.0 print api and the 2.0 print api
-- Fixed the money box opening bug
+- Fixed the money box opening bugqq
 
 ## 0.5.6
 - added openCashBox method

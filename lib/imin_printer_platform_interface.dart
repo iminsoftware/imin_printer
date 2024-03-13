@@ -32,6 +32,10 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('initEventChannel() has not been implemented.');
   }
 
+  Future<String?> getSdkVersion() {
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
+  }
+
   Future<bool?> initPrinter() {
     throw UnimplementedError('initPrinter() has not been implemented.');
   }
@@ -379,22 +383,28 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   }
 
   Future<List<String>?> getPrinterDensityList() {
-    throw UnimplementedError('getPrinterDensityList() has not been implemented.');
+    throw UnimplementedError(
+        'getPrinterDensityList() has not been implemented.');
   }
+
   Future<List<String>?> getPrinterSpeedList() {
     throw UnimplementedError('getPrinterSpeedList() has not been implemented.');
   }
+
   Future<void> setPrinterSpeed(int speed) {
     throw UnimplementedError('setPrinterSpeed() has not been implemented.');
   }
+
   Future<int?> getPrinterSpeed() {
     throw UnimplementedError('getPrinterSpeed() has not been implemented.');
   }
+
   Future<List<String>?> getPrinterPaperTypeList() {
-    throw UnimplementedError('getPrinterPaperTypeList() has not been implemented.');
+    throw UnimplementedError(
+        'getPrinterPaperTypeList() has not been implemented.');
   }
+
   Future<void> setPrinterEncode(int encode) {
     throw UnimplementedError('setPrinterEncode() has not been implemented.');
   }
-
 }

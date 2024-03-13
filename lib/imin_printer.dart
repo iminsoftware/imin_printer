@@ -8,6 +8,9 @@ import 'package:logger/logger.dart';
 var logger = Logger();
 
 class IminPrinter {
+  Future<String?> getSdkVersion() {
+    return IminPrinterPlatform.instance.getSdkVersion();
+  }
   Stream<dynamic> get receiveBroadcastStream {
     return IminPrinterPlatform.instance.initEventChannel();
   }

@@ -39,7 +39,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
+        multiDexEnabled true
     }
     dependencies {
         testImplementation 'junit:junit:4.13.2'

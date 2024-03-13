@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
- xmlns:tools="http://schemas.android.com/tools"
-  package="com.imin.printer.imin_printer">
-     <uses-sdk tools:overrideLibrary="com.imin.printer"/>
+package="com.imin.printer.imin_printer">
+ <!-- xmlns:tools="http://schemas.android.com/tools" -->
+     <!-- <uses-sdk tools:overrideLibrary="com.imin.printer"/>
     <application
         android:name="com.imin.printer.imin_printer.BaseApplication"
         tools:replace="android:name"
@@ -11,5 +11,5 @@
                 android:authorities="com.imin.printer.imin_printer"
                 android:name="com.imin.printer.imin_printer.MyProvider"
                 tools:ignore="WrongManifestParent" />
-    </application>
+    </application> -->
 </manifest>
