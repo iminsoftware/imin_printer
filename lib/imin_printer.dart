@@ -706,4 +706,20 @@ class IminPrinter {
   Future<void> setPrinterEncode(int encode) {
     return IminPrinterPlatform.instance.setPrinterEncode(encode);
   }
+
+  /// print partial cut in your printer
+  ///
+  /// {@tool snippet}
+  ///
+  ///  ```dart
+  /// iminPrinter.openLogs()
+  /// ```
+  /// {@end-tool}
+  Future<void> openLogs(int open) {
+    return IminPrinterPlatform.instance.openLogs(open);
+  }
+
+  Future<void> sendRAWDataHexStr(String hex) {
+    return IminPrinterPlatform.instance.sendRAWDataHexStr(hex);
+  }
 }

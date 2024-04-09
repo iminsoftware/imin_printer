@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:imin_printer/imin_printer.dart';
@@ -6,6 +7,8 @@ import 'package:imin_printer/imin_style.dart';
 import 'package:imin_printer/column_maker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../v2/home.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,6 +25,7 @@ class _HomeState extends State<Home> {
     getMediaFilePermission();
   }
 
+  int open = 1;
   /// 获取媒体文件读写权限
   Future<void> getMediaFilePermission() async {
     Map<Permission, PermissionStatus> statuses =
@@ -89,6 +93,7 @@ class _HomeState extends State<Home> {
                               'iMin advocates the core values of "Integrity, Customer First, Invention&Creation, Patience”, using cloud-based technology to help businesses to get  access to the Internet and also increases their data base, by providing more solutions so that their business can take a step further. Through their efficiency enhancement, cost improvement, service innovation, and  better services for consumers, these aspect will drives the entire industry development.',
                               style: IminTextStyle(wordWrap: true));
                           await iminPrinter.printAndFeedPaper(100);
+                          await iminPrinter.sendRAWDataHexStr("0A");
                         },
                         child: const Text('Text in word wrap')),
                     ElevatedButton(
@@ -97,6 +102,7 @@ class _HomeState extends State<Home> {
                               style:
                                   IminTextStyle(align: IminPrintAlign.center));
                                   await iminPrinter.printAndFeedPaper(100);
+                          await iminPrinter.sendRAWDataHexStr("0A");
                         },
                         child: const Text('text alignment'))
                   ]),
@@ -112,6 +118,7 @@ class _HomeState extends State<Home> {
                         await iminPrinter.printText('测试字体大小',
                             style: IminTextStyle(fontSize: 25));
                             await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('Text fontSize')),
                   ElevatedButton(
@@ -120,6 +127,7 @@ class _HomeState extends State<Home> {
                             style: IminTextStyle(
                                 typeface: IminTypeface.typefaceMonospace));
                                 await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('Text typeface'))
                 ],
@@ -148,6 +156,7 @@ class _HomeState extends State<Home> {
                                 // typeface: IminTypeface.typefaceDefault
                                 fontStyle: IminFontStyle.italic));
                                 await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('Text style')),
                   ElevatedButton(
@@ -159,7 +168,9 @@ class _HomeState extends State<Home> {
                               height: 50,
                             )
                         );
+                        await iminPrinter.sendRAWDataHexStr("0A");
                         await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print singleBitmap'))
                 ],
@@ -178,6 +189,7 @@ class _HomeState extends State<Home> {
                   ElevatedButton(
                       onPressed: () async {
                         await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print AndFeedPaper'))
                 ],
@@ -193,6 +205,7 @@ class _HomeState extends State<Home> {
                         await iminPrinter.printText(
                             '测试打印字体iMin is a service provider who focuses mainly on the field of business intelligence, bringing IoT, AI and cloud service to the business sector. We develop and provide a wide range of intelligent commercial hardware solutions which help businesses to run more cost effectively.');
                         await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print Text')),
                   ElevatedButton(
@@ -213,7 +226,9 @@ class _HomeState extends State<Home> {
                               width: 250,
                               height: 70,
                             ));
+                        await iminPrinter.sendRAWDataHexStr("0A");
                         await iminPrinter.printAndFeedPaper(200);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print singleBitmap in align'))
                 ],
@@ -233,6 +248,7 @@ class _HomeState extends State<Home> {
                                 qrSize: 4,
                                 align: IminPrintAlign.left));
                                 await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print QrCode')),
                   ElevatedButton(
@@ -254,7 +270,9 @@ class _HomeState extends State<Home> {
                               fontSize: 26,
                               align: IminPrintAlign.right)
                         ]);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                         await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print ColumnsText'))
                 ],
@@ -274,6 +292,7 @@ class _HomeState extends State<Home> {
                                 align: IminPrintAlign.center,
                                 position: IminBarcodeTextPos.textAbove));
                                 await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print barCode')),
                   ElevatedButton(
@@ -295,7 +314,9 @@ class _HomeState extends State<Home> {
                               width: 250,
                               height: 30,
                             ));
-                            await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
+                        await iminPrinter.printAndFeedPaper(100);
+                        await iminPrinter.sendRAWDataHexStr("0A");
                       },
                       child: const Text('print multiBitmap'))
                 ],
@@ -311,6 +332,7 @@ class _HomeState extends State<Home> {
                           await iminPrinter.printAntiWhiteText(
                               'iMin is a service provider who focuses mainly on the field of business intelligence, bringing IoT, AI and cloud service to the business sector. We develop and provide a wide range of intelligent commercial hardware solutions which help businesses to run more cost effectively.');
                           await iminPrinter.printAndFeedPaper(100);
+                          await iminPrinter.sendRAWDataHexStr("0A");
                         },
                         child: const Text('print antiWhiteText')),
                     ElevatedButton(
@@ -324,6 +346,7 @@ class _HomeState extends State<Home> {
                               ),
                               doubleQRSize: 5);
                               await iminPrinter.printAndFeedPaper(100);
+                          await iminPrinter.sendRAWDataHexStr("0A");
                         },
                         child: const Text('print DoubleQR'))
                   ]),
@@ -343,6 +366,20 @@ class _HomeState extends State<Home> {
                           await iminPrinter.openCashBox();
                         },
                         child: const Text('opencashBox'))
+                  ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () async {
+                          open = (open==1?0:1);
+                          await iminPrinter.openLogs(open==1?1:0);
+                        },
+                        child: const Text('openLogs')),
+
                   ]),
             ),
           ],

@@ -215,6 +215,10 @@ class MockIminPrinterPlatform
   Future<int?> getPrinterSpeed() => Future.value();
   @override
   Future<List<String>?> getPrinterPaperTypeList() => Future.value();
+  @override
+  Future<int?> openLogs(int encode) => Future.value();
+  @override
+  Future<List<String>?> sendRAWDataHexStr(String hex) => Future.value();
 }
 
 void main() {

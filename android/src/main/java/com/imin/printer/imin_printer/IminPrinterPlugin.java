@@ -450,6 +450,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (call.argument("alignment") != null) {
                     int alignmentMode = call.argument("alignment");
                     if (iminPrintUtils != null) {
+                        Log.e("IminPrinter","  printQrCode ==> "+qrStr+"  "+alignmentMode);
+
                         iminPrintUtils.printQrCode(qrStr, alignmentMode);
                     } else {
                         if (call.argument("qrSize") != null && call.argument("level") != null) {
@@ -612,7 +614,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "openCashBox":
                 if (iminPrintUtils != null) {
-                    // Utils.getInstance().opencashBox();
+                    Utils.getInstance().opencashBox();
                 } else {
                     PrinterHelper.getInstance().openDrawer();
                 }
@@ -1124,6 +1126,20 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (iminPrintUtils == null) {
                     boolean isCommit = call.argument("isCommit");
                     PrinterHelper.getInstance().exitPrinterBuffer(isCommit);
+                }
+                result.success(true);
+                break;
+            case "setIsOpenLog":
+                if (iminPrintUtils != null){
+                    int open = call.argument("open");
+                    iminPrintUtils.setIsOpenLog(open);
+                }
+                result.success(true);
+                break;
+            case "sendRAWDataHexStr":
+                if (iminPrintUtils != null){
+                    String open = call.argument("hex");
+                    iminPrintUtils.sendRAWData(open);
                 }
                 result.success(true);
                 break;

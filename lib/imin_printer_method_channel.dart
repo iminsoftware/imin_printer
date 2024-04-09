@@ -843,4 +843,16 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
     return await methodChannel
         .invokeMethod<List<String>>('getPrinterPaperTypeList');
   }
+
+  @override
+  Future<void> openLogs(int encode) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"open": encode};
+    await methodChannel.invokeMethod<void>('setIsOpenLog', arguments);
+  }
+
+  @override
+  Future<void> sendRAWDataHexStr(String hex) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"hex": hex};
+    await methodChannel.invokeMethod<void>('sendRAWDataHexStr', arguments);
+  }
 }

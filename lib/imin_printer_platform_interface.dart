@@ -407,4 +407,10 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> setPrinterEncode(int encode) {
     throw UnimplementedError('setPrinterEncode() has not been implemented.');
   }
+  Future<void> openLogs(int encode) {
+    throw UnimplementedError('setPrinterEncode() has not been implemented.');
+  }
+  Future<void> sendRAWDataHexStr(String bytes) {
+    throw UnimplementedError('sendRAWData() has not been implemented.');
+  }
 }
