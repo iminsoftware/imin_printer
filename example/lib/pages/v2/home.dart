@@ -204,7 +204,8 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printText('232323');
                 },
                 child: const Text('print singleBitmap'),
               ),

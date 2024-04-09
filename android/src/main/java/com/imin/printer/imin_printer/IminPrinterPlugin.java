@@ -373,6 +373,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                     }
                                 }
                             }
+                            result.success(true);
                         } catch (Exception err) {
                             Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
                         }
@@ -611,7 +612,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "openCashBox":
                 if (iminPrintUtils != null) {
-                    Utils.getInstance().opencashBox();
+                    // Utils.getInstance().opencashBox();
                 } else {
                     PrinterHelper.getInstance().openDrawer();
                 }

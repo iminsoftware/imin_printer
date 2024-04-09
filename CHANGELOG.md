@@ -1,5 +1,12 @@
 # Changelog
 
+# 0.6.3
+ - fixed  printSingleBitmap To Url bug
+
+# 0.6.2
+ - Fixed  bug and Optimize the money box function
+ - Fixed Package name collisions  bug
+
 # 0.6.1
  - Fixed bug
 
