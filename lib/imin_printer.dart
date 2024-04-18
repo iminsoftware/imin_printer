@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
 import 'imin_printer_platform_interface.dart';
 import 'enums.dart';
 import 'imin_style.dart';
@@ -9,16 +8,11 @@ import 'package:logger/logger.dart';
 var logger = Logger();
 
 class IminPrinter {
-  /// Get what version of sdk is the current device using
-  ///
-  /// {@tool snippet}
-  ///
-  ///  ```dart
-  /// iminPrinter.getUseSdkVersion()
-  /// ```
-  /// {@end-tool}
-  Future<bool?> getUseSdkVersion() {
-    return IminPrinterPlatform.instance.getUseSdkVersion();
+  Future<String?> getSdkVersion() {
+    return IminPrinterPlatform.instance.getSdkVersion();
+  }
+  Stream<dynamic> get receiveBroadcastStream {
+    return IminPrinterPlatform.instance.initEventChannel();
   }
 
   /// Reset the printer’s logic program (for example: layout settings, bold and other style settings), but do not clear the buffer data, so unfinished print jobs will continue after reset.
@@ -41,7 +35,7 @@ class IminPrinter {
   /// iminPrinter.getPrinterStatus()
   /// ```
   /// {@end-tool}
-  Future<String?> getPrinterStatus() {
+  Future<Map<String, dynamic>> getPrinterStatus() {
     return IminPrinterPlatform.instance.getPrinterStatus();
   }
 
@@ -655,5 +649,77 @@ class IminPrinter {
 
   Future<void> printColumnsString({required List<ColumnMaker> cols}) {
     return IminPrinterPlatform.instance.printColumnsString(cols: cols);
+  }
+
+  Future<void> enterPrinterBuffer(bool isClean) {
+    return IminPrinterPlatform.instance.enterPrinterBuffer(isClean);
+  }
+
+  Future<void> commitPrinterBuffer() {
+    return IminPrinterPlatform.instance.commitPrinterBuffer();
+  }
+
+  Future<void> exitPrinterBuffer(bool isCommit) {
+    return IminPrinterPlatform.instance.exitPrinterBuffer(isCommit);
+  }
+
+  Future<List<String>?> getFontCodepage() {
+    return IminPrinterPlatform.instance.getFontCodepage();
+  }
+
+  Future<void> setFontCodepage(int codepage) {
+    return IminPrinterPlatform.instance.setFontCodepage(codepage);
+  }
+
+  Future<String?> getCurCodepage() {
+    return IminPrinterPlatform.instance.getCurCodepage();
+  }
+
+  Future<List<String>?> getEncodeList() {
+    return IminPrinterPlatform.instance.getEncodeList();
+  }
+
+  Future<String?> getCurEncode() {
+    return IminPrinterPlatform.instance.getCurEncode();
+  }
+
+  Future<List<String>?> getPrinterDensityList() {
+    return IminPrinterPlatform.instance.getPrinterDensityList();
+  }
+
+  Future<List<String>?> getPrinterSpeedList() {
+    return IminPrinterPlatform.instance.getPrinterSpeedList();
+  }
+
+  Future<void> setPrinterSpeed(int speed) {
+    return IminPrinterPlatform.instance.setPrinterSpeed(speed);
+  }
+
+  Future<int?> getPrinterSpeed() {
+    return IminPrinterPlatform.instance.getPrinterSpeed();
+  }
+
+  Future<List<String>?> getPrinterPaperTypeList() {
+    return IminPrinterPlatform.instance.getPrinterPaperTypeList();
+  }
+
+  Future<void> setPrinterEncode(int encode) {
+    return IminPrinterPlatform.instance.setPrinterEncode(encode);
+  }
+
+  /// print partial cut in your printer
+  ///
+  /// {@tool snippet}
+  ///
+  ///  ```dart
+  /// iminPrinter.openLogs()
+  /// ```
+  /// {@end-tool}
+  Future<void> openLogs(int open) {
+    return IminPrinterPlatform.instance.openLogs(open);
+  }
+
+  Future<void> sendRAWDataHexStr(String hex) {
+    return IminPrinterPlatform.instance.sendRAWDataHexStr(hex);
   }
 }

@@ -4,14 +4,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
+import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import com.imin.library.IminSDKManager;
-import com.imin.library.SystemPropManager;
 import com.imin.printer.INeoPrinterCallback;
 import com.imin.printer.PrinterHelper;
 import com.imin.printerlib.Callback;
@@ -22,6 +20,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import android.graphics.Typeface;
 import android.content.Context;
@@ -35,62 +36,79 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.EventSink;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
+
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
+
+
 /**
  * IminPrinterPlugin
  */
-public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
+public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, StreamHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
     private IminPrintUtils iminPrintUtils;
+    private EventChannel eventChannel;
     private Context _context;
     private IminPrintUtils.PrintConnectType connectType = IminPrintUtils.PrintConnectType.USB;
+    private EventSink eventSink;
+    private String[] modelArry = {"W27_Pro", "I23M01", "I23M02", "I23D01", "D4-503 Pro", "D4-504 Pro", "D4-505 Pro", "MS2-11", "MS2-12", "MS1-15"};
+    private String sdkVersion = "1.0.0";
+    private static final String ACTION_PRITER_STATUS_CHANGE = "com.imin.printerservice.PRITER_STATUS_CHANGE";
+    private static final String ACTION_POGOPIN_STATUS_CHANGE = "com.imin.printerservice.PRITER_CONNECT_STATUS_CHANGE";
+    private static final String ACTION_PRITER_STATUS = "status";
+    private static final String TAG = "IminPrinterPlugin";
+    private BroadcastReceiver chargingStateChangeReceiver;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
-
-        if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
+        eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
+        List<String> modelList = Arrays.asList(modelArry);
+        if (modelList.contains(Build.MODEL)) {
             //初始化 2.0 的 SDK。
-            PrinterHelper.getInstance().initPrinterService(Utils.getInstance().getContext());
+            PrinterHelper.getInstance().initPrinterService(_context);
+            sdkVersion = "2.0.0";
         } else {
             //初始化 1.0 SDK
-            iminPrintUtils = IminPrintUtils.getInstance(Utils.getInstance().getContext());
-            String deviceModel = SystemPropManager.getModel();
+            iminPrintUtils = IminPrintUtils.getInstance(_context);
+            String deviceModel = Utils.getInstance().getModel();
             if (deviceModel.contains("M2-203") || deviceModel.contains("M2-202") || deviceModel.contains("M2-Pro")) {
                 connectType = IminPrintUtils.PrintConnectType.SPI;
             } else {
                 connectType = IminPrintUtils.PrintConnectType.USB;
             }
             iminPrintUtils.resetDevice();
+            sdkVersion = "1.0.0";
         }
+        eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
+     
     }
 
     @SuppressLint("NewApi")
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
-            case "sdkVersion":
-                if (Build.MODEL.equals("W27_Pro") || Build.MODEL.equals("I23D01") || Build.MODEL.equals("I23M01") || Build.MODEL.equals("I23M02")) {
-                    //初始化 2.0 的 SDK。
-                    result.success(true);
-                } else {
-                    //初始化 1.0 SDK
-                    result.success(false);
-                }
+            case "getSdkVersion":
+                result.success(sdkVersion);
                 break;
             case "initPrinter":
                 if (iminPrintUtils != null) {
                     iminPrintUtils.initPrinter(connectType);
                     result.success(true);
                 } else {
-                    PrinterHelper.getInstance().initPrinter(Utils.getInstance().getContext().getPackageName(), null);
+                    Log.d(TAG, _context.getPackageName());
+                    PrinterHelper.getInstance().initPrinter(_context.getPackageName(), null);
                 }
-
                 break;
             case "getPrinterStatus":
                 if (iminPrintUtils != null) {
@@ -211,19 +229,19 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     Log.e("IminPrinter", err.getMessage());
                 }
                 break;
-            case "printText"://
+            case "printText":
                 String text = call.argument("text");
                 if (iminPrintUtils != null) {
-                    iminPrintUtils.printText(text);
+                    iminPrintUtils.printText(text + "\n");
                 } else {
-                    PrinterHelper.getInstance().printTextBitmap(text, null);
+                   PrinterHelper.getInstance().printText(text + "\n", null);
                 }
                 result.success(true);
                 break;
             case "printAntiWhiteText":
                 String whiteText = call.argument("text");
                 if (iminPrintUtils != null) {
-                    iminPrintUtils.printAntiWhiteText(whiteText);
+                    iminPrintUtils.printAntiWhiteText(whiteText + "\n");
                 }
                 result.success(true);
                 break;
@@ -249,6 +267,14 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     iminPrintUtils.partialCut();
                 } else {
                     PrinterHelper.getInstance().partialCut();
+                }
+                result.success(true);
+                break;
+            case "fullCut":
+                if (iminPrintUtils != null) {
+                    //TODO
+                } else {
+                    PrinterHelper.getInstance().fullCut();
                 }
                 result.success(true);
                 break;
@@ -347,6 +373,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                     }
                                 }
                             }
+                            result.success(true);
                         } catch (Exception err) {
                             Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
                         }
@@ -395,6 +422,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int qrSize = call.argument("qrSize");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setQrCodeSize(qrSize);
+                } else {
+                    PrinterHelper.getInstance().setQrCodeSize(qrSize);
                 }
                 result.success(true);
                 break;
@@ -402,6 +431,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int margin = call.argument("margin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setLeftMargin(margin);
+                } else {
+                    PrinterHelper.getInstance().setLeftMargin(margin);
                 }
                 result.success(true);
                 break;
@@ -409,6 +440,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setQrCodeErrorCorrectionLev(level);
+                } else {
+                    PrinterHelper.getInstance().setQrCodeErrorCorrectionLev(level);
                 }
                 result.success(true);
                 break;
@@ -417,11 +450,23 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 if (call.argument("alignment") != null) {
                     int alignmentMode = call.argument("alignment");
                     if (iminPrintUtils != null) {
+                        Log.e("IminPrinter","  printQrCode ==> "+qrStr+"  "+alignmentMode);
+
                         iminPrintUtils.printQrCode(qrStr, alignmentMode);
+                    } else {
+                        if (call.argument("qrSize") != null && call.argument("level") != null) {
+                            int qrFullSize = call.argument("qrSize");
+                            int qrFullLevel = call.argument("level");
+                            PrinterHelper.getInstance().printQRCodeWithFull(qrStr, qrFullSize, qrFullLevel, alignmentMode, null);
+                        } else {
+                            PrinterHelper.getInstance().printQrCodeWithAlign(qrStr, alignmentMode, null);
+                        }
                     }
                 } else {
                     if (iminPrintUtils != null) {
                         iminPrintUtils.printQrCode(qrStr);
+                    } else {
+                        PrinterHelper.getInstance().printQrCode(qrStr, null);
                     }
                 }
                 result.success(true);
@@ -457,6 +502,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int formatStyle = call.argument("style");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setPageFormat(formatStyle);
+                } else {
+                    PrinterHelper.getInstance().setPageFormat(formatStyle);
                 }
                 result.success(true);
                 break;
@@ -473,8 +520,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 int barCodeFullPosition = call.argument("position");
                                 int barCodeFullHeight = call.argument("height");
                                 int barCodeFullWidth = call.argument("width");
-                                Log.d("TAG", "printBarCode:  barCodeContent: " + barCodeContent + " barCodeType:" + barCodeType + " barCodeAlign:" + barCodeAlign + "position:" + barCodeFullPosition + "barCodeHeight:" + barCodeFullHeight + "barCodeWidth:" + barCodeFullWidth);
-                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeAlign, barCodeFullPosition, barCodeFullHeight, barCodeFullWidth, null);
+                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeFullWidth, barCodeFullHeight, barCodeAlign, barCodeFullPosition, null);
                             } else {
                                 PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, null);
                             }
@@ -493,71 +539,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     Log.e("IminPrinter", e.getMessage());
                 }
                 break;
-            case "printBarCodeToBitmapFormat":
-                try {
-                    // String barCodeFormatContent = call.argument("data");
-                    // int barCodeFormatWidth = call.argument("width");
-                    // int barCodeFormatHeight = call.argument("height");
-                    // int barCodeFormat = call.argument("codeFormat");
-                    // switch (barCodeFormat) {
-                    //     case 0:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.AZTEC);
-                    //         break;
-                    //     case 1:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.CODABAR);
-                    //         break;
-                    //     case 2:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.CODE_39);
-                    //         break;
-                    //     case 3:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.CODE_93);
-                    //         break;
-                    //     case 4:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.CODE_128);
-                    //         break;
-                    //     case 5:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.DATA_MATRIX);
-                    //         break;
-                    //     case 6:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.EAN_13);
-                    //         break;
-                    //     case 7:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.ITF);
-                    //         break;
-                    //     case 8:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.PDF_417);
-                    //         break;
-                    //     case 9:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.MAXICODE);
-                    //         break;
-                    //     case 10:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.QR_CODE);
-                    //         break;
-                    //     case 11:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.RSS_14);
-                    //         break;
-                    //     case 12:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.RSS_EXPANDED);
-                    //         break;
-                    //     case 13:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.UPC_A);
-                    //         break;
-                    //     case 14:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.UPC_E);
-                    //         break;
-                    //     case 15:
-                    //         iminPrintUtils.printBarCodeToBitmapFormat(barCodeFormatContent, barCodeFormatWidth, barCodeFormatHeight, CodeFormat.UPC_EAN_EXTENSION);
-                    //         break;
-                    // }
-                    result.success(true);
-                } catch (Exception e) {
-                    Log.e("IminPrinter", e.getMessage());
-                }
-                break;
             case "setDoubleQRSize":
                 int doubleQRSize = call.argument("size");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQRSize(doubleQRSize);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQRSize(doubleQRSize);
                 }
                 result.success(true);
                 break;
@@ -565,6 +552,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR1Level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1Level(doubleQR1Level);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1Level(doubleQR1Level);
                 }
                 result.success(true);
                 break;
@@ -572,6 +561,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR2Level = call.argument("level");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2Level(doubleQR2Level);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2Level(doubleQR2Level);
                 }
                 result.success(true);
                 break;
@@ -579,6 +570,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR1MarginLeft = call.argument("leftMargin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1MarginLeft(doubleQR1MarginLeft);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1MarginLeft(doubleQR1MarginLeft);
                 }
                 result.success(true);
                 break;
@@ -586,6 +579,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR2MarginLeft = call.argument("leftMargin");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2MarginLeft(doubleQR2MarginLeft);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2MarginLeft(doubleQR2MarginLeft);
                 }
                 result.success(true);
                 break;
@@ -593,25 +588,33 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 int doubleQR1Version = call.argument("version");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR1Version(doubleQR1Version);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR1Version(doubleQR1Version);
                 }
+                result.success(true);
                 break;
             case "setDoubleQR2Version":
                 int doubleQR2Version = call.argument("version");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.setDoubleQR2Version(doubleQR2Version);
+                } else {
+                    PrinterHelper.getInstance().setDoubleQR2Version(doubleQR2Version);
                 }
+                result.success(true);
                 break;
             case "printDoubleQR":
                 String qrCode1Text = call.argument("qrCode1Text");
                 String qrCode2Text = call.argument("qrCode2Text");
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printDoubleQR(qrCode1Text, qrCode2Text);
+                } else {
+                    PrinterHelper.getInstance().printDoubleQR(qrCode1Text, qrCode2Text, null);
                 }
                 result.success(true);
                 break;
             case "openCashBox":
                 if (iminPrintUtils != null) {
-                    IminSDKManager.opencashBox();
+                    Utils.getInstance().opencashBox();
                 } else {
                     PrinterHelper.getInstance().openDrawer();
                 }
@@ -638,9 +641,100 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "unBindService":
                 if (iminPrintUtils == null) {
-                    PrinterHelper.getInstance().deInitPrinterService(Utils.getInstance().getContext());
+                    PrinterHelper.getInstance().deInitPrinterService(_context);
                 }
                 result.success(true);
+                break;
+
+            case "getFontCodepage"://1. codepage
+                if (iminPrintUtils == null) {
+                    List<String> fontCodepage = PrinterHelper.getInstance().getFontCodepage();
+                    result.success(fontCodepage);
+                }
+                result.success(true);
+                break;
+            case "setFontCodepage":
+                if (iminPrintUtils == null) {
+                    int codepage = call.argument("codepage");//从getFontCodepage 列表的脚标（0、1、3...）
+                    PrinterHelper.getInstance().setFontCodepage(codepage);
+                }
+                result.success(true);
+                break;
+            case "getCurCodepage":
+                if (iminPrintUtils == null) {
+                    String curCodepage = PrinterHelper.getInstance().getCurCodepage();
+                    result.success(curCodepage);
+                }
+                result.success(true);
+                break;
+
+            case "getEncodeList"://2. encode
+                if (iminPrintUtils == null) {
+                    List<String> encodeList = PrinterHelper.getInstance().getEncodeList();
+                    result.success(encodeList);
+                }
+                break;
+            case "setPrinterEncode":
+                if (iminPrintUtils == null) {
+                    int encode = call.argument("encode");
+                    PrinterHelper.getInstance().setPrinterEncode(encode);
+                }
+                result.success(true);
+                break;
+            case "getCurEncode":
+                if (iminPrintUtils == null) {
+                    String curEncode = PrinterHelper.getInstance().getCurEncode();
+                    result.success(curEncode);
+                }
+                break;
+
+            case "getPrinterDensityList"://3. density
+                if (iminPrintUtils == null) {
+                    List<String> printerDensityList = PrinterHelper.getInstance().getPrinterDensityList();
+                    result.success(printerDensityList);
+                }
+                break;
+            case "setPrinterDensity":
+                if (iminPrintUtils == null) {
+                    int density = call.argument("density");
+                    PrinterHelper.getInstance().setPrinterDensity(density);
+                }
+                result.success(true);
+                break;
+            case "getPrinterDensity":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterDensity());
+                }
+                break;
+            case "getPrinterSpeedList"://4. speed
+                if (iminPrintUtils == null) {
+                    List<String> printerSpeedList = PrinterHelper.getInstance().getPrinterSpeedList();
+                    result.success(printerSpeedList);
+                }
+                break;
+            case "setPrinterSpeed":
+                if (iminPrintUtils == null) {
+                    int speed = call.argument("speed");
+                    PrinterHelper.getInstance().setPrinterSpeed(speed);
+                }
+                result.success(true);
+                break;
+            case "getPrinterSpeed":
+                if (iminPrintUtils == null) {
+                    int printerSpeed = PrinterHelper.getInstance().getPrinterSpeed();
+                    result.success(printerSpeed);
+                }
+                break;
+            case "getPrinterPaperTypeList"://5. Paper width
+                if (iminPrintUtils == null) {
+                    List<String> printerPaperTypeList = PrinterHelper.getInstance().getPrinterPaperTypeList();
+                    result.success(printerPaperTypeList);
+                }
+                break;
+            case "getPrinterPaperType":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterPaperType());
+                }
                 break;
             case "getPrinterSerialNumber":
                 if (iminPrintUtils == null) {
@@ -782,11 +876,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success(PrinterHelper.getInstance().getUsbDevicesName());
                 }
                 break;
-            case "getPrinterDensity":
-                if (iminPrintUtils == null) {
-                    result.success(PrinterHelper.getInstance().getPrinterDensity());
-                }
-                break;
+
             case "getPrinterPaperDistance":
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().getPrinterPaperDistance(new INeoPrinterCallback() {
@@ -812,11 +902,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     });
                 }
                 break;
-            case "getPrinterPaperType":
-                if (iminPrintUtils == null) {
-                    result.success(PrinterHelper.getInstance().getPrinterPaperType());
-                }
-                break;
+
             case "getPrinterCutTimes":
                 if (iminPrintUtils == null) {
                     PrinterHelper.getInstance().getPrinterCutTimes(new INeoPrinterCallback() {
@@ -871,6 +957,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "setCodeAlignment":
                 if (iminPrintUtils == null) {
                     int align = call.argument("align");
+                    Log.d("TAG", "setCodeAlignment: " + align);
                     PrinterHelper.getInstance().setCodeAlignment(align);
                 }
                 result.success(true);
@@ -908,9 +995,8 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "setTextBitmapStyle":
                 if (iminPrintUtils == null) {
                     int textBitmapStyle = call.argument("style");
-                    if (iminPrintUtils != null) {
-                        PrinterHelper.getInstance().setTextBitmapStyle(textBitmapStyle);
-                    }
+                    Log.d("setTextBitmapStyle", "setTextBitmapStyle: " + textBitmapStyle);
+                    PrinterHelper.getInstance().setTextBitmapStyle(textBitmapStyle);
                 }
                 result.success(true);
                 break;
@@ -951,11 +1037,18 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 }
                 result.success(true);
                 break;
+            case "printTextBitmap":
+                if (iminPrintUtils == null) {
+                    String textStr = call.argument("text");
+                    PrinterHelper.getInstance().printTextBitmap(textStr + "\n", null);
+                }
+                result.success(true);
+                break;
             case "printTextBitmapWithAli":
                 if (iminPrintUtils == null) {
                     String textBitmapString = call.argument("text");
                     int textBitmapAlign = call.argument("align");
-                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString, textBitmapAlign, null);
+                    PrinterHelper.getInstance().printTextBitmapWithAli(textBitmapString + "\n", textBitmapAlign, null);
                 }
                 result.success(true);
                 break;
@@ -1008,14 +1101,92 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 }
                 result.success(true);
                 break;
+            case "getPrinterIsUpdateStatus":
+                // if (iminPrintUtils == null) {
+                //      result.success(PrinterHelper.getInstance().getPrinterIsUpdateStatus());
+                // }
+                result.success(true);
+                break;
+
+            case "enterPrinterBuffer"://进入事务模式
+                if (iminPrintUtils == null) {
+                    boolean isClean = call.argument("isClean");
+                    PrinterHelper.getInstance().enterPrinterBuffer(isClean);
+                }
+                result.success(true);
+                break;
+            case "commitPrinterBuffer"://提交事务打印
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().commitPrinterBuffer(null);
+                }
+                result.success(true);
+                break;
+
+            case "exitPrinterBuffer"://exit事务模式
+                if (iminPrintUtils == null) {
+                    boolean isCommit = call.argument("isCommit");
+                    PrinterHelper.getInstance().exitPrinterBuffer(isCommit);
+                }
+                result.success(true);
+                break;
+            case "setIsOpenLog":
+                if (iminPrintUtils != null){
+                    int open = call.argument("open");
+                    iminPrintUtils.setIsOpenLog(open);
+                }
+                result.success(true);
+                break;
+            case "sendRAWDataHexStr":
+                if (iminPrintUtils != null){
+                    String open = call.argument("hex");
+                    iminPrintUtils.sendRAWData(open);
+                }
+                result.success(true);
+                break;
             default:
                 result.notImplemented();
                 break;
         }
     }
 
+    private BroadcastReceiver createChargingStateChangeReceiver(EventChannel.EventSink events) {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int status = intent.getIntExtra(ACTION_PRITER_STATUS, -1);
+                Log.d("TAG", "打印机状态：" + intent.getAction());
+                if (intent.getAction().equals(ACTION_PRITER_STATUS_CHANGE)) {
+                    Map<String, Object> result = new HashMap<String, Object>();
+                    result.put("status", status);
+                    result.put("action", "printer_status");
+                    events.success(result);
+                } else {
+                    events.success(true);
+                }
+            }
+        };
+    }
+
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
+
+    @Override
+    public void onListen(Object argument, EventChannel.EventSink events) {
+        eventSink = events;
+        chargingStateChangeReceiver = createChargingStateChangeReceiver(eventSink);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_PRITER_STATUS_CHANGE);
+        intentFilter.addAction(ACTION_POGOPIN_STATUS_CHANGE);
+        _context.registerReceiver(chargingStateChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onCancel(Object argument) {
+        _context.unregisterReceiver(chargingStateChangeReceiver);
+        eventSink = null;
+        chargingStateChangeReceiver = null;
+    }
+
 }

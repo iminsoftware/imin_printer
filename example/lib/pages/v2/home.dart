@@ -10,6 +10,8 @@ import 'package:imin_printer_example/pages/v2/info.dart';
 import 'package:imin_printer_example/pages/v2/print_sttings_form.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'transaction_print.dart';
+
 class NewHome extends StatefulWidget {
   const NewHome({super.key});
   final String title = '打印测试';
@@ -24,6 +26,7 @@ class _NewHomeState extends State<NewHome> {
   void initState() {
     super.initState();
     //  getMediaFilePermission();
+    if (!mounted) return;
   }
 
   /// 获取媒体文件读写权限
@@ -31,6 +34,7 @@ class _NewHomeState extends State<NewHome> {
     Map<Permission, PermissionStatus> statuses =
         await [Permission.manageExternalStorage].request();
     if (!mounted) return;
+    // debugPrint('initState: ${ await iminPrinter.listenerEvent()}');
     //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不在提示
     if (statuses[Permission.manageExternalStorage]!.isGranted) {
       setState(() {
@@ -71,9 +75,10 @@ class _NewHomeState extends State<NewHome> {
                   child: const Text('init Printer')),
               OutlinedButton(
                   onPressed: () async {
-                    String? state = await iminPrinter.getPrinterStatus();
+                    Map<String, dynamic> state =
+                        await iminPrinter.getPrinterStatus();
                     Fluttertoast.showToast(
-                        msg: state ?? '',
+                        msg: state['msg'],
                         toastLength: Toast.LENGTH_LONG,
                         gravity: ToastGravity.BOTTOM, // 消息框弹出的位置
                         // timeInSecForIos: 1,  // 消息框持续的时间（目前的版本只有ios有效）
@@ -134,6 +139,7 @@ class _NewHomeState extends State<NewHome> {
                   debugPrint('escPos: $escPos');
 
                   await iminPrinter.sendRAWData(Uint8List.fromList(escPos));
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('sendRAWData'),
               ),
@@ -152,8 +158,16 @@ class _NewHomeState extends State<NewHome> {
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.partialCut();
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('partialCut'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.fullCut();
+                  await iminPrinter.printAndFeedPaper(70);
+                },
+                child: const Text('fullCut'),
               ),
               OutlinedButton(
                 onPressed: () async {
@@ -190,6 +204,8 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+                  await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printText('232323');
                 },
                 child: const Text('print singleBitmap'),
               ),
@@ -212,6 +228,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 250,
                         height: 30,
                       ));
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print multiBitmap'),
               ),
@@ -233,6 +250,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+                        await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print bitmapColorChart'),
               ),
@@ -381,6 +399,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
+                   await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsText'),
               ),
@@ -408,9 +427,46 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
+                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsString'),
-              )
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printQrCode('https://www.imin.sg',
+                      qrCodeStyle: IminQrCodeStyle(
+                          errorCorrectionLevel:
+                              IminQrcodeCorrectionLevel.levelH,
+                          qrSize: 5,
+                         ));
+                           await iminPrinter.printAndFeedPaper(70);
+                },
+                child: const Text('print Qrcode'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await iminPrinter.printDoubleQR(
+                      qrCode1: IminDoubleQRCodeStyle(
+                        text: 'www.imin.sg',
+                      ),
+                      qrCode2: IminDoubleQRCodeStyle(
+                        text: 'www.google.com',
+                      ),
+                      doubleQRSize: 5);
+                        await iminPrinter.printAndFeedPaper(70);
+                },
+                child: const Text('print DoubleQR'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TransactionPrintPage()),
+                  );
+                },
+                child: const Text('transaction printing'),
+              ),
             ],
           ),
         )));

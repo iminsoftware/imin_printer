@@ -12,12 +12,16 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockIminPrinterPlatform
     with MockPlatformInterfaceMixin
     implements IminPrinterPlatform {
+    
   @override
-  Future<bool?> getUseSdkVersion() => Future.value(true);
+  Future<String?> getSdkVersion() => Future.value('1.0.0');
+  @override
+  Stream<dynamic> initEventChannel() => const Stream.empty();
   @override
   Future<bool?> initPrinter() => Future.value(true);
   @override
-  Future<String?> getPrinterStatus() => Future.value('-1');
+  Future<Map<String, dynamic>> getPrinterStatus() =>
+      Future.value({"code": 0, "msg": 'sdsd'});
   @override
   Future<void> setTextSize(int size) => Future.value();
   @override
@@ -30,6 +34,9 @@ class MockIminPrinterPlatform
   Future<void> printText(String text, {IminTextStyle? style}) => Future.value();
   @override
   Future<void> printAntiWhiteText(String text, {IminTextStyle? style}) =>
+      Future.value();
+  @override
+  Future<void> setPrinterEncode(int encode) =>
       Future.value();
   @override
   Future<void> printColumnsText({required List<ColumnMaker> cols}) =>
@@ -182,6 +189,36 @@ class MockIminPrinterPlatform
   @override
   Future<void> printColumnsString({required List<ColumnMaker> cols}) =>
       Future.value();
+  @override
+  Future<void> enterPrinterBuffer(bool isClean) => Future.value();
+  @override
+  Future<void> commitPrinterBuffer() => Future.value();
+  @override
+  Future<void> exitPrinterBuffer(bool isCommit) => Future.value();
+  @override
+  Future<List<String>?> getFontCodepage() => Future.value();
+  @override
+  Future<void> setFontCodepage(int codepage) => Future.value();
+  @override
+  Future<String?> getCurCodepage() => Future.value();
+  @override
+  Future<List<String>?> getEncodeList() => Future.value();
+  @override
+  Future<String?> getCurEncode() => Future.value();
+  @override
+  Future<List<String>?> getPrinterDensityList() => Future.value();
+  @override
+  Future<List<String>?> getPrinterSpeedList() => Future.value();
+  @override
+  Future<void> setPrinterSpeed(int speed) => Future.value();
+  @override
+  Future<int?> getPrinterSpeed() => Future.value();
+  @override
+  Future<List<String>?> getPrinterPaperTypeList() => Future.value();
+  @override
+  Future<int?> openLogs(int encode) => Future.value();
+  @override
+  Future<List<String>?> sendRAWDataHexStr(String hex) => Future.value();
 }
 
 void main() {

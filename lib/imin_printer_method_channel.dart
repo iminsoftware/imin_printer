@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
-// import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'enums.dart';
@@ -16,9 +16,16 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('imin_printer');
 
+  final eventChannel = const EventChannel('imin_printer_event');
+
   @override
-  Future<bool?> getUseSdkVersion() async {
-    return await methodChannel.invokeMethod<bool>('sdkVersion');
+  Future<String?> getSdkVersion() async {
+    return await methodChannel.invokeMethod<String>('getSdkVersion');
+  }
+
+  @override
+  Stream<dynamic> initEventChannel() {
+    return eventChannel.receiveBroadcastStream();
   }
 
   @override
@@ -28,10 +35,14 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
-  Future<String?> getPrinterStatus() async {
+  Future<Map<String, dynamic>> getPrinterStatus() async {
     final code = await methodChannel.invokeMethod<String>('getPrinterStatus');
     logger.d('code $code');
-    return PrinterStatus.getValue(code ?? '-1');
+    Map<String, dynamic> printerStatus = <String, dynamic>{
+      "code": code,
+      "msg": PrinterStatus.getValue(code ?? '-1')
+    };
+    return printerStatus;
   }
 
   @override
@@ -293,18 +304,30 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> printQrCode(String data, {IminQrCodeStyle? qrCodeStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (qrCodeStyle != null) {
-      if (qrCodeStyle.align != null) {
+      if (qrCodeStyle.align != null &&
+          qrCodeStyle.qrSize != null &&
+          qrCodeStyle.errorCorrectionLevel != null) {
         arguments.putIfAbsent("alignment", () => qrCodeStyle.align?.index);
-      }
-      if (qrCodeStyle.qrSize != null) {
-        await setQrCodeSize(qrCodeStyle.qrSize!);
-      }
+        arguments.putIfAbsent("qrSize", () => qrCodeStyle.qrSize!);
+        arguments.putIfAbsent(
+            "level", () => qrCodeStyle.errorCorrectionLevel?.level);
+        if (qrCodeStyle.leftMargin != null) {
+          await setLeftMargin(qrCodeStyle.leftMargin!);
+        }
+      } else {
+        if (qrCodeStyle.align != null) {
+          arguments.putIfAbsent("alignment", () => qrCodeStyle.align?.index);
+        }
+        if (qrCodeStyle.qrSize != null) {
+          await setQrCodeSize(qrCodeStyle.qrSize!);
+        }
 
-      if (qrCodeStyle.leftMargin != null) {
-        await setLeftMargin(qrCodeStyle.leftMargin!);
-      }
-      if (qrCodeStyle.errorCorrectionLevel != null) {
-        await setQrCodeErrorCorrectionLev(qrCodeStyle.errorCorrectionLevel!);
+        if (qrCodeStyle.leftMargin != null) {
+          await setLeftMargin(qrCodeStyle.leftMargin!);
+        }
+        if (qrCodeStyle.errorCorrectionLevel != null) {
+          await setQrCodeErrorCorrectionLev(qrCodeStyle.errorCorrectionLevel!);
+        }
       }
     }
     arguments.putIfAbsent("data", () => data);
@@ -585,7 +608,10 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setCodeAlignment(IminPrintAlign alignment) async {
-    await methodChannel.invokeMethod<void>('setCodeAlignment');
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "align": alignment.index,
+    };
+    await methodChannel.invokeMethod<void>('setCodeAlignment', arguments);
   }
 
   @override
@@ -708,7 +734,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       await methodChannel.invokeMethod<void>(
           'printTextBitmapWithAli', arguments);
     } else {
-      await methodChannel.invokeMethod<void>('printText', arguments);
+      await methodChannel.invokeMethod<void>('printTextBitmap', arguments);
     }
   }
 
@@ -743,5 +769,90 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       "cols": json.encode(jsonCols)
     };
     await methodChannel.invokeMethod<void>('printColumnsString', arguments);
+  }
+
+  @override
+  Future<void> enterPrinterBuffer(bool isClean) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"isClean": isClean};
+    await methodChannel.invokeMethod<void>('enterPrinterBuffer', arguments);
+  }
+
+  @override
+  Future<void> commitPrinterBuffer() async {
+    await methodChannel.invokeMethod<void>('commitPrinterBuffer');
+  }
+
+  @override
+  Future<void> exitPrinterBuffer(bool isCommit) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"isCommit": isCommit};
+    await methodChannel.invokeMethod<void>('exitPrinterBuffer', arguments);
+  }
+
+  @override
+  Future<List<String>?> getFontCodepage() async {
+    return await methodChannel.invokeMethod<List<String>>('getFontCodepage');
+  }
+
+  @override
+  Future<void> setFontCodepage(int codepage) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"codepage": codepage};
+    return await methodChannel.invokeMethod<void>('setFontCodepage', arguments);
+  }
+
+  @override
+  Future<String?> getCurCodepage() async {
+    return await methodChannel.invokeMethod<String>('getCurCodepage');
+  }
+
+  @override
+  Future<List<String>?> getEncodeList() async {
+    return await methodChannel.invokeMethod<List<String>>('getEncodeList');
+  }
+
+  @override
+  Future<List<String>?> getPrinterDensityList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterDensityList');
+  }
+
+  @override
+  Future<List<String>?> getPrinterSpeedList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterSpeedList');
+  }
+
+  @override
+  Future<void> setPrinterSpeed(int speed) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"speed": speed};
+    await methodChannel.invokeMethod<void>('setPrinterSpeed', arguments);
+  }
+
+  @override
+  Future<int?> getPrinterSpeed() async {
+    return await methodChannel.invokeMethod<int>('getPrinterSpeed');
+  }
+
+  @override
+  Future<void> setPrinterEncode(int encode) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"encode": encode};
+    await methodChannel.invokeMethod<void>('setPrinterEncode', arguments);
+  }
+
+  @override
+  Future<List<String>?> getPrinterPaperTypeList() async {
+    return await methodChannel
+        .invokeMethod<List<String>>('getPrinterPaperTypeList');
+  }
+
+  @override
+  Future<void> openLogs(int encode) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"open": encode};
+    await methodChannel.invokeMethod<void>('setIsOpenLog', arguments);
+  }
+
+  @override
+  Future<void> sendRAWDataHexStr(String hex) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"hex": hex};
+    await methodChannel.invokeMethod<void>('sendRAWDataHexStr', arguments);
   }
 }

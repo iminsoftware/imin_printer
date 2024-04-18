@@ -28,15 +28,19 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<bool?> getUseSdkVersion() {
-    throw UnimplementedError('getUseSdkVersion() has not been implemented.');
+  Stream<dynamic> initEventChannel() {
+    throw UnimplementedError('initEventChannel() has not been implemented.');
+  }
+
+  Future<String?> getSdkVersion() {
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
   }
 
   Future<bool?> initPrinter() {
     throw UnimplementedError('initPrinter() has not been implemented.');
   }
 
-  Future<String?> getPrinterStatus() {
+  Future<Map<String, dynamic>> getPrinterStatus() {
     throw UnimplementedError('getPrinterStatus() has not been implemented.');
   }
 
@@ -344,5 +348,69 @@ abstract class IminPrinterPlatform extends PlatformInterface {
 
   Future<void> printColumnsString({required List<ColumnMaker> cols}) {
     throw UnimplementedError('printColumnsString() has not been implemented.');
+  }
+
+  Future<void> enterPrinterBuffer(bool isClean) {
+    throw UnimplementedError('enterPrinterBuffer() has not been implemented.');
+  }
+
+  Future<void> commitPrinterBuffer() {
+    throw UnimplementedError('commitPrinterBuffer() has not been implemented.');
+  }
+
+  Future<void> exitPrinterBuffer(bool isCommit) {
+    throw UnimplementedError('exitPrinterBuffer() has not been implemented.');
+  }
+
+  Future<List<String>?> getFontCodepage() {
+    throw UnimplementedError('getFontCodepage() has not been implemented.');
+  }
+
+  Future<void> setFontCodepage(int codepage) {
+    throw UnimplementedError('setFontCodepage() has not been implemented.');
+  }
+
+  Future<String?> getCurCodepage() {
+    throw UnimplementedError('getCurCodepage() has not been implemented.');
+  }
+
+  Future<List<String>?> getEncodeList() {
+    throw UnimplementedError('getEncodeList() has not been implemented.');
+  }
+
+  Future<String?> getCurEncode() {
+    throw UnimplementedError('getCurEncode() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterDensityList() {
+    throw UnimplementedError(
+        'getPrinterDensityList() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterSpeedList() {
+    throw UnimplementedError('getPrinterSpeedList() has not been implemented.');
+  }
+
+  Future<void> setPrinterSpeed(int speed) {
+    throw UnimplementedError('setPrinterSpeed() has not been implemented.');
+  }
+
+  Future<int?> getPrinterSpeed() {
+    throw UnimplementedError('getPrinterSpeed() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterPaperTypeList() {
+    throw UnimplementedError(
+        'getPrinterPaperTypeList() has not been implemented.');
+  }
+
+  Future<void> setPrinterEncode(int encode) {
+    throw UnimplementedError('setPrinterEncode() has not been implemented.');
+  }
+  Future<void> openLogs(int encode) {
+    throw UnimplementedError('setPrinterEncode() has not been implemented.');
+  }
+  Future<void> sendRAWDataHexStr(String bytes) {
+    throw UnimplementedError('sendRAWData() has not been implemented.');
   }
 }
