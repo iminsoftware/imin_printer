@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:imin_printer/imin_printer.dart';
@@ -7,8 +6,6 @@ import 'package:imin_printer/imin_style.dart';
 import 'package:imin_printer/column_maker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import '../v2/home.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

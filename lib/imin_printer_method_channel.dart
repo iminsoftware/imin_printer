@@ -851,8 +851,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
-  Future<void> sendRAWDataHexStr(String hex) async {
-    Map<String, dynamic> arguments = <String, dynamic>{"hex": hex};
+  Future<void> sendRAWDataHexStr(String bytes) async {
+    Map<String, dynamic> arguments = <String, dynamic>{"hex": bytes};
     await methodChannel.invokeMethod<void>('sendRAWDataHexStr', arguments);
   }
 }
