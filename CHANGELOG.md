@@ -1,5 +1,10 @@
 # Changelog
 
+# 0.6.4
+ - fixed  example bug
+ - Add openLogs method
+ - Add sendRAWDataHexStr method
+
 # 0.6.3
  - fixed  printSingleBitmap To Url bug
 

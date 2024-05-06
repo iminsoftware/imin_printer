@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  */
 public class Utils {
     private static String TAG = "flutter_print_Utils";
+
     private Utils() {
     }
 
@@ -27,47 +28,50 @@ public class Utils {
     }
 
     private Context mContext;
+
     public Context getContext() {
         return mContext;
     }
+
     public void setContext(Context context) {
         this.mContext = context;
     }
-    public  String getPlaform(){
+
+    public String getPlaform() {
         return getSystemProperties("ro.board.platform");
     }
 
-    public  String getModel(){
+    public String getModel() {
         String model = "";
-        String plaform =getPlaform();
+        String plaform = getPlaform();
 
-        if (!TextUtils.isEmpty(plaform) && plaform.startsWith("mt")){
-            model= getSystemProperties("ro.neostra.imin_model");
-        }else if (!TextUtils.isEmpty(plaform) && plaform.startsWith("ums512")){
+        if (!TextUtils.isEmpty(plaform) && plaform.startsWith("mt")) {
+            model = getSystemProperties("ro.neostra.imin_model");
+        } else if (!TextUtils.isEmpty(plaform) && plaform.startsWith("ums512")) {
             model = Build.MODEL;
-        } else if (!TextUtils.isEmpty(plaform) && plaform.startsWith("sp9863a")){
+        } else if (!TextUtils.isEmpty(plaform) && plaform.startsWith("sp9863a")) {
             model = Build.MODEL;
-            if(model.equals("I22M01")){
+            if (model.equals("I22M01")) {
                 model = "MS1-11";
             }
-        }else {
+        } else {
             model = getSystemProperties("sys.neostra_oem_id");
-            android.util.Log.d(TAG,"model "+model);
+            android.util.Log.d(TAG, "model " + model);
             if (!TextUtils.isEmpty(model) && model.length() > 4) {
                 model = filterModel(model.substring(0, 5));
                 String oemId = getSystemProperties("sys.neostra_oem_id");
-                if(oemId.length() > 27 && oemId.startsWith("W26MP")){
+                if (oemId.length() > 27 && oemId.startsWith("W26MP")) {
                     String num28 = String.valueOf(oemId.charAt(27));
-                    if("S".equalsIgnoreCase(num28)){
+                    if ("S".equalsIgnoreCase(num28)) {
                         model = "D3-510";
                     }
                 }
             } else {
                 model = getSystemProperties("ro.neostra.imin_model");
             }
-            if("".equals(model)){
+            if ("".equals(model)) {
                 model = Build.MODEL;
-                if(model.equals("I22D01")){
+                if (model.equals("I22D01")) {
                     model = "DS1-11";
                 }
             }
@@ -76,7 +80,7 @@ public class Utils {
         return model;
     }
 
-    private  String filterModel(String str) {
+    private String filterModel(String str) {
         switch (str) {
             case "W21XX":
                 return "D1-501";
@@ -109,21 +113,21 @@ public class Utils {
             case "V2BXX":
                 return "D2 Pro";
             case "1824P":
-                if(getSystemProperties("persist.sys.customername").equals("ZKSY-301")){
+                if (getSystemProperties("persist.sys.customername").equals("ZKSY-301")) {
                     return "ZKSY-301";
-                }else if(getSystemProperties("persist.sys.customername").equals("K3")){
+                } else if (getSystemProperties("persist.sys.customername").equals("K3")) {
                     return "K3";
                 }
                 return "D3-501";//yimin
             case "P24MP":
                 String customerName = getSystemProperties("persist.sys.customername");
-                if(customerName.equals("2Dfire")){
+                if (customerName.equals("2Dfire")) {
                     return "P10M";
-                }else if(customerName.equalsIgnoreCase("Bestway")){
+                } else if (customerName.equalsIgnoreCase("Bestway")) {
                     return "V5-1824M Plus";
-                }else if(customerName.equalsIgnoreCase("idiotehs")){
+                } else if (customerName.equalsIgnoreCase("idiotehs")) {
                     return "CTA-D3M";
-                }else {
+                } else {
                     return "D3-503";//yimin
                 }
 //                return "D3-503";//yimin
@@ -190,25 +194,25 @@ public class Utils {
             case "W28XX":
             case "W28MX":
                 customerName = getSystemProperties("persist.sys.customername");
-                if(customerName.equals("2Dfire")) {
+                if (customerName.equals("2Dfire")) {
                     return "P5";
-                }else if("Dingjian".equals(customerName)){
+                } else if ("Dingjian".equals(customerName)) {
                     return "DJ-P28";
-                }else if("baohuoli".equalsIgnoreCase(customerName)){
+                } else if ("baohuoli".equalsIgnoreCase(customerName)) {
                     return "FS-5216";
-                }else {
+                } else {
                     return "Swan 1";//yimin device name
                 }
 //                return "Swan 1";//yimin device name
             case "W28GX":
                 String w28gxCustomerName = getSystemProperties("persist.sys.customername");
-                if(w28gxCustomerName.equals("2Dfire")){
+                if (w28gxCustomerName.equals("2Dfire")) {
                     return "P5K";
-                }else if("Dingjian".equals(w28gxCustomerName)){
+                } else if ("Dingjian".equals(w28gxCustomerName)) {
                     return "DJ-P28K";
-                }else if("baohuoli".equalsIgnoreCase(w28gxCustomerName)){
+                } else if ("baohuoli".equalsIgnoreCase(w28gxCustomerName)) {
                     return "FS-5216";
-                }else {
+                } else {
                     return "Swan 1k";//yimin device name
                 }
             case "W26DP":
@@ -224,8 +228,8 @@ public class Utils {
         return "";
     }
 
-    public  String getSystemProperties(String property) {
-        String value ="";
+    public String getSystemProperties(String property) {
+        String value = "";
         try {
             Class clazz = Class.forName("android.os.SystemProperties");
             Method getter = clazz.getDeclaredMethod("get", String.class);
@@ -235,15 +239,16 @@ public class Utils {
         }
         return value;
     }
-    public  void opencashBox(){
+
+    public void opencashBox() {
         int open = 1;
         OutputStream out = null;
-        String cmd = "echo "+open+" > /sys/class/neostra_gpioctl/dev/gpioctl " + "\n";
+        String cmd = "echo " + open + " > /sys/class/neostra_gpioctl/dev/gpioctl " + "\n";
         String model = getModel();
-        if(model.equals("D1") || (model.equals("D1-Pro"))
-                || (model.equals("Falcon 1"))|| (model.equals("I22T01")) || (model.equals("TF1-11"))
-                || getPlaform().equalsIgnoreCase("ums512")){
-            cmd = "echo "+open+" > /sys/extcon-usb-gpio/cashbox_en " + "\n";
+        if (model.equals("D1") || (model.equals("D1-Pro"))
+                || (model.equals("Falcon 1")) || (model.equals("I22T01")) || (model.equals("TF1-11"))
+                || getPlaform().equalsIgnoreCase("ums512")) {
+            cmd = "echo " + open + " > /sys/extcon-usb-gpio/cashbox_en " + "\n";
         }/*else if(model.equals("Swan 1") || model.equals("DS1-11")){
             cmd = "echo cash_en:0 > /sys/devices/platform/gpio_ctrl/switch_gpio " + "\n";
         }*/
@@ -262,11 +267,11 @@ public class Utils {
         } catch (Exception e) {
             //e.printStackTrace();
             Log.d("iminLib", "cmdGpioPwrOn faild :" + e.getMessage());
-        }finally {
-            if(out != null){
+        } finally {
+            if (out != null) {
                 try {
                     out.close();
-                }catch (Exception e){
+                } catch (Exception e) {
                     //e.printStackTrace();
                     Log.d("iminLib", "close stream faild :" + e.getMessage());
                 }

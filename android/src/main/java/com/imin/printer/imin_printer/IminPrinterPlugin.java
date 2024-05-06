@@ -4,7 +4,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap; 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
@@ -91,7 +91,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         }
         eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
-     
+
     }
 
     @SuppressLint("NewApi")
@@ -234,7 +234,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text + "\n");
                 } else {
-                   PrinterHelper.getInstance().printText(text + "\n", null);
+                    PrinterHelper.getInstance().printText(text + "\n", null);
                 }
                 result.success(true);
                 break;
@@ -450,7 +450,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 if (call.argument("alignment") != null) {
                     int alignmentMode = call.argument("alignment");
                     if (iminPrintUtils != null) {
-                        Log.e("IminPrinter","  printQrCode ==> "+qrStr+"  "+alignmentMode);
+                        Log.e("IminPrinter", "  printQrCode ==> " + qrStr + "  " + alignmentMode);
 
                         iminPrintUtils.printQrCode(qrStr, alignmentMode);
                     } else {
@@ -1130,14 +1130,14 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 result.success(true);
                 break;
             case "setIsOpenLog":
-                if (iminPrintUtils != null){
+                if (iminPrintUtils != null) {
                     int open = call.argument("open");
                     iminPrintUtils.setIsOpenLog(open);
                 }
                 result.success(true);
                 break;
             case "sendRAWDataHexStr":
-                if (iminPrintUtils != null){
+                if (iminPrintUtils != null) {
                     String open = call.argument("hex");
                     iminPrintUtils.sendRAWData(open);
                 }
