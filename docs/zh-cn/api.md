@@ -756,3 +756,22 @@ import 'package:imin_printer/enums.dart';
 ```dart
   iminPrinter.setInitIminPrinter(true);
 ```
+
+## 开启调试日志
+  - openLogs
+     - 参数:
+         - int 0 or 1 -> 是否开启。
+
+```dart
+   iminPrinter.openLogs(1);
+```
+
+## 发送原始数据字符串
+  - sendRAWDataHexStr
+   - 参数: 
+   - String bytes -> byte字符串。
+
+
+```dart
+   iminPrinter.sendRAWDataHexStr('0A');
+```

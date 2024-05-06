@@ -758,3 +758,23 @@ Example:
 ```dart
   iminPrinter.setInitIminPrinter(true);
 ```
+
+
+## Open Logs
+  - openLogs
+     - parameter:
+         - int 0 or 1 -> is open
+
+```dart
+   iminPrinter.openLogs(1);
+```
+
+## Send RAW Data Hex Str
+  - sendRAWDataHexStr
+   - parameter: 
+   - String bytes -> byte String。
+
+
+```dart
+   iminPrinter.sendRAWDataHexStr('0A');
+```
