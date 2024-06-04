@@ -106,7 +106,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     iminPrintUtils.initPrinter(connectType);
                     result.success(true);
                 } else {
-                 
+
                     PrinterHelper.getInstance().initPrinter(_context.getPackageName(), null);
                 }
                 break;

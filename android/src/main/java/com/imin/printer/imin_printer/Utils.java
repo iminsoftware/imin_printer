@@ -56,7 +56,6 @@ public class Utils {
             }
         } else {
             model = getSystemProperties("sys.neostra_oem_id");
-            android.util.Log.d(TAG, "model " + model);
             if (!TextUtils.isEmpty(model) && model.length() > 4) {
                 model = filterModel(model.substring(0, 5));
                 String oemId = getSystemProperties("sys.neostra_oem_id");
