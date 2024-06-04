@@ -72,6 +72,14 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
+  Future<void> setUnderline(bool hasUnderline) async {
+    Map<String, dynamic> arguments = <String, dynamic>{
+      "hasUnderline": hasUnderline,
+    };
+    await methodChannel.invokeMethod<void>('setUnderline', arguments);
+  }
+
+  @override
   Future<void> setTextSize(int size) async {
     Map<String, dynamic> arguments = <String, dynamic>{
       "size": size,
@@ -137,6 +145,11 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
       if (style.fontStyle != null) {
         await setTextStyle(style.fontStyle!);
+      }
+      if (style.underline != null) {
+        await setUnderline(style.underline!);
+      } else {
+        await setUnderline(false);
       }
     } else {
       arguments.putIfAbsent('text', () => '$text\n');

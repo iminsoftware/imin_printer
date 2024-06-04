@@ -8,15 +8,18 @@ class IminTextStyle {
   IminTypeface? typeface;
   IminFontStyle? fontStyle;
   IminPrintAlign? align;
+  bool? underline;
 
-  IminTextStyle(
-      {this.wordWrap,
-      this.fontSize,
-      this.align,
-      this.space,
-      this.width,
-      this.fontStyle,
-      this.typeface});
+  IminTextStyle({
+    this.wordWrap,
+    this.fontSize,
+    this.align,
+    this.space,
+    this.width,
+    this.fontStyle,
+    this.typeface,
+    this.underline,
+  });
 }
 
 class IminTextPictureStyle {
@@ -67,6 +70,7 @@ class IminDoubleQRCodeStyle {
   int? level;
   int? leftMargin;
   int? version;
+
   IminDoubleQRCodeStyle(
       {this.level, this.text = '', this.leftMargin, this.version});
 }
@@ -74,11 +78,13 @@ class IminDoubleQRCodeStyle {
 class IminBaseStyle {
   int? width;
   int? height;
+
   IminBaseStyle({this.width, this.height});
 }
 
 class IminPictureStyle extends IminBaseStyle {
   IminPrintAlign? alignment;
+
   IminPictureStyle({this.alignment, width, height})
       : super(width: width, height: height);
 }

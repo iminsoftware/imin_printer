@@ -192,6 +192,13 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
                 result.success(true);
                 break;
+            case "setUnderline":
+                boolean hasUnderline = call.argument("hasUnderline");
+                if (iminPrintUtils != null) {
+                    iminPrintUtils.setUnderline(hasUnderline);
+                }
+                result.success(true);
+                break;
             case "setTextLineSpacing":
                 double space = call.argument("space");
                 float c = ((Double) space).floatValue();

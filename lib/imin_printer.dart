@@ -87,6 +87,10 @@ class IminPrinter {
     return IminPrinterPlatform.instance.setAlignment(alignment);
   }
 
+  Future<void> setUnderline(bool hasUnderline) {
+    return IminPrinterPlatform.instance.setUnderline(hasUnderline);
+  }
+
   /// set the print text width in your printer
   ///
   /// {@tool snippet}

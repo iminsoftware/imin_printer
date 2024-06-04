@@ -60,6 +60,11 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('setAlignment() has not been implemented.');
   }
 
+  Future<void> setUnderline(bool hasUnderline) {
+    throw UnimplementedError('setUnderline() has not been implemented.');
+  }
+
+
   Future<void> setTextLineSpacing(double space) {
     throw UnimplementedError('setTextLineSpacing() has not been implemented.');
   }
