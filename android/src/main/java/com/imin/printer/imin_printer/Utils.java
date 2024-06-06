@@ -45,6 +45,7 @@ public class Utils {
         String model = "";
         String plaform = getPlaform();
 
+
         if (!TextUtils.isEmpty(plaform) && plaform.startsWith("mt")) {
             model = getSystemProperties("ro.neostra.imin_model");
         } else if (!TextUtils.isEmpty(plaform) && plaform.startsWith("ums512")) {
