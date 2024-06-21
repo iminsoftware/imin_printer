@@ -89,7 +89,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setTextStyle(IminFontStyle style) async {
-    logger.d('setTextStyle', style.index);
+    logger.d('setTextStyle: ${style.index}');
     Map<String, dynamic> arguments = <String, dynamic>{
       "style": style.index,
     };
@@ -377,13 +377,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
     }
     arguments.putIfAbsent("bitmaps", () => imgs);
-    if (imgs is List<Uint8List>) {
-      await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
-    } else {
-      arguments.putIfAbsent("multiBitmap", () => 1);
-      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
+    await methodChannel.invokeMethod<void>('printMultiBitmap', arguments);
     }
-  }
 
   @override
   Future<void> printSingleBitmapBlackWhite(dynamic img,
@@ -713,7 +708,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
 
       if (style.lineHeight != null) {
-        logger.d('lineHeight', style.lineHeight);
+        logger.d('lineHeight: ${style.lineHeight}');
         await setTextBitmapLineSpacing(style.lineHeight!);
       }
 
