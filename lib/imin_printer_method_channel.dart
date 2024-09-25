@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
-import 'enums.dart';
-import 'column_maker.dart';
-import 'imin_style.dart';
-import 'imin_printer_platform_interface.dart';
 import 'package:logger/logger.dart';
+
+import 'column_maker.dart';
+import 'enums.dart';
+import 'imin_printer_platform_interface.dart';
+import 'imin_style.dart';
 
 var logger = Logger();
 
@@ -89,7 +91,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
 
   @override
   Future<void> setTextStyle(IminFontStyle style) async {
-    logger.d('setTextStyle', style.index);
+    logger.d('setTextStyle ${style.index}');
     Map<String, dynamic> arguments = <String, dynamic>{
       "style": style.index,
     };
@@ -713,7 +715,7 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       }
 
       if (style.lineHeight != null) {
-        logger.d('lineHeight', style.lineHeight);
+        logger.d('lineHeight ${style.lineHeight}');
         await setTextBitmapLineSpacing(style.lineHeight!);
       }
 
