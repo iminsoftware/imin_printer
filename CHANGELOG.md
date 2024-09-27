@@ -1,5 +1,7 @@
 # Changelog
 
+# 0.6.5
+ - update jar package version
 # 0.6.4
  - fixed  example bug
  - Add openLogs method
