@@ -59,7 +59,6 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
     private Context _context;
     private IminPrintUtils.PrintConnectType connectType = IminPrintUtils.PrintConnectType.USB;
     private EventSink eventSink;
-    private String[] modelArry = {"W27_Pro", "I23M01", "I23M02", "I23D01", "D4-503 Pro", "D4-504 Pro", "D4-505 Pro", "MS2-11", "MS2-12", "MS1-15"};
     private String sdkVersion = "1.0.0";
     private static final String ACTION_PRITER_STATUS_CHANGE = "com.imin.printerservice.PRITER_STATUS_CHANGE";
     private static final String ACTION_POGOPIN_STATUS_CHANGE = "com.imin.printerservice.PRITER_CONNECT_STATUS_CHANGE";
@@ -72,12 +71,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
         eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
-        List<String> modelList = Arrays.asList(modelArry);
-        if (modelList.contains(Build.MODEL)) {
-            //初始化 2.0 的 SDK。
+        if (Build.MODEL.contains("I23D") || Build.MODEL.contains("I23M") || Build.MODEL.contains("I24D") || Build.MODEL.contains("I24T") || Build.MODEL.contains("I24M")) {
+              //初始化 2.0 的 SDK。
             PrinterHelper.getInstance().initPrinterService(_context);
             sdkVersion = "2.0.0";
-        } else {
+            }
+        else {
             //初始化 1.0 SDK
             iminPrintUtils = IminPrintUtils.getInstance(_context);
             String deviceModel = Utils.getInstance().getModel();

@@ -394,7 +394,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                     ColumnMaker(
-                        text: '冯老师',
+                        text: '王老师',
                         width: 120,
                         fontSize: 26,
                         align: IminPrintAlign.left),

@@ -1,5 +1,6 @@
 # Changelog
-
+# 0.6.6
+ - update jar package version
 # 0.6.5
  - update jar package version
 # 0.6.4
