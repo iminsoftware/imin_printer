@@ -722,4 +722,46 @@ class IminPrinter {
   Future<void> sendRAWDataHexStr(String hex) {
     return IminPrinterPlatform.instance.sendRAWDataHexStr(hex);
   }
+
+  ///print Label api
+  Future<void> labelInitCanvas({LabelCanvasStyle? labelCanvasStyle}) {
+    return IminPrinterPlatform.instance.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
+  }
+
+  Future<void> labelAddText(String text,{ LabelTextStyle? labelTextStyle}) {
+    return IminPrinterPlatform.instance.labelAddText(text,labelTextStyle: labelTextStyle);
+  }
+
+  Future<void> labelAddBarCode(String barCode,{ LabelBarCodeStyle? barCodeStyle}) {
+    return IminPrinterPlatform.instance.labelAddBarCode(barCode,barCodeStyle: barCodeStyle);
+  }
+
+  Future<void> labelAddQrCode(String qrCode,{ LabelQrCodeStyle? qrCodeStyle}) {
+    return IminPrinterPlatform.instance.labelAddQrCode(qrCode,qrCodeStyle: qrCodeStyle);
+  }
+
+  Future<void> labelAddArea({ LabelAreaStyle? areaStyle}) {
+    return IminPrinterPlatform.instance.labelAddArea(areaStyle: areaStyle);
+  }
+
+  Future<void> labelAddBitmap(dynamic img,{ LabelBitmapStyle? addBitmapStyle}) {
+    return IminPrinterPlatform.instance.labelAddBitmap(img,addBitmapStyle: addBitmapStyle);
+  }
+
+  Future<void> labelPrintCanvas(int printCount) {
+    return IminPrinterPlatform.instance.labelPrintCanvas(printCount);
+  }
+
+  Future<void> printLabelBitmap(dynamic img,{ LabelPrintBitmapStyle? printBitmapStyle}) {
+    return IminPrinterPlatform.instance.printLabelBitmap(img,printBitmapStyle: printBitmapStyle);
+  }
+
+  Future<void> labelLearning() {
+    return IminPrinterPlatform.instance.labelLearning();
+  }
+
+  Future<void> setPrintModel(int printModel) {
+    return IminPrinterPlatform.instance.setPrintModel(printModel);
+  }
+
 }

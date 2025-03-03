@@ -10,8 +10,23 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
+import com.imin.printer.ILabelPrintResult;
 import com.imin.printer.INeoPrinterCallback;
+import com.imin.printer.IPrinterCallback;
 import com.imin.printer.PrinterHelper;
+import com.imin.printer.enums.Align;
+import com.imin.printer.enums.ErrorLevel;
+import com.imin.printer.enums.HumanReadable;
+import com.imin.printer.enums.ImageAlgorithm;
+import com.imin.printer.enums.Rotate;
+import com.imin.printer.enums.Shape;
+import com.imin.printer.enums.Symbology;
+import com.imin.printer.label.LabelAreaStyle;
+import com.imin.printer.label.LabelBarCodeStyle;
+import com.imin.printer.label.LabelBitmapStyle;
+import com.imin.printer.label.LabelCanvasStyle;
+import com.imin.printer.label.LabelQrCodeStyle;
+import com.imin.printer.label.LabelTextStyle;
 import com.imin.printerlib.Callback;
 import com.imin.printerlib.IminPrintUtils;
 
@@ -23,9 +38,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import android.graphics.Typeface;
 import android.content.Context;
+import android.os.IBinder;
 import android.os.RemoteException;
 
 import io.flutter.Log;
@@ -927,11 +944,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     });
                 }
                 break;
-            case "getPrinterMode":
-                if (iminPrintUtils == null) {
-                    result.success(PrinterHelper.getInstance().getPrinterMode());
-                }
-                break;
+//            case "getPrinterMode":
+//                if (iminPrintUtils == null) {
+//                    result.success(PrinterHelper.getInstance().getPrinterMode());
+//                }
+//                break;
             case "getDrawerStatus":
                 if (iminPrintUtils == null) {
                     result.success(PrinterHelper.getInstance().getDrawerStatus());
@@ -1141,6 +1158,382 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     iminPrintUtils.sendRAWData(open);
                 }
                 result.success(true);
+                break;
+            ////标签打印
+
+            case "labelInitCanvas"://标签初始化
+            {
+                if (iminPrintUtils == null) {
+                    Map<String, Object> labelCanvasStyleMap = call.argument("labelCanvasStyle");
+
+                    if (labelCanvasStyleMap != null) {
+                        Integer width = (Integer) labelCanvasStyleMap.get("width");
+                        Integer height1 = (Integer) labelCanvasStyleMap.get("height");
+                        Integer posX = (Integer) labelCanvasStyleMap.get("posX");
+                        Integer posY = (Integer) labelCanvasStyleMap.get("posY");
+
+                        // 使用解析后的数据
+                        Log.e("IminPrinter", "labelInitCanvas:" + width+" "+height1+" "+posX+" ,y= "+posY);
+                        PrinterHelper.getInstance().labelInitCanvas(LabelCanvasStyle.getCanvasStyle()
+                                .setWidth(width)
+                                .setHeight(height1)
+                                .setPosX(posX)
+                                .setPosY(posY)
+                        );
+                    }
+                    result.success(true);
+                }
+            }
+                break;
+            case "labelAddText"://绘制文本内容
+            {
+                Log.e("IminPrinter", "labelAddText: 点击绘制文本" );
+                if (iminPrintUtils == null){
+                    String textLabel = call.argument("text");
+                    Map<String, Object> labelAddTexteMap = call.argument("labelTexStyle");
+                    if (labelAddTexteMap != null) {
+                        // 手动解析每个参数
+                        Integer posX = (Integer) labelAddTexteMap.get("posX");
+                        Integer posY = (Integer) labelAddTexteMap.get("posY");
+                        Integer textSize = (Integer) labelAddTexteMap.get("textSize");
+                        Integer textWidthRatio = (Integer) labelAddTexteMap.get("textWidthRatio");
+                        Integer textHeightRatio = (Integer) labelAddTexteMap.get("textHeightRatio");
+                        Integer width = (Integer) labelAddTexteMap.get("width");
+                        Integer height1 = (Integer) labelAddTexteMap.get("height");
+                        String alignStr = (String) labelAddTexteMap.get("align");
+                        String rotateStr = (String) labelAddTexteMap.get("rotate");
+                        Integer textSpace = (Integer) labelAddTexteMap.get("textSpace");
+                        Boolean enableBold = (Boolean) labelAddTexteMap.get("enableBold");
+                        Boolean enableUnderline = (Boolean) labelAddTexteMap.get("enableUnderline");
+                        Boolean enableStrikethrough = (Boolean) labelAddTexteMap.get("enableStrikethrough");
+                        Boolean enableItalics = (Boolean) labelAddTexteMap.get("enableItalics");
+                        Boolean enAntiColor = (Boolean) labelAddTexteMap.get("enAntiColor");
+
+                        Log.e("IminPrinter", "labelAddText: 点击绘制文本 " +textLabel+",width=" +
+                                width+" ,height1= "+height1+" ,posX= "+posX+" ,posY= "+posY+" ,rotateStr= "+rotateStr+" ,enableBold= "+enableBold);
+
+                        // 将字符串转换为枚举类型
+                        Align align = Align.valueOf(alignStr);
+                        Rotate rotate = Rotate.valueOf(rotateStr);
+
+                        PrinterHelper.getInstance().labelAddText(textLabel, LabelTextStyle.getTextStyle()
+                                .setPosX(posX)
+                                .setPosY(posY)
+                                .setTextSize(textSize)
+                                .setTextWidthRatio(textWidthRatio)
+                        .setTextHeightRatio(textHeightRatio)
+                        .setWidth (width)
+                        .setHeight(height1)
+                        .setAlign(align)
+                        .setRotate(rotate)
+                        .setTextSpace(textSpace)
+                        .setEnableBold (enableBold)
+                        .setEnableUnderline (enableUnderline)
+                        .setEnableStrikethrough(enableStrikethrough)
+                        .setEnableItalics(enableItalics)
+                        .setEnAntiColor(enAntiColor)
+                        );
+                    }
+                }
+            }
+                break;
+            case "labelAddBarCode"://绘制条形码内容
+            {
+                if (iminPrintUtils == null){
+                    String barCode = call.argument("barCode");
+                    Map<String, Object> barCodeStyleMap = call.argument("barCodeStyle");
+                    if (barCodeStyleMap != null) {
+                        // 直接从 map 获取各个属性
+                        Integer posX = (Integer) barCodeStyleMap.get("posX");
+                        Integer posY = (Integer) barCodeStyleMap.get("posY");
+                        Integer dotWidth = (Integer) barCodeStyleMap.get("dotWidth");
+                        Integer barHeight = (Integer) barCodeStyleMap.get("barHeight");
+                        String readable = (String) barCodeStyleMap.get("readable");
+                        String symbology = (String) barCodeStyleMap.get("symbology");
+                        String alignStr = (String) barCodeStyleMap.get("align");
+                        String rotateStr = (String) barCodeStyleMap.get("rotate");
+                        Integer width = (Integer) barCodeStyleMap.get("width");
+                        Integer height1 = (Integer) barCodeStyleMap.get("height");
+
+                        Rotate rotate = Rotate.valueOf(rotateStr);
+                        Align align = Align.valueOf(alignStr);
+                        HumanReadable readable1 = HumanReadable.valueOf(readable);
+                        Symbology symbology1 = Symbology.valueOf(symbology);
+
+                        Log.e("IminPrinter", "labelAddBarCode: 绘制条形码内容 " +barCode+",width=" +
+                                width+" ,height1= "+height1+" ,posX= "+posX+" ,posY= "+posY+" ,readable= "+readable+" ,symbology= "+symbology+"  ,HumanReadable=>   "+readable1);
+
+                        PrinterHelper.getInstance().labelAddBarCode(barCode, LabelBarCodeStyle.getBarCodeStyle()
+                                .setPosX(posX)
+                                .setPosY(posY)
+                                .setSymbology(symbology1)
+                                .setDotWidth(dotWidth)
+                                .setBarHeight(barHeight)
+                                .setReadable(readable1)
+                                .setAlign(align)
+                                .setRotate(rotate)
+                                .setWidth(width)
+                                .setHeight(height1)
+                        );
+
+                    }
+                }
+
+                Log.e("IminPrinter", "labelAddBarCode: 绘制条形码内容" );
+
+            }
+                break;
+            case "labelAddQrCode"://绘制二维码内容
+            {
+                Log.e("IminPrinter", "labelAddQrCode: 绘制二维码内容" );
+                if (iminPrintUtils == null){
+                    String qrCode = call.argument("qrCode");
+                    Map<String, Object> qrCodeStyleMap = call.argument("qrCodeStyle");
+                    if (qrCodeStyleMap != null) {
+                        // 直接从 map 获取各个属性
+                        Integer posX = (Integer) qrCodeStyleMap.get("posX");
+                        Integer posY = (Integer) qrCodeStyleMap.get("posY");
+                        Integer size1 = (Integer) qrCodeStyleMap.get("size");
+                        String errorLevelStr = (String) qrCodeStyleMap.get("errorLevel");
+                        String rotateStr = (String) qrCodeStyleMap.get("rotate");
+                        Integer width = (Integer) qrCodeStyleMap.get("width");
+                        Integer height1 = (Integer) qrCodeStyleMap.get("height");
+                        Log.e("IminPrinter", "labelAddQrCode: 绘制二维码内容 " +qrCode+",width=" +
+                                width+" ,height1= "+height1+" ,posX= "+posX+" ,posY= "+posY+" ,errorLevelStr= "+errorLevelStr+" ,size= "+size1);
+
+                        Rotate rotate = Rotate.valueOf(rotateStr);
+                        ErrorLevel errorLevel = ErrorLevel.valueOf(errorLevelStr);
+
+
+                        PrinterHelper.getInstance().labelAddQrCode(qrCode, LabelQrCodeStyle.getQrCodeStyle()
+                                .setPosX(posX)
+                                .setPosY(posY)
+                                .setSize(size1)
+                                .setErrorLevel(errorLevel)
+                                .setRotate(rotate)
+                                .setWidth(width)
+                                .setHeight(height1)
+                        );
+
+                    }
+                }
+            }
+                break;
+            case "labelAddBitmap"://绘制图像
+            {
+                Log.e("IminPrinter", "labelAddBitmap: 绘制图像" );
+                if (iminPrintUtils == null){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                byte[] bitmapBase64 = call.argument("bitmap");
+                                String bitmapUrl = call.argument("bitmapUrl");
+                                Map<String, Object> labelAddAreaMap = call.argument("addBitmapStyle");
+                                Integer posX = (Integer) labelAddAreaMap.get("posX");
+                                Integer posY = (Integer) labelAddAreaMap.get("posY");
+                                String algorithm = (String) labelAddAreaMap.get("algorithm");
+                                Integer value = (Integer) labelAddAreaMap.get("value");
+                                Integer width = (Integer) labelAddAreaMap.get("width");
+                                Integer height1 = (Integer) labelAddAreaMap.get("height");
+                                ImageAlgorithm imageAlgorithm = ImageAlgorithm.valueOf(algorithm);
+
+                                Log.e("IminPrinter", "labelAddBitmap: 绘制图像 " +bitmapUrl+" ,width=" + width+" ,height1= "+height1+" ,posX= "+posX+" ,posY= "+posY+" ,algorithm= "+algorithm+" ,value= "+value);
+
+                                Bitmap bitmap = null;
+                                if (bitmapUrl == null || bitmapUrl.isEmpty()){
+                                    bitmap = BitmapFactory.decodeByteArray(bitmapBase64, 0, bitmapBase64.length);
+                                }else {
+                                    bitmap = Glide.with(_context).asBitmap().load(bitmapUrl).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(width, height1).get();
+                                }
+
+                                PrinterHelper.getInstance().labelAddBitmap(bitmap, LabelBitmapStyle.getBitmapStyle()
+                                        .setPosX(posX)
+                                        .setPosY(posY)
+                                        .setAlgorithm(imageAlgorithm)
+                                        .setValue(value)
+                                        .setWidth(width)
+                                        .setHeight(height1)
+                                );
+                            }catch (Exception e){
+                                Log.e("IminPrinter", "labelAddBitmap: 绘制图像 e"+e.getMessage() );
+                            }
+                        }
+                    }).start();
+
+                }
+
+            }
+                break;
+            case "printLabelBitmap"://打印标签样式的图片
+            {
+                Log.e("IminPrinter", "printLabelBitmap: 打印标签样式的图片" );
+                if (iminPrintUtils == null){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                byte[] bitmapBase64 = call.argument("bitmap");
+                                String bitmapUrl = call.argument("bitmapUrl");
+                                Map<String, Object> labelAddAreaMap = call.argument("printBitmapStyle");
+                                Integer width = (Integer) labelAddAreaMap.get("width");
+                                Integer height1 = (Integer) labelAddAreaMap.get("height");
+
+                                Log.e("IminPrinter", "labelAddArea: 绘制特殊图形 " +",width=" +
+                                        width+" ,height1= "+height1+"  ,bitmapUrl= "+bitmapUrl+(bitmapBase64==null));
+
+                                Bitmap bitmap = null;
+                                if (bitmapUrl == null || bitmapUrl.isEmpty()){
+                                    bitmap = BitmapFactory.decodeByteArray(bitmapBase64, 0, bitmapBase64.length);
+                                }else {
+                                    bitmap = Glide.with(_context).asBitmap().load(bitmapUrl).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(width, height1).get();
+                                }
+
+                                PrinterHelper.getInstance().labelAddBitmap(bitmap, LabelBitmapStyle.getBitmapStyle()
+                                        .setWidth(width)
+                                        .setHeight(height1)
+                                );
+                            }catch (Exception e){
+                                Log.e("IminPrinter", "printLabelBitmap: 打印标签样式的图片 e " +e.getMessage());
+                            }
+                        }
+                    }).start();
+
+                }
+
+            }
+                break;
+            case "labelAddArea"://绘制特殊图形
+            {
+                if (iminPrintUtils == null){
+                    Map<String, Object> labelAddAreaMap = call.argument("areaStyle");
+
+                    if (labelAddAreaMap != null) {
+                        // 获取具体的参数
+                        String styleString = (String) labelAddAreaMap.get("style");
+                        Integer width = (Integer) labelAddAreaMap.get("width");
+                        Integer height1 = (Integer) labelAddAreaMap.get("height");
+                        Integer posX = (Integer) labelAddAreaMap.get("posX");
+                        Integer posY = (Integer) labelAddAreaMap.get("posY");
+                        Integer endX = (Integer) labelAddAreaMap.get("endX");
+                        Integer endY = (Integer) labelAddAreaMap.get("endY");
+                        Integer thick = (Integer) labelAddAreaMap.get("thick");
+                        Log.e("IminPrinter", "labelAddArea: 绘制特殊图形 " +styleString+",width=" +
+                                width+" ,height1= "+height1+" ,posX= "+posX+" ,posY= "+posY+" ,endX= "+endX+" ,endY= "+endY+" ,thick= "+thick);
+                        // 转换字符串到枚举
+                        Shape styleShape = Shape.valueOf(styleString);
+                        PrinterHelper.getInstance().labelAddArea(LabelAreaStyle.getAreaStyle()
+                                .setStyle(styleShape)
+                                        .setWidth(width)
+                                        .setHeight(height1)
+                                .setPosX(posX)
+                                .setPosY(posY)
+                                .setEndX(endX)
+                                .setEndY(endY)
+                                .setThick(thick));
+                    }
+                }
+                
+            }
+                break;
+            case "labelPrintCanvas"://打印绘制的内容
+            {
+
+                if (iminPrintUtils == null){
+                    int printCount = call.argument("printCount");
+                    Log.e("IminPrinter", "labelPrintCanvas: 打印绘制的内容 =>" +printCount);
+                    PrinterHelper.getInstance().labelPrintCanvas(printCount, new ILabelPrintResult() {
+                        @Override
+                        public void onResult(int resultCode, String message) throws RemoteException {
+
+                            result.success(true);
+                        }
+
+                        @Override
+                        public IBinder asBinder() {
+                            return null;
+                        }
+                    });
+                }
+
+            }
+                break;
+            case "labelLearning"://标签学习
+            {
+
+                if (iminPrintUtils == null){
+                    PrinterHelper.getInstance().labelPaperLearning(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            Log.e("IminPrinter", "labelLearning: 标签学习" +s);
+                            result.success(true);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+
+                        }
+
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+
+                        }
+                    });
+                }
+
+            }
+                break;
+            case "setPrintModel"://设置打印模式
+            {
+
+                if (iminPrintUtils == null){
+                    int printModel = call.argument("printModel");
+                    Log.e("IminPrinter", "setPrintModel: 设置打印模式" +printModel);
+                    PrinterHelper.getInstance().setPrinterMode(printModel);
+                    result.success(true);
+                }
+            }
+                break;
+            case "getPrintModel"://获取当前打印机模式
+            {
+
+                if (iminPrintUtils == null){
+                    Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式" );
+                    PrinterHelper.getInstance().labelGetPrinterMode(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+
+                        }
+                        @Override
+                        public void onReturnString(String string) throws RemoteException {
+                            Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式"+ string);
+                            if (string != null && !string.isEmpty()){
+                                if (string.equalsIgnoreCase("Label")){
+                                    result.success(1);
+                                }else {
+                                    result.success(0);
+                                }
+                            }
+                        }
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {
+                        }
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+                        }
+                        @Override
+                        public IBinder asBinder() {
+                            return null;
+                        }
+                    });
+                }
+            }
+
                 break;
             default:
                 result.notImplemented();
