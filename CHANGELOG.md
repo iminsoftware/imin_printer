@@ -1,5 +1,5 @@
 # Changelog
-# 0.6.8
+# 0.6.9
  - update Label API
 # 0.6.6
  - update jar package version
