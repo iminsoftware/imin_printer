@@ -1234,6 +1234,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         .setEnAntiColor(enAntiColor)
                         );
                     }
+                    result.success(true);
                 }
             }
                 break;
@@ -1277,6 +1278,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         );
 
                     }
+                    result.success(true);
                 }
 
                 Log.e("IminPrinter", "labelAddBarCode: 绘制条形码内容" );
@@ -1316,6 +1318,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         );
 
                     }
+                    result.success(true);
                 }
             }
                 break;
@@ -1355,8 +1358,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                         .setWidth(width)
                                         .setHeight(height1)
                                 );
+
+                                result.success(true);
                             }catch (Exception e){
                                 Log.e("IminPrinter", "labelAddBitmap: 绘制图像 e"+e.getMessage() );
+                                result.success(false);
                             }
                         }
                     }).start();
@@ -1393,8 +1399,11 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                         .setWidth(width)
                                         .setHeight(height1)
                                 );
+
+                                result.success(true);
                             }catch (Exception e){
                                 Log.e("IminPrinter", "printLabelBitmap: 打印标签样式的图片 e " +e.getMessage());
+                                result.success(false);
                             }
                         }
                     }).start();
@@ -1432,6 +1441,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                 .setEndY(endY)
                                 .setThick(thick));
                     }
+                    result.success(true);
                 }
                 
             }
@@ -1462,6 +1472,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             {
 
                 if (iminPrintUtils == null){
+                    Log.e("IminPrinter", "labelLearning: 标签学习");
                     PrinterHelper.getInstance().labelPaperLearning(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -1499,7 +1510,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
             }
                 break;
-            case "getPrintModel"://获取当前打印机模式
+            case "getPrinterMode"://获取当前打印机模式
             {
 
                 if (iminPrintUtils == null){
