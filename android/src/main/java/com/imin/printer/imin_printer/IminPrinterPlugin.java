@@ -317,6 +317,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printSingleBitmap:" + err.getMessage());
+                    result.success(false);
                 }
                 break;
             case "printBitmapToUrl":
@@ -392,6 +393,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                             result.success(true);
                         } catch (Exception err) {
                             Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
+                            result.success(false);
                         }
                     }
                 }).start();
@@ -406,6 +408,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printSingleBitmapBlackWhite:" + err.getMessage());
+                    result.success(false);
                 }
                 break;
             case "printMultiBitmap":
@@ -432,6 +435,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", "printMultiBitmap:" + err.getMessage());
+                    result.success(false);
                 }
                 break;
             case "setQrCodeSize":
@@ -553,6 +557,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(true);
                 } catch (Exception e) {
                     Log.e("IminPrinter", e.getMessage());
+                    result.success(false);
                 }
                 break;
             case "setDoubleQRSize":
@@ -1091,6 +1096,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "printColumnsString":
                 String colsString = call.argument("cols");
+                Log.e("IminPrinter","printColumnsString ===> "+colsString);
                 try {
                     JSONArray cols = new JSONArray(colsString);
                     String[] colsText = new String[cols.length()];
@@ -1114,8 +1120,9 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     result.success(true);
                 } catch (Exception err) {
                     Log.e("IminPrinter", err.getMessage());
+                    result.success(false);
                 }
-                result.success(true);
+
                 break;
             case "getPrinterIsUpdateStatus":
                 // if (iminPrintUtils == null) {
