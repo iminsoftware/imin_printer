@@ -1217,7 +1217,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
 - LabelBarCodeStyle barCodeStyle -> Specified attributes related to barcode content
 - LabelBarCodeStyle Related APIs
 - | Available methods       |	Method description| 	Parameter description	 |default value|
-       |------------| --- |-------------------------| --- |
+  |------------| --- |-------------------------| --- |
   | posX       |	Set the barcode content to the starting horizontal coordinate position of the canvas	| Unit pixel              |	0|
   | posY       |	Set the barcode content to the starting ordinate position of the canvas| 	Unit pixel             |	0|
   | dotWidth   |	Set code block width| 	1~16 pixels            | Will affect the total width of the final barcode   |	2|
@@ -1251,7 +1251,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
 - LabelQrCodeStyle Related APIs description
 
   | Available methods	       |Method description	| Parameter description	 | default value |
-       |-------------| --- |------------------------|-----|
+  |-------------| --- |------------------------|-----|
   | posX	       |Set the starting horizontal coordinate position of the QR code content on the canvas	| Unit pixel	            |0|
   | posY	       |Set the starting vertical coordinate position of the QR code content on the canvas	| Unit pixel             |	0|
   | size	       |Set the QR code block size	| 1~16 pixels            |This will ultimately affect the size of the QR code |	4|
@@ -1275,7 +1275,7 @@ LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
 - parameters：
 - LabelAreaStyle areaStyle -> Graphics related configuration properties
 - | Available methods    |	Method description|	Parameter description|	default value|
-        |---------| --- |-------|-----|
+  |---------| --- |-------|-----|
   | style   |	Set drawing shape|See Shape	|Shape.RECT_FILL|
   | width	  |Set the width of the graphic| Invalid if the shape is a line segment. Indicates the diameter of the circle if the shape is a circle.	|Unit pixel	|50|
   | height	 |Set the height of the graphic| Invalid when the shape is a line segment |	Unit pixel|	50|
@@ -1344,7 +1344,7 @@ LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
 - LabelPrintBitmapStyle addBitmapStyle -> Image-related configuration properties
 
 - |Available methods	|Method description	|Parameter description	|default value|
-      | --- | --- |-------|-----|
+  | --- | --- |-------|-----|
   |width	|Specify the image scaling width	|When the zoom width is set, the image size will be forced to change|	No scaling|
   |height|	Specify the image scaling height	|When the zoom width is set, the image size will be forced to change|	No scaling|
 -
