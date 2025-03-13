@@ -1196,7 +1196,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
                     enableBold: true,
                     textSize: 30,
                   );
-                  // // 调用 labelInitCanvas 方法
+                  // // 
                   await iminPrinter.labelAddText("iMin Label Printer",labelTextStyle: labelTextStyle);
 ```
 ## 绘制条形码内容
@@ -1229,7 +1229,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
                     barHeight: 60,
                     readable: HumanReadable.POS_TWO,
                   );
-                  // // 调用 labelInitCanvas 方法
+                  // // 
                   await iminPrinter.labelAddBarCode("123456",barCodeStyle: barCodeStyle);
 ```
 ## 绘制二维码内容
@@ -1256,7 +1256,7 @@ LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
                     size: 3,
                     errorLevel: ErrorLevel.H,
                   );
-                  // // 调用 labelInitCanvas 方法
+                  // // 
                   await iminPrinter.labelAddQrCode("12345658哈哈",qrCodeStyle: qrCodeStyle);
 ```
 ## 绘制特殊图形
@@ -1283,7 +1283,7 @@ LabelAreaStyle printBitmapStyle = LabelAreaStyle(
                     endY: 60,
                     thick: 2,
                   );
-                  // // 调用 labelInitCanvas 方法
+                  // // 
                   await iminPrinter.labelAddArea(areaStyle: printBitmapStyle);
 ```
 ## 绘制图像
@@ -1310,7 +1310,7 @@ LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
                     height: 80,
 
                   );
-                  // // 调用 labelInitCanvas 方法
+                  // // 
                   await iminPrinter.labelAddBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
 
 ```
