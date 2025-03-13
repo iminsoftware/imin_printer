@@ -1149,7 +1149,8 @@ iminPrinter.printSingleBitmapColorChart(
 - 参数：
 - LabelCanvasStyle labelCanvasStyle ->指定标签画布的位置  大小
 - LabelCanvasStyle 相关API:
-- | 属性 | 描述 | 参数说明 | 默认值 |
+- 
+  | 属性 | 描述 | 参数说明 | 默认值 |
   | --- | --- | --- | --- |
   | width | 预渲染的画布宽度 | 可设置大小不超过打印纸宽度 | 50 |
   | height | 预渲染的画布高度 | 可设置大小不超过打印纸高度 | 30 |
