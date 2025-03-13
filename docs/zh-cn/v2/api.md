@@ -1150,7 +1150,7 @@ iminPrinter.printSingleBitmapColorChart(
 - LabelCanvasStyle labelCanvasStyle ->指定标签画布的位置  大小
 - LabelCanvasStyle 相关API:
 - | 属性 | 描述 | 参数说明 | 默认值 |
-       | --- | --- | --- | --- |
+  | --- | --- | --- | --- |
   | width | 预渲染的画布宽度 | 可设置大小不超过打印纸宽度 | 50 |
   | height | 预渲染的画布高度 | 可设置大小不超过打印纸高度 | 30 |
   | posX | 画布相对标签的起始横坐标 | 单位像素 | 0 |
@@ -1169,7 +1169,7 @@ await iminPrinter.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
 - LabelTextStyle labelTextStyle -> 绘制内容指令内容的属性
 - LabelTextStyle 相关API:
 -    |可用方法|	方法说明	|参数说明|	默认值|
-           | --- | --- | --- | --- |
+     | --- | --- | --- | --- |
      |posX	|设置文本内容在画布起始横坐标位置	|单位像素|	0|
      |posY	|设置文本内容在画布起始纵坐标位置|	单位像素	|0|
      |textSize	|指定文本字符大小	|有效范围6~96像素	|24|
@@ -1206,7 +1206,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
 - LabelBarCodeStyle barCodeStyle -> 条形码内容相关指定属性
 - LabelBarCodeStyle 相关api
 - | 可用方法       |	方法说明|	参数说明	|默认值|
-     |------------| --- | --- | --- |
+  |------------| --- | --- | --- |
   | posX       |	设置条码内容在画布起始横坐标位置	|单位像素|	0|
   | posY       |	设置条码内容在画布起始纵坐标位置|	单位像素|	0|
   | dotWidth   |	设置码块宽度|	1~16像素| 将影响最终条码的总宽度   |	2|
@@ -1240,7 +1240,7 @@ LabelTextStyle labelTextStyle = LabelTextStyle(
 - LabelQrCodeStyle 相关api说明
 
   | 可用方法	       |方法说明	| 参数说明	 | 默认值 |
-     |-------------| --- |-------|-----|
+  |-------------| --- |-------|-----|
   | posX	       |设置二维码内容在画布起始横坐标位置	|单位像素	|0|
   | posY	       |设置二维码内容在画布起始纵坐标位置	|单位像素|	0|
   | size	       |设置二维码块大小	|1~16像素|最终将影响二维码大小 |	4|
@@ -1264,7 +1264,7 @@ LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
 - 参数：
 - LabelAreaStyle areaStyle -> 图形相关配置属性
 - | 可用方法    |	方法说明|	参数说明|	默认值|
-      |---------| --- |-------|-----|
+  |---------| --- |-------|-----|
   | style   |	设置绘制形状|	见Shape	|Shape.RECT_FILL|
   | width	  |设置图形的宽度| 形状为线段时无效形状为圆形时表示圆形直径	|单位像素	|50|
   | height	 |设置图形的高度| 形状为线段时无效 |	单位像素|	50|
@@ -1293,7 +1293,7 @@ LabelAreaStyle printBitmapStyle = LabelAreaStyle(
 - LabelBitmapStyle addBitmapStyle -> 图像相关配置属性
 
 - | 可用方法	     |方法说明	|参数说明	|默认值|
-    |-----------| --- |-------|-----|
+  |-----------| --- |-------|-----|
   | posX	     |设置图片在画布起始横坐标位置|	超出画布大小将不打印|	0|
   | posY      |	设置图片在画布起始纵坐标位置|	超出画布大小将不打印|	0|
   | algorithm |	设置图片转换方式|	见ImageAlgorithm	|ImageAlgorithm.BINARIZATION|
@@ -1330,7 +1330,7 @@ LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
 - LabelPrintBitmapStyle addBitmapStyle -> 图像相关配置属性
 
 - |可用方法	|方法说明	|参数说明	|默认值|
-    | --- | --- |-------|-----|
+  | --- | --- |-------|-----|
   |width	|指定图片缩放宽度	|当设置缩放宽度后将强制改变图片大小|	不缩放|
   |height|	指定图片缩放高度	|当设置缩放宽度后将强制改变图片大小|	不缩放|
 -
@@ -1342,6 +1342,7 @@ LabelPrintBitmapStyle addBitmapStyle = LabelPrintBitmapStyle(
 
 );
  await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
+
 ```
 
 ```dart
