@@ -1,4 +1,6 @@
 # Changelog
+# 0.6.10
+  Fixed bug
 # 0.6.9
  - update Label API
 # 0.6.6

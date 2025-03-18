@@ -686,11 +686,12 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
       {IminTextPictureStyle? style}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (style != null) {
-      if (style.wordWrap != null && style.wordWrap == false) {
-        arguments.putIfAbsent('text', () => text);
-      } else {
-        arguments.putIfAbsent('text', () => '$text\n');
-      }
+      // if (style.wordWrap != null && style.wordWrap == false) {
+      //   arguments.putIfAbsent('text', () => text);
+      // } else {
+      //   arguments.putIfAbsent('text', () => '$text');
+      // }
+      arguments.putIfAbsent('text', () => text);
       if (style.fontSize != null) {
         logger.d('fontSize');
         await setTextBitmapSize(style.fontSize!);
@@ -727,7 +728,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         await setTextBitmapAntiWhite(style.reverseWhite!);
       }
     } else {
-      arguments.putIfAbsent('text', () => '$text\n');
+      //arguments.putIfAbsent('text', () => '$text\n');
+      arguments.putIfAbsent('text', () => text);
     }
     if (style != null && style.align != null) {
       arguments.putIfAbsent('align', () => style.align!.index);
