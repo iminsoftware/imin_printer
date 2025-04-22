@@ -408,9 +408,54 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('setPrinterEncode() has not been implemented.');
   }
   Future<void> openLogs(int encode) {
-    throw UnimplementedError('setPrinterEncode() has not been implemented.');
+    throw UnimplementedError('openLogs() has not been implemented.');
   }
   Future<void> sendRAWDataHexStr(String bytes) {
-    throw UnimplementedError('sendRAWData() has not been implemented.');
+    throw UnimplementedError('sendRAWDataHexStr() has not been implemented.');
   }
+
+  Future<void> labelInitCanvas({LabelCanvasStyle? labelCanvasStyle}) {
+    throw UnimplementedError('labelInitCanvas() has not been implemented.');
+  }
+
+  Future<void> labelAddText(String text,{ LabelTextStyle? labelTextStyle}) {
+    throw UnimplementedError('labelAddText() has not been implemented.');
+  }
+
+  Future<void> labelAddBarCode(String barCode,{ LabelBarCodeStyle? barCodeStyle}) {
+    throw UnimplementedError('labelAddBarCode() has not been implemented.');
+  }
+
+  Future<void> labelAddQrCode(String qrCode,{ LabelQrCodeStyle? qrCodeStyle}) {
+    throw UnimplementedError('labelAddQrCode() has not been implemented.');
+  }
+
+  Future<void> labelAddArea({ LabelAreaStyle? areaStyle}) {
+    throw UnimplementedError('labelAddArea() has not been implemented.');
+  }
+
+  Future<void> labelAddBitmap(dynamic img,{ LabelBitmapStyle? addBitmapStyle}) {
+    throw UnimplementedError('labelAddBitmap() has not been implemented.');
+  }
+
+  Future<void> labelPrintCanvas(int printCount) {
+    throw UnimplementedError('labelPrintCanvas() has not been implemented.');
+  }
+
+  Future<void> printLabelBitmap(dynamic img,{ LabelPrintBitmapStyle? printBitmapStyle}) {
+    throw UnimplementedError('printLabelBitmap() has not been implemented.');
+  }
+
+  Future<void> labelLearning() {
+    throw UnimplementedError('labelLearning() has not been implemented.');
+  }
+
+  Future<void> setPrintModel(int printModel) {
+    throw UnimplementedError('labelLearning() has not been implemented.');
+  }
+
+  // Future<String?> getPrintModel() {
+  //   throw UnimplementedError('getUsbPrinterVidPid() has not been implemented.');
+  // }
+
 }

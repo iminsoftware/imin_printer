@@ -1153,3 +1153,270 @@ Examples:
      print(value); // List of paper types
   });
 ```
+
+## label printing
+## Canvas settings
+- labelInitCanvas
+- parameters：
+- LabelCanvasStyle labelCanvasStyle ->Specify the location and size of the label canvas
+- LabelCanvasStyle Related APIs:
+- |property | describe | Parameter description | default value |
+  | --- | --- | --- | --- |
+  | width | Pre-rendered canvas width | The size can be set not exceeding the width of the printing paper | 50 |
+  | height |Pre-rendered canvas height | The size can be set not exceeding the height of the printing paper | 30 |
+  | posX | The starting horizontal coordinate of the canvas relative to the label | Unit pixel | 0 |
+  | posY | The starting vertical coordinate of the canvas relative to the label | Unit pixel | 0 |
+
+```dart
+LabelCanvasStyle labelCanvasStyle = LabelCanvasStyle(width: 40 * 8,
+height: 30 * 8,);
+
+await iminPrinter.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
+```
+## Draw text content
+- labelAddText
+- parameters：
+- String text ->Specifies the print content of the area to be drawn
+- LabelTextStyle labelTextStyle -> Draw the attributes of the content of the content instruction
+- LabelTextStyle Related APIs:
+-    |Available methods|	Method description	| Parameter description                                                                |	default value|
+     | --- | --- |--------------------------------------------------------------------------------------| --- |
+     |posX	|Set the text content to the starting horizontal coordinate position of the canvas	| Unit pixel                                                                           |	0|
+     |posY	|Set the text content at the starting ordinate position of the canvas| 	Unit pixel	                                                                         |0|
+     |textSize	|Specify text character size	| Effective range: 6~96 pixels	                                                        |24|
+     |textWidthRatio	|Specify double width size	| Valid range 0-9                                                                      |	0|
+     |textHeightRatio	|Specify double height size	| Valid range 0-9	                                                                     |0|
+     |width	|Set text limit width| If you set a width limit, the line will wrap automatically if the width is exceeded. |	no limit（-1）|
+     |height	|Set text limit height| 	If you set a height limit, the part exceeding it will not be displayed	             |no limit（-1）|
+     |align	|Set the position of the text content relative to the starting coordinates| 	See Align                                                                           |Align.DEFAUL|
+     |rotate	|Set the direction of text content	| See Rotate	                       |horizontal direction|
+     |textSpace	|Set text spacing	| 0~100 pixels	                                                           |0|
+     |enableBold	|Set text bold	| Turn on bold text	                                                    |Not open|
+     |enableUnderline	|Set text underline| 	Enable text underline	                                        |Not open|
+     |enableStrikethrough	|Set text strikethrough	| Enable text strikethrough	                              |Not open|
+     |enableItalics	|Set text italics| 	Turn on italic text	                                                     |Not open|
+     |enAntiColor	|Set text highlight	| Enable text highlighting                              |Not open|
+
+
+
+```dart
+LabelTextStyle labelTextStyle = LabelTextStyle(
+                    posX: 0,
+                    posY: 60,
+                    align: AlignLabel.CENTER,
+                    enableBold: true,
+                    textSize: 30,
+                  );
+                  
+                  await iminPrinter.labelAddText("iMin Label Printer",labelTextStyle: labelTextStyle);
+```
+## Draw barcode content
+- labelAddBarCode
+- parameters：
+- String barCode -> Barcode content
+- LabelBarCodeStyle barCodeStyle -> Specified attributes related to barcode content
+- LabelBarCodeStyle Related APIs
+- | Available methods       |	Method description| 	Parameter description	 |default value|
+  |------------| --- |-------------------------| --- |
+  | posX       |	Set the barcode content to the starting horizontal coordinate position of the canvas	| Unit pixel              |	0|
+  | posY       |	Set the barcode content to the starting ordinate position of the canvas| 	Unit pixel             |	0|
+  | dotWidth   |	Set code block width| 	1~16 pixels            | Will affect the total width of the final barcode   |	2|
+  | barHeight	 |Set barcode height	| 1~255 pixels            | Will affect the total height of the final barcode   |	162|
+  | readable	  |Set HRI location	| See HumanReadable       |	Do not display|
+  | symbology	 |Set barcode type	| See Symbology           |	code128|
+  | align	     |Set the relative starting coordinate position of the barcode| 	See Align              |	Align.DEFAUL|
+  | rotate     |	Set the barcode rotation direction	| See Rotate	                |horizontal direction|
+  | width	     |Specify barcode scaling width	| When the zoom width is set, the code content size will be forced to change	     |No scaling|
+  | height     |	Specify barcode scaling height	| When the zoom width is set, the code content size will be forced to change	     |No scaling|
+
+```dart
+
+                  LabelBarCodeStyle barCodeStyle = LabelBarCodeStyle(
+                    posX: 30,
+                    posY: 370,
+                    align: AlignLabel.CENTER,
+                    symbology: Symbology.CODABAR,
+                    dotWidth: 2,
+                    barHeight: 60,
+                    readable: HumanReadable.POS_TWO,
+                  );
+                  
+                  await iminPrinter.labelAddBarCode("123456",barCodeStyle: barCodeStyle);
+```
+## Draw the QR code content
+- labelAddQrCode
+- parameters：
+- String qrCode -> Printed QR code content
+- LabelQrCodeStyle qrCodeStyle -> QR code configuration related properties
+- LabelQrCodeStyle Related APIs description
+
+  | Available methods	       |Method description	| Parameter description	 | default value |
+  |-------------| --- |------------------------|-----|
+  | posX	       |Set the starting horizontal coordinate position of the QR code content on the canvas	| Unit pixel	            |0|
+  | posY	       |Set the starting vertical coordinate position of the QR code content on the canvas	| Unit pixel             |	0|
+  | size	       |Set the QR code block size	| 1~16 pixels            |This will ultimately affect the size of the QR code |	4|
+  | errorLevel	 | Set the QR code error correction level	| See ErrorLevel         |	ErrorLevel.L|
+  | rotate	     |Set the QR code rotation direction	| See Rotate             |	horizontal direction|
+  | width	      |Specify the width of the QR code	| When the zoom width is set, the code content size will be forced to change     |	No scaling|
+  | height	     |Specify the QR code scaling height| 	When the zoom width is set, the code content size will be forced to change	   |No scaling|
+
+```dart
+LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
+                    posX: 290,
+                    posY: 145,
+                    size: 3,
+                    errorLevel: ErrorLevel.H,
+                  );
+                  
+                  await iminPrinter.labelAddQrCode("12345658哈哈",qrCodeStyle: qrCodeStyle);
+```
+## Draw special graphics
+- labelAddArea
+- parameters：
+- LabelAreaStyle areaStyle -> Graphics related configuration properties
+- | Available methods    |	Method description|	Parameter description|	default value|
+  |---------| --- |-------|-----|
+  | style   |	Set drawing shape|See Shape	|Shape.RECT_FILL|
+  | width	  |Set the width of the graphic| Invalid if the shape is a line segment. Indicates the diameter of the circle if the shape is a circle.	|Unit pixel	|50|
+  | height	 |Set the height of the graphic| Invalid when the shape is a line segment |	Unit pixel|	50|
+  | posX	   |Set starting x coordinate	|Unit pixel|	0|
+  | posY	   |Set the starting y coordinate|	Unit pixel|	0|
+  | endX	   |Set the x coordinate of the end point of the line segment	|Unit pixel|	50|
+  | endY	   |Set the y coordinate of the end point of the line segment|	Unit pixel|	50|
+  | thick	  |Set stroke|	stroke width|	1|
+
+```dart
+LabelAreaStyle printBitmapStyle = LabelAreaStyle(
+                    style: Shape.PATH,
+                    posX: 1,
+                    posY: 40,
+                    endX: 50 * 8 - 1,
+                    endY: 60,
+                    thick: 2,
+                  );
+                 
+                  await iminPrinter.labelAddArea(areaStyle: printBitmapStyle);
+```
+## draw image
+- labelAddBitmap
+- parameters：
+- dynamic img -> Image path url or image binary stream
+- 
+- LabelBitmapStyle addBitmapStyle -> Image-related configuration properties
+
+- | Available methods	     |Method description	|Parameter description	| default value               |
+  |-----------| --- |-------|-----------------------------|
+  | posX	     |Set the initial horizontal position of the image|	If the canvas size is exceeded, it will not be printed.| 	0                          |
+  | posY      |Set the image's starting ordinate position on the canvas|If the canvas size is exceeded, it will not be printed.| 	0                          |
+  | algorithm |Set image conversion method|	See ImageAlgorithm	| ImageAlgorithm.BINARIZATION |
+  | value	    |Set algorithm float value	|The floating value varies according to the specific algorithm| See ImageAlgorithm          |
+  | width	    |Specify the image scaling width	|When the zoom width is set, the image size will be forced to change| 	No scaling                        |
+  | height    | Specify the image scaling height	|When the zoom width is set, the image size will be forced to change| 	No scaling                        |
+
+```dart
+LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
+
+                    posX: 290,
+                    posY: 30,
+                    width: 80,
+                    height: 80,
+
+  
+                  );
+
+                  await iminPrinter.labelAddBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
+
+```
+
+## Print the drawn content
+- labelPrintCanvas
+- parameters：
+- int printCount -> The number of times you want to print. If it is a label printer, it will be printed on each label separately. 
+- The number of prints is greater than 0.
+- Print result returns
+```dart
+ await iminPrinter.labelPrintCanvas(1);
+```
+## Print label image
+- printLabelBitmap
+- parameters：
+- dynamic img -> Image path url or image binary stream
+- LabelPrintBitmapStyle addBitmapStyle -> Image-related configuration properties
+
+- |Available methods	|Method description	|Parameter description	|default value|
+  | --- | --- |-------|-----|
+  |width	|Specify the image scaling width	|When the zoom width is set, the image size will be forced to change|	No scaling|
+  |height|	Specify the image scaling height	|When the zoom width is set, the image size will be forced to change|	No scaling|
+-
+```dart
+LabelPrintBitmapStyle addBitmapStyle = LabelPrintBitmapStyle(
+  
+  width: 50,
+  height: 30,
+
+);
+ await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
+```
+
+```dart
+
+enum ImageAlgorithm {
+  BINARIZATION,
+  DITHERING;
+}
+
+enum Shape {
+  RECT_FILL,
+  RECT_WHITE,
+  RECT_REVERSE,
+  BOX,
+  CIRCLE,
+  OVAL,
+  PATH
+}
+
+enum Rotate {
+  ROTATE_0,
+  ROTATE_90,
+  ROTATE_180,
+  ROTATE_270
+}
+
+enum ErrorLevel {
+  L,
+  M,
+  Q,
+  H
+}
+
+enum Symbology {
+  UPCA,
+  UPCE,
+  EAN13,
+  EAN8,
+  CODE39,
+  ITF,
+  CODABAR,
+  CODE93,
+  CODE128;
+
+}
+
+enum AlignLabel {
+  DEFAULT,
+  LEFT,
+  CENTER,
+  RIGHT
+}
+
+enum HumanReadable {
+  HIDE,
+  POS_ONE,
+  POS_TWO,
+  POS_THREE
+}
+
+
+
+```
+

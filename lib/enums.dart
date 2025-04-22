@@ -125,3 +125,58 @@ enum IminBarCodeToBitmapFormat {
   upcE,
   upcEanExteNsion;
 }
+enum ImageAlgorithm {
+  BINARIZATION,
+  DITHERING;
+}
+
+enum Shape {
+  RECT_FILL,
+  RECT_WHITE,
+  RECT_REVERSE,
+  BOX,
+  CIRCLE,
+  OVAL,
+  PATH
+}
+
+enum Rotate {
+  ROTATE_0,
+  ROTATE_90,
+  ROTATE_180,
+  ROTATE_270
+}
+
+enum ErrorLevel {
+  L,
+  M,
+  Q,
+  H
+}
+
+enum Symbology {
+  UPCA,
+  UPCE,
+  EAN13,
+  EAN8,
+  CODE39,
+  ITF,
+  CODABAR,
+  CODE93,
+  CODE128;
+
+}
+
+enum AlignLabel {
+  DEFAULT,
+  LEFT,
+  CENTER,
+  RIGHT
+}
+
+enum HumanReadable {
+  HIDE,
+  POS_ONE,
+  POS_TWO,
+  POS_THREE
+}

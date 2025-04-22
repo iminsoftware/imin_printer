@@ -394,7 +394,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                     ColumnMaker(
-                        text: '冯老师',
+                        text: '王老师',
                         width: 120,
                         fontSize: 26,
                         align: IminPrintAlign.left),
@@ -466,6 +466,108 @@ class _NewHomeState extends State<NewHome> {
                   );
                 },
                 child: const Text('transaction printing'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  await iminPrinter.labelLearning();
+                },
+                child: const Text('labelLearning'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  LabelCanvasStyle labelCanvasStyle = LabelCanvasStyle(width: 40 * 8,
+                    height: 30 * 8,);
+                  // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
+
+                  LabelTextStyle labelTextStyle = LabelTextStyle(
+                    posX: 0,
+                    posY: 60,
+                    align: AlignLabel.CENTER,
+                    enableBold: true,
+                    textSize: 30,
+                  );
+                  // // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelAddText("iMin Label Printer",labelTextStyle: labelTextStyle);
+
+                  // 创建一个 LabelCanvasStyle 对象
+                  LabelBarCodeStyle barCodeStyle = LabelBarCodeStyle(
+                    posX: 30,
+                    posY: 370,
+                    align: AlignLabel.CENTER,
+                    symbology: Symbology.CODABAR,
+                    dotWidth: 2,
+                    barHeight: 60,
+                    readable: HumanReadable.POS_TWO,
+                  );
+                  // // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelAddBarCode("123456",barCodeStyle: barCodeStyle);
+
+                  LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
+                    posX: 290,
+                    posY: 145,
+                    size: 3,
+                    errorLevel: ErrorLevel.H,
+                  );
+                  // // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelAddQrCode("12345658哈哈",qrCodeStyle: qrCodeStyle);
+
+                  LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
+
+                    posX: 290,
+                    posY: 30,
+                    width: 80,
+                    height: 80,
+
+                  );
+                  // // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelAddBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
+
+                  LabelAreaStyle printBitmapStyle = LabelAreaStyle(
+                    style: Shape.PATH,
+                    posX: 1,
+                    posY: 40,
+                    endX: 50 * 8 - 1,
+                    endY: 60,
+                    thick: 2,
+                  );
+                  // // 调用 labelInitCanvas 方法
+                  await iminPrinter.labelAddArea(areaStyle: printBitmapStyle);
+
+                  await iminPrinter.labelPrintCanvas(1);
+
+                },
+                child: const Text('labelPrint'),
+              ),
+
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     LabelPrintBitmapStyle printBitmapStyle = LabelPrintBitmapStyle(
+              //       width: 50 * 8,
+              //       height: 30 * 8,
+              //     );
+              //     // // 调用 labelInitCanvas 方法
+              //     await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',printBitmapStyle: printBitmapStyle);
+              //   },
+              //   child: const Text('printLabelBitmap'),
+              // ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  int? mode = await iminPrinter.getPrinterMode();
+                  Fluttertoast.showToast(
+                      msg: mode.toString(),
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM, // 消息框弹出的位置
+                      // timeInSecForIos: 1,  // 消息框持续的时间（目前的版本只有ios有效）
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+
+                },
+                child: const Text('getPrinterMode'),
               ),
             ],
           ),

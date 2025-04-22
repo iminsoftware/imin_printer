@@ -219,6 +219,30 @@ class MockIminPrinterPlatform
   Future<int?> openLogs(int encode) => Future.value();
   @override
   Future<List<String>?> sendRAWDataHexStr(String hex) => Future.value();
+
+  @override
+  Future<void> labelInitCanvas({LabelCanvasStyle? labelCanvasStyle}) => Future.value();
+  @override
+  Future<void> labelAddArea({LabelAreaStyle? areaStyle}) => Future.value();
+  @override
+  Future<void> labelAddBarCode(String barCode, {LabelBarCodeStyle? barCodeStyle}) => Future.value();
+  @override
+  Future<void> labelAddBitmap(dynamic img,{LabelBitmapStyle? addBitmapStyle}) => Future.value();
+  @override
+  Future<void> labelAddQrCode(String qrCode, {LabelQrCodeStyle? qrCodeStyle}) => Future.value();
+  @override
+  Future<void> labelAddText(String text, {LabelTextStyle? labelTextStyle}) => Future.value();
+  @override
+  Future<void> labelLearning() => Future.value();
+  @override
+  Future<void> labelPrintCanvas(int printCount) => Future.value();
+
+  @override
+  Future<void> printLabelBitmap(dynamic img,{LabelPrintBitmapStyle? printBitmapStyle}) => Future.value();
+  @override
+  Future<void> setPrintModel(int printModel) => Future.value();
+
+
 }
 
 void main() {
