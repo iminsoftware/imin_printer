@@ -1,8 +1,12 @@
 # Changelog
+# 0.6.11
+- Add transparent background image printing
+- Add 64-bit so file adaptation
 # 0.6.10
-  Fixed bug
+ - Fixed bug
 # 0.6.9
  - update Label API
+ - 
 # 0.6.6
  - update jar package version
 # 0.6.5
