@@ -46,6 +46,10 @@ class MockIminPrinterPlatform
           {IminPictureStyle? pictureStyle}) =>
       Future.value();
   @override
+  Future<void> printSingleBitmapWithTranslation(dynamic img,
+      {IminPictureStyle? pictureStyle}) =>
+      Future.value();
+  @override
   Future<void> printSingleBitmapBlackWhite(dynamic img,
           {IminBaseStyle? baseStyle}) =>
       Future.value();

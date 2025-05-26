@@ -6,6 +6,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -294,9 +297,50 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 }
                 result.success(true);
                 break;
+            case "printSingleBitmapWithTranslation"://打印透明底色的图片
+                try {
+                    byte[] img = call.argument("bitmap");
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                    Bitmap nonTransparentBitmap = null;
+                    if (bitmap != null){
+
+                        nonTransparentBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                        // 创建 Canvas 对象，并将新 Bitmap 设置为绘制目标
+                        Canvas canvas = new Canvas(nonTransparentBitmap);
+                        // 使用 Paint 设置填充颜色为白色
+                        Paint paint = new Paint();
+                        paint.setColor(Color.WHITE);
+                        // 绘制白色背景
+                        canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), paint);
+                        // 在白色背景上绘制原始 Bitmap
+                        canvas.drawBitmap(bitmap, 0, 0, null);
+                    }
+                    if (call.argument("alignment") != null) {
+                        int align = call.argument("alignment");
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printSingleBitmap(nonTransparentBitmap, align);
+                        } else {
+                            PrinterHelper.getInstance().printBitmapWithAlign(nonTransparentBitmap, align, null);
+                        }
+
+                    } else {
+                        if (iminPrintUtils != null) {
+                            iminPrintUtils.printSingleBitmap(nonTransparentBitmap);
+                        } else {
+                            PrinterHelper.getInstance().printBitmap(nonTransparentBitmap, null);
+                        }
+
+                    }
+                    result.success(true);
+                } catch (Exception err) {
+                    Log.e("IminPrinter", "printSingleBitmap:" + err.getMessage());
+                    result.success(false);
+                }
+                break;
             case "printSingleBitmap":
                 try {
                     byte[] img = call.argument("bitmap");
+                    Log.e("IminPrinter", "printSingleBitmap: img=> " + img);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
                     if (call.argument("alignment") != null) {
                         int align = call.argument("alignment");
@@ -345,14 +389,32 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
+                                        Log.e("IminPrinter", "printBitmapToUrl 000 :" +img );
                                         Bitmap image = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+
+                                        Bitmap nonTransparentBitmap = null;
+                                        if (image != null){
+
+                                            nonTransparentBitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
+                                            // 创建 Canvas 对象，并将新 Bitmap 设置为绘制目标
+                                            Canvas canvas = new Canvas(nonTransparentBitmap);
+                                            // 使用 Paint 设置填充颜色为白色
+                                            Paint paint = new Paint();
+                                            paint.setColor(Color.WHITE);
+                                            // 绘制白色背景
+                                            canvas.drawRect(0, 0, image.getWidth(), image.getHeight(), paint);
+                                            // 在白色背景上绘制原始 Bitmap
+                                            canvas.drawBitmap(image, 0, 0, null);
+                                        }
+
                                         if (iminPrintUtils != null) {
-                                            iminPrintUtils.printSingleBitmap(image, align);
+                                            Log.e("IminPrinter", "nonTransparentBitmap:" +img );
+                                            iminPrintUtils.printSingleBitmap(nonTransparentBitmap, align);
                                         } else {
                                             if (call.argument("SingleBitmapColorChart") != null) {
                                                 PrinterHelper.getInstance().printBitmapColorChartWithAlign(image, align, null);
                                             } else {
-                                                PrinterHelper.getInstance().printBitmapWithAlign(image, align, null);
+                                                PrinterHelper.getInstance().printBitmapWithAlign(nonTransparentBitmap, align, null);
                                             }
                                         }
                                     }
@@ -372,19 +434,36 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                         }
                                     } else {
                                         String img = call.argument("bitmap");
+
+                                        Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );
                                         Bitmap bitmap = Glide.with(_context).asBitmap().load(img).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).submit(imageWidth, imageHeight).get();
+                                        Bitmap nonTransparentBitmap = null;
+                                        if (bitmap != null){
+                                            nonTransparentBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                                            // 创建 Canvas 对象，并将新 Bitmap 设置为绘制目标
+                                            Canvas canvas = new Canvas(nonTransparentBitmap);
+                                            // 使用 Paint 设置填充颜色为白色
+                                            Paint paint = new Paint();
+                                            paint.setColor(Color.WHITE);
+                                            // 绘制白色背景
+                                            canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), paint);
+                                            // 在白色背景上绘制原始 Bitmap
+                                            canvas.drawBitmap(bitmap, 0, 0, null);
+                                        }
+
                                         if (iminPrintUtils != null) {
                                             if (call.argument("blackWhite") != null) {
-                                                iminPrintUtils.printSingleBitmapBlackWhite(bitmap);
+                                                iminPrintUtils.printSingleBitmapBlackWhite(nonTransparentBitmap);
                                             } else {
-                                                iminPrintUtils.printSingleBitmap(bitmap);
+                                                Log.e("IminPrinter", "printBitmapToUrl 000 :" +img );
+                                                iminPrintUtils.printSingleBitmap(nonTransparentBitmap);
 
                                             }
                                         } else {
                                             if (call.argument("SingleBitmapColorChart") != null) {
                                                 PrinterHelper.getInstance().printBitmapColorChart(bitmap, null);
                                             } else {
-                                                PrinterHelper.getInstance().printBitmap(bitmap, null);
+                                                PrinterHelper.getInstance().printBitmap(nonTransparentBitmap, null);
                                             }
                                         }
                                     }

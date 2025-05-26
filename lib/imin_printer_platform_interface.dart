@@ -101,6 +101,11 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('printSingleBitmap() has not been implemented.');
   }
 
+  Future<void> printSingleBitmapWithTranslation(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
+    throw UnimplementedError('printSingleBitmapWithTranslation() has not been implemented.');
+  }
+
   Future<void> printMultiBitmap(List<dynamic> imgs,
       {IminPictureStyle? pictureStyle}) {
     throw UnimplementedError('printMultiBitmap() has not been implemented.');

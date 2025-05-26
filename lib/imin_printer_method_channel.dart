@@ -364,6 +364,27 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   }
 
   @override
+  Future<void> printSingleBitmapWithTranslation(dynamic img,
+      {IminPictureStyle? pictureStyle}) async {
+    Map<String, dynamic> arguments = <String, dynamic>{};
+    if (pictureStyle != null) {
+      if (pictureStyle.alignment != null) {
+        arguments.putIfAbsent("alignment", () => pictureStyle.alignment?.index);
+      }
+      if (pictureStyle.width != null && pictureStyle.height != null) {
+        arguments.putIfAbsent("width", () => pictureStyle.width);
+        arguments.putIfAbsent("height", () => pictureStyle.height);
+      }
+    }
+    arguments.putIfAbsent("bitmap", () => img);
+    if (img is Uint8List) {
+      await methodChannel.invokeMethod<void>('printSingleBitmapWithTranslation', arguments);
+    } else {
+      await methodChannel.invokeMethod<void>('printBitmapToUrl', arguments);
+    }
+  }
+
+  @override
   Future<void> printMultiBitmap(List<dynamic> imgs,
       {IminPictureStyle? pictureStyle}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};

@@ -233,6 +233,12 @@ class IminPrinter {
         .printSingleBitmap(img, pictureStyle: pictureStyle);
   }
 
+  Future<void> printSingleBitmapWithTranslation(dynamic img,
+      {IminPictureStyle? pictureStyle}) {
+    return IminPrinterPlatform.instance
+        .printSingleBitmapWithTranslation(img, pictureStyle: pictureStyle);
+  }
+
   /// print multi bitmap in your printer
   ///
   /// {@tool snippet}
