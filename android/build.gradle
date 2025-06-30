@@ -6,7 +6,6 @@ buildscript {
         google()
         mavenCentral()
          maven{
-            allowInsecureProtocol = true
             url 'https://www.jitpack.io'
         }
     }
@@ -21,7 +20,6 @@ rootProject.allprojects {
         google()
         mavenCentral()
         maven{
-            allowInsecureProtocol = true
             url 'https://www.jitpack.io'
         }
     }
@@ -31,7 +29,8 @@ apply plugin: 'com.android.library'
 
 apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
 android {
-    compileSdkVersion 34
+    namespace 'com.imin.printer.imin_printer'
+    compileSdk 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
