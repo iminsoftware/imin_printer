@@ -1,4 +1,7 @@
 # Changelog
+# 0.6.13 （2025/7/2216:31）
+- Adapt and update the latest android SDK （适配并更新最新android SDK）
+- Update the reference to SDK on the Android side of the plugin to avoid differences between the old and new versions of SDK(更新插件安卓端对SDK的引用，避免出现sdk 新旧版本差异化问题)
 # 0.6.12 （2025/7/2216:31）
 - Adapt and update the latest android SDK （适配并更新最新android SDK） 
 # 0.6.11

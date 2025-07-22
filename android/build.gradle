@@ -31,15 +31,15 @@ apply plugin: 'com.android.library'
 
 apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
 android {
-    compileSdkVersion = 36
+    compileSdkVersion = flutter.compileSdkVersion
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 36
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.compileSdkVersion
         multiDexEnabled true
     }
 
