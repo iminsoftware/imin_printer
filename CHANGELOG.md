@@ -1,4 +1,6 @@
 # Changelog
+# 0.6.12 （2025/7/2216:31）
+- Adapt and update the latest android SDK （适配并更新最新android SDK） 
 # 0.6.11
 - Add transparent background image printing
 - Add 64-bit so file adaptation
