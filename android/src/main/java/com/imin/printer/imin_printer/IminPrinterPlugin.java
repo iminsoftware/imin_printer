@@ -841,11 +841,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     PrinterHelper.getInstance().getPrinterSerialNumber(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+//                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
                         }
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterSerialNumber: "+s );
                             result.success(s);
                         }
 
@@ -863,6 +864,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getPrinterModelName":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterThermalHead: " );
                     PrinterHelper.getInstance().getPrinterModelName(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -871,6 +873,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterThermalHead: " +s);
                             result.success(s);
                         }
 
@@ -888,6 +891,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getPrinterThermalHead":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterThermalHead: " );
                     PrinterHelper.getInstance().getPrinterThermalHead(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -896,6 +900,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterThermalHead: " +s);
                             result.success(s);
                         }
 
@@ -913,6 +918,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getPrinterFirmwareVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterFirmwareVersion: " );
                     PrinterHelper.getInstance().getPrinterFirmwareVersion(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -921,6 +927,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterFirmwareVersion: " +s);
                             result.success(s);
                         }
 
@@ -938,11 +945,13 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getServiceVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getServiceVersion: " );
                     result.success(PrinterHelper.getInstance().getServiceVersion());
                 }
                 break;
             case "getPrinterHardwareVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterHardwareVersion: " );
                     PrinterHelper.getInstance().getPrinterHardwareVersion(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -968,17 +977,20 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "getUsbPrinterVidPid":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getUsbPrinterVidPid: " );
                     result.success(PrinterHelper.getInstance().getUsbPrinterVidPid());
                 }
                 break;
             case "getUsbDevicesName":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getUsbDevicesName: " );
                     result.success(PrinterHelper.getInstance().getUsbDevicesName());
                 }
                 break;
 
             case "getPrinterPaperDistance":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterPaperDistance: " );
                     PrinterHelper.getInstance().getPrinterPaperDistance(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -1540,15 +1552,16 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                     Log.e("IminPrinter", "labelPrintCanvas: 打印绘制的内容 =>" +printCount);
                     PrinterHelper.getInstance().labelPrintCanvas(printCount, new ILabelPrintResult() {
                         @Override
+                        public IBinder asBinder() {
+                            return null;
+                        }
+
+                        @Override
                         public void onResult(int resultCode, String message) throws RemoteException {
 
                             result.success(true);
                         }
 
-                        @Override
-                        public IBinder asBinder() {
-                            return null;
-                        }
                     });
                 }
 
@@ -1608,7 +1621,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         }
                         @Override
                         public void onReturnString(String string) throws RemoteException {
-                            Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式"+ string);
+                            Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式 ==>"+ string);
                             if (string != null && !string.isEmpty()){
                                 if (string.equalsIgnoreCase("Label")){
                                     result.success(1);
@@ -1623,10 +1636,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         @Override
                         public void onPrintResult(int code, String msg) throws RemoteException {
                         }
-                        @Override
-                        public IBinder asBinder() {
-                            return null;
-                        }
+
                     });
                 }
             }
