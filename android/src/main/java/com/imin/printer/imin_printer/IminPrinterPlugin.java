@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.imin.printer.ILabelPrintResult;
 import com.imin.printer.INeoPrinterCallback;
@@ -91,7 +92,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
         eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
-        if (Build.MODEL.contains("I23D") || Build.MODEL.contains("I23M") || Build.MODEL.contains("I24D") || Build.MODEL.contains("I24T") || Build.MODEL.contains("I24M")) {
+        if (isAndroid15()) {
               //初始化 2.0 的 SDK。
             PrinterHelper.getInstance().initPrinterService(_context);
             sdkVersion = "2.0.0";
@@ -1678,7 +1679,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PRITER_STATUS_CHANGE);
         intentFilter.addAction(ACTION_POGOPIN_STATUS_CHANGE);
-        _context.registerReceiver(chargingStateChangeReceiver, intentFilter);
+        ContextCompat.registerReceiver(_context, chargingStateChangeReceiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -1686,6 +1687,15 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         _context.unregisterReceiver(chargingStateChangeReceiver);
         eventSink = null;
         chargingStateChangeReceiver = null;
+    }
+
+    public static boolean isAndroid15() {
+        // 假设Android 15的API级别是34（实际数字将在Android 15发布时确定）
+        final int ANDROID_15_API_LEVEL = 32;
+        // 获取当前设备的API级别
+        int currentApiLevel = Build.VERSION.SDK_INT;
+        // 判断是否是Android 15
+        return currentApiLevel >= ANDROID_15_API_LEVEL;
     }
 
 }
