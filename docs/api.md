@@ -1,64 +1,137 @@
 # Related methods provided by flutter, iMin's internal printer
 
-## Initializes the iMin internal printer
+## Basic Printer Operations
+
+### Initializes the iMin internal printer
  - initPrinter()
-    - Not parameter
+    - No parameters
+    - Returns: `Future<bool?>`
 
 Example: 
 ```dart
-  iminPrinter.initPrinter();
+  await iminPrinter.initPrinter();
+```
+
+### Get SDK Version
+ - getSdkVersion()
+    - No parameters
+    - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? version = await iminPrinter.getSdkVersion();
+  print('SDK Version: $version');
+```
+
+### Get Printer Information
+ - getPrinterSerialNumber()
+    - Returns: `Future<String?>`
+ - getPrinterModelName()
+    - Returns: `Future<String?>`
+ - getPrinterThermalHead()
+    - Returns: `Future<String?>`
+ - getPrinterFirmwareVersion()
+    - Returns: `Future<String?>`
+ - getPrinterHardwareVersion()
+    - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? serialNumber = await iminPrinter.getPrinterSerialNumber();
+  String? modelName = await iminPrinter.getPrinterModelName();
+  String? firmwareVersion = await iminPrinter.getPrinterFirmwareVersion();
 ```
 
 ## Get printer status
  - getPrinterStatus()
-    - Not parameter
+    - No parameters
+    - Returns: `Future<Map<String, dynamic>>`
 
 Example: 
 ```dart
-  iminPrinter.getPrinterStatus().then((value){
-    // printer status
-    print(state['msg']);    
-  });   
+  Map<String, dynamic> status = await iminPrinter.getPrinterStatus();
+  print('Printer status: ${status['msg']}');    
 ```
 
-## A line of paper
-  - printAndLineFeed()
-    -  Not parameter
+## Printer Buffer Management
+
+### Enter Printer Buffer
+ - enterPrinterBuffer(bool isClean)
+    - parameter:
+      - bool isClean -> Whether to clean the buffer before entering
 
 Example:
 ```dart
-  iminPrinter.printAndLineFeed();
+  await iminPrinter.enterPrinterBuffer(true);
 ```
 
+### Commit Printer Buffer
+ - commitPrinterBuffer()
+    - No parameters
 
-## Walk several lines of paper, customize the height
+Example:
+```dart
+  await iminPrinter.commitPrinterBuffer();
+```
+
+### Exit Printer Buffer
+ - exitPrinterBuffer(bool isCommit)
+    - parameter:
+      - bool isCommit -> Whether to commit before exiting
+
+Example:
+```dart
+  await iminPrinter.exitPrinterBuffer(true);
+```
+
+## Paper Control
+
+### A line of paper
+  - printAndLineFeed()
+    -  No parameters
+
+Example:
+```dart
+  await iminPrinter.printAndLineFeed();
+```
+
+### Walk several lines of paper, customize the height
   - printAndFeedPaper()
     - parameter:
       - int lineHeight , Value range: 1-1016
 
 Example:
 ```dart
-  iminPrinter.printAndFeedPaper(100); 
+  await iminPrinter.printAndFeedPaper(100); 
 ```
 
-## Set paper size
+### Set paper size
   - setPageFormat()
     - parameter:
       - int style -> Paper size  0-80mm 1-58mm;
 
 Example:
 ```dart
-  iminPrinter.setPageFormat(1);
+  await iminPrinter.setPageFormat(1);
 ```
 
-## cutter
-This method is only applicable to iMin  devices with 'cutter function'.
+### Cutter (Only for devices with cutter function)
+This method is only applicable to iMin devices with 'cutter function'.
  - partialCut()
-   - Not parameter
+   - No parameters
 
 Example:
 ```dart
-  iminPrinter.partialCut();
+  await iminPrinter.partialCut();
+```
+
+### Full Cut
+ - fullCut()
+   - No parameters
+
+Example:
+```dart
+  await iminPrinter.fullCut();
 ```
 
 ## Set alignment
@@ -73,7 +146,7 @@ Example:
 Example:
 ```dart
 import 'package:imin_printer/enums.dart';  ///need import
-  iminPrinter.setAlignment(IminPrintAlign.center);
+  await iminPrinter.setAlignment(IminPrintAlign.center);
 ```
 
 ## Set text size
@@ -83,7 +156,7 @@ import 'package:imin_printer/enums.dart';  ///need import
 
 Example:
 ```dart
-  iminPrinter.setTextSize(25);
+  await iminPrinter.setTextSize(25);
 ```
 
 ## Set text Typeface
@@ -105,7 +178,7 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';  ///need import
 
- iminPrinter.setTextTypeface(IminTypeface.typefaceMonospace);
+ await iminPrinter.setTextTypeface(IminTypeface.typefaceMonospace);
 ```
 
 ## Set text style
@@ -121,8 +194,7 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';   ///need import
   
-  
-  iminPrinter.setTextStyle(IminFontStyle.bold);
+  await iminPrinter.setTextStyle(IminFontStyle.bold);
 ```
 
 ## Set text line spacing
@@ -132,7 +204,7 @@ import 'package:imin_printer/enums.dart';   ///need import
 
 Example:
 ```dart
-  iminPrinter.setTextLineSpacing(1.0f);
+  await iminPrinter.setTextLineSpacing(1.0);
 ```
 
 ## Set the print text width
@@ -142,7 +214,7 @@ Example:
 
 Example:
 ```dart
-  iminPrinter.setTextWidth(200);
+  await iminPrinter.setTextWidth(200);
 ```
 
 ## Print text
@@ -182,18 +254,72 @@ import 'package:imin_printer/imin_style.dart';  ///Need to import
 import 'package:imin_printer/enums.dart';  ///Need to import
 
 ///Simple use
-iminPrinter.printText("Hello World");
+await iminPrinter.printText("Hello World");
 
 /// Set the Settings related to the printed text
-iminPrinter.printText("Hello World", IminTextStyle(
-  fontSize: 20,
-  space: 1.0f,
-  width: 100,
-  typeface: IminTypeface.typefaceDefaultBold,
-  fontStyle: IminFontStyle.boldItalic,
-  align: IminPrintAlign.center
-));
+await iminPrinter.printText("Hello World", 
+  style: IminTextStyle(
+    fontSize: 20,
+    space: 1.0,
+    width: 100,
+    typeface: IminTypeface.typefaceDefaultBold,
+    fontStyle: IminFontStyle.boldItalic,
+    align: IminPrintAlign.center
+  )
+);
+```
 
+## Text Bitmap Printing
+
+### Set Text Bitmap Properties
+ - setTextBitmapTypeface(IminTypeface typeface)
+ - setTextBitmapSize(int size)
+ - setTextBitmapStyle(IminFontStyle style)
+ - setTextBitmapStrikeThru(bool strikeThru)
+ - setTextBitmapUnderline(bool haveUnderline)
+ - setTextBitmapLineSpacing(double lineHeight)
+ - setTextBitmapLetterSpacing(double space)
+ - setTextBitmapAntiWhite(bool antiWhite)
+
+Example:
+```dart
+await iminPrinter.setTextBitmapTypeface(IminTypeface.typefaceDefaultBold);
+await iminPrinter.setTextBitmapSize(32);
+await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
+await iminPrinter.setTextBitmapUnderline(true);
+await iminPrinter.setTextBitmapAntiWhite(false);
+```
+
+### Print Text as Bitmap
+ - printTextBitmap(String text, {IminTextPictureStyle? style})
+   - parameter:
+     - String text -> Text content
+     - IminTextPictureStyle style -> Text picture style settings (optional)
+
+IminTextPictureStyle Properties:
+  | Property | Explain | Type | Default |
+  | ---- | ---- | ---- | ---- |
+  | fontSize | Font size | int | None |
+  | typeface | Font typeface | IminTypeface | None |
+  | fontStyle | Font style | IminFontStyle | None |
+  | align | Text alignment | IminPrintAlign | None |
+  | letterSpacing | Letter spacing | double | None |
+  | underline | Enable underline | bool | None |
+  | throughline | Enable strikethrough | bool | None |
+  | lineHeight | Line height | double | None |
+  | reverseWhite | Reverse white | bool | None |
+
+Example:
+```dart
+await iminPrinter.printTextBitmap(
+  "Bitmap Text",
+  style: IminTextPictureStyle(
+    fontSize: 28,
+    fontStyle: IminFontStyle.bold,
+    underline: true,
+    reverseWhite: false,
+  )
+);
 ```
 
 ## Print anti-white text
@@ -233,18 +359,19 @@ import 'package:imin_printer/imin_style.dart';  /// Need to import
 import 'package:imin_printer/enums.dart';  ///Need to import
 
 /// Simple use
-iminPrinter.printAntiWhiteText("Hello World");
+await iminPrinter.printAntiWhiteText("Hello World");
 
 /// Set the Settings related to the printed text
-iminPrinter.printAntiWhiteText("Hello World", IminTextStyle(
-  fontSize: 20,
-  space: 1.0f,
-  width: 100,
-  typeface: IminTypeface.typefaceDefaultBold,
-  fontStyle: IminFontStyle.boldItalic,
-  align: IminPrintAlign.center
-));
-
+await iminPrinter.printAntiWhiteText("Hello World", 
+  style: IminTextStyle(
+    fontSize: 20,
+    space: 1.0,
+    width: 100,
+    typeface: IminTypeface.typefaceDefaultBold,
+    fontStyle: IminFontStyle.boldItalic,
+    align: IminPrintAlign.center
+  )
+);
 ```
 
 
@@ -267,29 +394,50 @@ Example:
 import 'package:imin_printer/column_maker.dart'; /// Need to import
 import 'package:imin_printer/enums.dart'; /// Need to import
 
+await iminPrinter.printColumnsText(cols: [
+  ColumnMaker(
+      text: '1',
+      width: 1,
+      fontSize: 26,
+      align: IminPrintAlign.center),
+  ColumnMaker(
+      text: 'iMin',
+      width: 2,
+      fontSize: 26,
+      align: IminPrintAlign.left),
+  ColumnMaker(
+      text: 'iMin',
+      width: 1,
+      fontSize: 26,
+      align: IminPrintAlign.right)
+]);
+```
 
-   iminPrinter.printColumnsText(cols: [
-      ColumnMaker(
-          text: '1',
-          width: 1,
-          fontSize: 26,
-          align: IminPrintAlign.center),
-      ColumnMaker(
-          text: 'iMin',
-          width: 2,
-          fontSize: 26,
-          align: IminPrintAlign.left),
-      ColumnMaker(
-          text: 'iMin',
-          width: 1,
-          fontSize: 26,
-          align: IminPrintAlign.right)
-    ])
+## Print Columns String
+  - printColumnsString()
+      - parameter:
+        - List<ColumnMaker> cols -> Column array
 
+Example:
+```dart
+await iminPrinter.printColumnsString(cols: [
+  ColumnMaker(
+      text: 'Item',
+      width: 2,
+      fontSize: 24,
+      align: IminPrintAlign.left),
+  ColumnMaker(
+      text: 'Price',
+      width: 1,
+      fontSize: 24,
+      align: IminPrintAlign.right)
+]);
 ```
 
 
-## Print a single image
+## Image Printing
+
+### Print a single image
  - printSingleBitmap()
    - parameter:
       - dynamic img -> Image path url or image binary stream。
@@ -303,7 +451,6 @@ IminPictureStyle Related API:
   | height | Picture height | int| None |
   | alignment | Print picture alignment | enum IminPrintAlign { left, center, right }  | None |
 
-
 ```dart
   enum IminPrintAlign { left, center, right }
 ```
@@ -314,29 +461,46 @@ import 'package:imin_printer/imin_style.dart'; ///If passing an image style sett
 import 'package:imin_printer/enums.dart';  ///If passing an image style setting item needs to be imported
 
 /// Simple use
-iminPrinter.printSingleBitmap(Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]));
+await iminPrinter.printSingleBitmap(Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]));
 
 /// Use the image binary stream and set the image style
-iminPrinter.printSingleBitmap(
-    Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0])
-      pictureStyle: IminPictureStyle(
-              alignment: IminPrintAlign.center,
-          )
+await iminPrinter.printSingleBitmap(
+    Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]),
+    pictureStyle: IminPictureStyle(
+        alignment: IminPrintAlign.center,
     )
-
+);
 
 /// Pass the image using the url address and set the image style
-iminPrinter.printSingleBitmap(
+await iminPrinter.printSingleBitmap(
     'https://www.example.com/image.jpg',
-     pictureStyle: IminPictureStyle(
-        alignment: IminPrintAlign.center,
-        width: 250,
-        height: 50,
-      ));
+    pictureStyle: IminPictureStyle(
+      alignment: IminPrintAlign.center,
+      width: 250,
+      height: 50,
+    )
+);
 ```
 
+### Print Single Bitmap with Translation
+ - printSingleBitmapWithTranslation()
+   - parameter:
+      - dynamic img -> Image path url or image binary stream
+      - IminPictureStyle pictureStyle -> Image style Settings (optional)
 
-## Print multiple pictures
+Example:
+```dart
+await iminPrinter.printSingleBitmapWithTranslation(
+    imageBytes,
+    pictureStyle: IminPictureStyle(
+      alignment: IminPrintAlign.center,
+      width: 300,
+      height: 200,
+    )
+);
+```
+
+### Print multiple pictures
  - printMultiBitmap()
    - parameter:
       - List<dynamic> img -> Image path url array or image binary stream array。
@@ -360,30 +524,32 @@ import 'package:imin_printer/imin_style.dart'; /// If passing an image style set
 import 'package:imin_printer/enums.dart';  /// If passing an image style setting item needs to be imported
 
 /// Simple use
-
-iminPrinter.printMultiBitmap([Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]), Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00]]);
+await iminPrinter.printMultiBitmap([
+  Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]), 
+  Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00])
+]);
 
 /// Use the image binary stream and set the image style
-iminPrinter.printMultiBitmap(
-   [Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]), Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00])],
-      pictureStyle: IminPictureStyle(
-              alignment: IminPrintAlign.center,
-          )
+await iminPrinter.printMultiBitmap(
+   [Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]), 
+    Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00])],
+    pictureStyle: IminPictureStyle(
+        alignment: IminPrintAlign.center,
     )
-
+);
 
 /// Pass the image using the url address and set the image style
-iminPrinter.printSingleBitmap(
-    ['https://www.example.com/image.jpg', 'https://www.example.com/image.jpg'],
-     pictureStyle: IminPictureStyle(
-        alignment: IminPrintAlign.center,
-        width: 250,
-        height: 50,
-      ));
+await iminPrinter.printMultiBitmap(
+    ['https://www.example.com/image1.jpg', 'https://www.example.com/image2.jpg'],
+    pictureStyle: IminPictureStyle(
+      alignment: IminPrintAlign.center,
+      width: 250,
+      height: 50,
+    )
+);
 ```
 
-
-## Print a single anti-white image
+### Print a single anti-white image
  - printSingleBitmapBlackWhite
     - parameter:
       - dynamic img -> Image path url or image binary stream。
@@ -398,40 +564,72 @@ IminBaseStyle Related API:
 
 Example:
 ```dart
-
 /// Pass a picture using a picture binary stream
-iminPrinter.printSingleBitmapBlackWhite(Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0]))
+await iminPrinter.printSingleBitmapBlackWhite(
+  Uint8List.fromList([0x1B, 0x2A, 0x00, 0x00, 0x00, 0])
+);
 
 /// Pass the image using the url address and set the image style
-iminPrinter.printSingleBitmapBlackWhite('https://www.example.com/image.jpg',
-     pictureStyle: IminBaseStyle(
-        width: 250,
-        height: 50,
-      ));
-
+await iminPrinter.printSingleBitmapBlackWhite(
+  'https://www.example.com/image.jpg',
+  baseStyle: IminBaseStyle(
+    width: 250,
+    height: 50,
+  )
+);
 ```
 
-## Set QR code size
+### Print Single Bitmap Color Chart
+ - printSingleBitmapColorChart()
+   - parameter:
+      - dynamic img -> Image data
+      - IminPictureStyle pictureStyle -> Picture style settings (optional)
+
+Example:
+```dart
+await iminPrinter.printSingleBitmapColorChart(
+  imageBytes,
+  pictureStyle: IminPictureStyle(
+    alignment: IminPrintAlign.center,
+    width: 400,
+    height: 300,
+  )
+);
+```
+
+## QR Code Printing
+
+### Set QR code size
  - setQrCodeSize
     - parameter:
       - int size -> Qr code size。
 
 Example:
 ```dart
-iminPrinter.setQrCodeSize(5); // Set the QR code size to 5.
+await iminPrinter.setQrCodeSize(5); // Set the QR code size to 5.
 ```
 
-## Set the left margin of the QR code and barcode
+### Set the left margin of the QR code and barcode
   - setLeftMargin
     - parameter:
       - int  margin -> left margin
 
 Example:
 ```dart
-iminPrinter.setLeftMargin(5); // Set the left margin to 5.
+await iminPrinter.setLeftMargin(5); // Set the left margin to 5.
 ```
 
-## Set the error correction level of the QR code
+### Set Code Alignment
+ - setCodeAlignment
+   - parameter:
+     - IminPrintAlign alignment -> Code alignment
+
+Example:
+```dart
+await iminPrinter.setCodeAlignment(IminPrintAlign.center);
+```
+
+### Set the error correction level of the QR code
  - setQrCodeErrorCorrectionLev
     - parameter:
       -  IminQrcodeCorrectionLevel level -> Error correction level.
@@ -449,12 +647,10 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';  ///Need to import
 
-
-iminPrinter.IminQrcodeCorrectionLevel(IminQrcodeCorrectionLevel.levelL); 
-
+await iminPrinter.setQrCodeErrorCorrectionLev(IminQrcodeCorrectionLevel.levelL); 
 ```
 
-## Print QR code
+### Print QR code
  - printQrCode
     - parameter:
       - String content -> Qr code content.
@@ -468,7 +664,6 @@ IminQrCodeStyle Qr code style related API:
   | align  | Qr code alignment | enum IminPrintAlign { left, center, right } | None |
   | leftMargin | Left margin of QR code | int | None |
   | errorCorrectionLevel | Error correction level | enum IminQrcodeCorrectionLevel { levelL(48), levelM(49), levelQ(50), levelH(51)} | None |
-
 
 ```dart
 enum IminPrintAlign { left, center, right }
@@ -485,90 +680,93 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';  ///Need to import
 
-  iminPrinter.printQrCode('https://www.baidu.com', 
-  IminQrCodeStyle(
+await iminPrinter.printQrCode('https://www.baidu.com', 
+  qrCodeStyle: IminQrCodeStyle(
     qrSize: 4,  
     errorCorrectionLevel: IminQrcodeCorrectionLevel.levelH,
     leftMargin: 2,
-     align: IminPrintAlign.left 
-  ));
+    align: IminPrintAlign.left 
+  )
+);
 ```
 
-## Set double QR code size
+### Double QR Code Operations
+
+#### Set double QR code size
  - setDoubleQRSize
    - parameter:
       - int qrSize -> Size of QR code.
 
 Example:
 ```dart
-iminPrinter.setDoubleQRSize(4);
+await iminPrinter.setDoubleQRSize(4);
 ```
 
-## Set double QR code (QR1) error
+#### Set double QR code (QR1) error level
   - setDoubleQR1Level()
      - parameter:
         - int  level -> Error Size Value range :1 to 3。
 
 Example:
 ```dart
-iminPrinter.setDoubleQR1Level(2);
+await iminPrinter.setDoubleQR1Level(2);
 ```
 
-## Set double QR code (QR2) error
+#### Set double QR code (QR2) error level
   - setDoubleQR2Level()
      - parameter:
         - int  level -> Error Size Value range:1 to 3。
 
 Example:
 ```dart
-iminPrinter.setDoubleQR2Level(2);
+await iminPrinter.setDoubleQR2Level(2);
 ``` 
 
-## Set double QR code (QR1) left margin
+#### Set double QR code (QR1) left margin
   - setDoubleQR1MarginLeft()
      - parameter:
         - int  leftMargin -> The left distance ranges from 0 to 576.
 
 Example:
 ```dart
-iminPrinter.setDoubleQR1MarginLeft(2);
+await iminPrinter.setDoubleQR1MarginLeft(2);
 ```
 
-## Set double QR code (QR2) left margin
+#### Set double QR code (QR2) left margin
   - setDoubleQR2MarginLeft()
      - parameter:
         - int  leftMargin -> The left distance ranges from 0 to 576.
    
 Example:
 ```dart
-iminPrinter.setDoubleQR2MarginLeft(2);
+await iminPrinter.setDoubleQR2MarginLeft(2);
 ```
 
-## Set up the dual QR Code (QR1) version
+#### Set up the dual QR Code (QR1) version
   - setDoubleQR1Version()
      - parameter:
         - int  version -> Version Value range :1 to 40。
 
 Example:
 ```dart
-iminPrinter.setDoubleQR1Version(2);
+await iminPrinter.setDoubleQR1Version(2);
 ```
 
-## Set the dual QR Code (QR2) version
+#### Set the dual QR Code (QR2) version
   - setDoubleQR2Version()
      - parameter:
         - int  version -> Version Value range :1 to 40。
 
 Example:
 ```dart
-iminPrinter.setDoubleQR2Version(2); 
+await iminPrinter.setDoubleQR2Version(2); 
 ```
 
-## Print double QR code
+#### Print double QR code
  - printDoubleQR()
    - parameter:
-      - IminDoubleQRCodeStyle qr1 -> The first QR code setting.
-      - IminDoubleQRCodeStyle qr2 -> Second QR code Settings.
+      - IminDoubleQRCodeStyle qrCode1 -> The first QR code setting.
+      - IminDoubleQRCodeStyle qrCode2 -> Second QR code Settings.
       - int doubleQRSize -> Double QR code size (optional)
 
 IminDoubleQRCodeStyle Qr code Settings related API
@@ -585,37 +783,41 @@ Example:
 import 'package:imin_printer/enums.dart';
 import 'package:imin_printer/imin_style.dart';  /// Need to import
 
-iminPrinter.printDoubleQR( qrCode1: IminDoubleQRCodeStyle(
-            text: 'www.imin.sg',
-          ),
-          qrCode2: IminDoubleQRCodeStyle(
-            text: 'www.google.com',
-          ),
-          doubleQRSize: 5)
+await iminPrinter.printDoubleQR(
+  qrCode1: IminDoubleQRCodeStyle(
+    text: 'www.imin.sg',
+  ),
+  qrCode2: IminDoubleQRCodeStyle(
+    text: 'www.google.com',
+  ),
+  doubleQRSize: 5
+);
 ```
 
 
-## Set bar code width
+## Barcode Printing
+
+### Set bar code width
   - setBarCodeWidth()
      - parameter:
         - int  width -> Bar code width Value range :2-6.
       
 Example:
 ```dart
-iminPrinter.setBarCodeWidth(2);
+await iminPrinter.setBarCodeWidth(2);
 ```
 
-## Set bar code height
+### Set bar code height
   - setBarCodeHeight()
      - parameter:
         - int  height -> The bar code height ranges from 1 to 255.
 
 Example:
 ```dart
-iminPrinter.setBarCodeHeight(2);
+await iminPrinter.setBarCodeHeight(2);
 ```
 
-## The print position of the HRI character when printing the bar
+### The print position of the HRI character when printing the bar
    - setBarCodeContentPrintPos()
       - parameter:
          - IminBarcodeTextPos position -> Barcode content print location.
@@ -633,10 +835,10 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';
 
-  iminPrinter.setBarCodeContentPrintPos(IminBarcodeTextPos.textAbove);
+await iminPrinter.setBarCodeContentPrintPos(IminBarcodeTextPos.textAbove);
 ```
 
-## Print bar code
+### Print bar code
   - printBarCode()
     - parameter:
        - IminBarcodeType barCodeType -> Bar code type.
@@ -650,7 +852,6 @@ IminBarCodeStyle  Related API:
   | height | Bar code height | int | None |
   | position | Barcode content print location | IminBarcodeTextPos | None |
   | align | Barcode alignment | IminPrintAlign | None |
-
 
 ```dart
 enum IminBarcodeTextPos {
@@ -680,21 +881,23 @@ Example:
 import 'package:imin_printer/imin_style.dart';
 import 'package:imin_printer/enums.dart';
 
-  /// Simple to use
-   iminPrinter.printBarCode(IminBarcodeType.jan13, "0123456789012",);
+/// Simple to use
+await iminPrinter.printBarCode(IminBarcodeType.jan13, "0123456789012");
 
- /// Set the bar code style
-     iminPrinter.printBarCode(
-          IminBarcodeType.jan13, "0123456789012",
-          style: IminBarCodeStyle(
-               width: 150,
-               height: 50,
-              align: IminPrintAlign.center,
-              position: IminBarcodeTextPos.textAbove));
+/// Set the bar code style
+await iminPrinter.printBarCode(
+    IminBarcodeType.jan13, 
+    "0123456789012",
+    style: IminBarCodeStyle(
+        width: 150,
+        height: 50,
+        align: IminPrintAlign.center,
+        position: IminBarcodeTextPos.textAbove
+    )
+);
 ```
 
-
-## Print barcode setup format
+### Print barcode setup format
    - printBarCodeToBitmapFormat()
        - parameter:
           - String barCodeContent -> Bar code content.
@@ -727,27 +930,286 @@ Example:
 ```dart
 import 'package:imin_printer/enums.dart';
 
- iminPrinter.printBarCodeToBitmapFormat( "0123456789012", 100, 50, IminBarCodeToBitmapFormat.code39);
-
+await iminPrinter.printBarCodeToBitmapFormat(
+  "0123456789012", 
+  100, 
+  50, 
+  IminBarCodeToBitmapFormat.code39
+);
 ```
 
 
 ## Open the money box
   - openCashBox()
-     - Not parameter:
+     - No parameters
 
 Example:
 ```dart
-  iminPrinter.openCashBox();
+  await iminPrinter.openCashBox();
 ```
 
 ## Reset printer
   - resetDevice()
-    - Not parameter:
+    - No parameters
 
 Example:
 ```dart
-  iminPrinter.resetDevice();
+  await iminPrinter.resetDevice();
+```
+
+## Printer Configuration
+
+### Set Print Model
+ - setPrintModel(int printModel)
+   - parameter:
+     - int printModel -> Print model (0: thermal, 1: label)
+
+Example:
+```dart
+  await iminPrinter.setPrintModel(0); // Set to thermal printing
+```
+
+### Font and Encoding Management
+
+#### Get Font Codepage List
+ - getFontCodepage()
+   - Returns: `Future<List<String>?>`
+
+Example:
+```dart
+  List<String>? codepages = await iminPrinter.getFontCodepage();
+```
+
+#### Set Font Codepage
+ - setFontCodepage(int codepage)
+   - parameter:
+     - int codepage -> Codepage number
+
+Example:
+```dart
+  await iminPrinter.setFontCodepage(0);
+```
+
+#### Get Current Codepage
+ - getCurCodepage()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? currentCodepage = await iminPrinter.getCurCodepage();
+```
+
+#### Get Encode List
+ - getEncodeList()
+   - Returns: `Future<List<String>?>`
+
+Example:
+```dart
+  List<String>? encodeList = await iminPrinter.getEncodeList();
+```
+
+#### Set Printer Encode
+ - setPrinterEncode(int encode)
+   - parameter:
+     - int encode -> Encode number
+
+Example:
+```dart
+  await iminPrinter.setPrinterEncode(0);
+```
+
+#### Get Current Encode
+ - getCurEncode()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? currentEncode = await iminPrinter.getCurEncode();
+```
+
+### Printer Density and Speed
+
+#### Get Printer Density List
+ - getPrinterDensityList()
+   - Returns: `Future<List<String>?>`
+
+Example:
+```dart
+  List<String>? densityList = await iminPrinter.getPrinterDensityList();
+```
+
+#### Get Printer Density
+ - getPrinterDensity()
+   - Returns: `Future<int?>`
+
+Example:
+```dart
+  int? density = await iminPrinter.getPrinterDensity();
+```
+
+#### Get Printer Speed List
+ - getPrinterSpeedList()
+   - Returns: `Future<List<String>?>`
+
+Example:
+```dart
+  List<String>? speedList = await iminPrinter.getPrinterSpeedList();
+```
+
+#### Set Printer Speed
+ - setPrinterSpeed(int speed)
+   - parameter:
+     - int speed -> Speed value
+
+Example:
+```dart
+  await iminPrinter.setPrinterSpeed(3);
+```
+
+#### Get Printer Speed
+ - getPrinterSpeed()
+   - Returns: `Future<int?>`
+
+Example:
+```dart
+  int? speed = await iminPrinter.getPrinterSpeed();
+```
+
+### Paper Type Management
+
+#### Get Printer Paper Type List
+ - getPrinterPaperTypeList()
+   - Returns: `Future<List<String>?>`
+
+Example:
+```dart
+  List<String>? paperTypes = await iminPrinter.getPrinterPaperTypeList();
+```
+
+#### Get Printer Paper Type
+ - getPrinterPaperType()
+   - Returns: `Future<int?>`
+
+Example:
+```dart
+  int? paperType = await iminPrinter.getPrinterPaperType();
+```
+
+#### Get Printer Paper Distance
+ - getPrinterPaperDistance()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? paperDistance = await iminPrinter.getPrinterPaperDistance();
+```
+
+### Hardware Information
+
+#### Get USB Printer VID PID
+ - getUsbPrinterVidPid()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? vidPid = await iminPrinter.getUsbPrinterVidPid();
+```
+
+#### Get USB Devices Name
+ - getUsbDevicesName()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? deviceName = await iminPrinter.getUsbDevicesName();
+```
+
+#### Get Service Version
+ - getServiceVersion()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? serviceVersion = await iminPrinter.getServiceVersion();
+```
+
+### Cash Drawer
+
+#### Get Drawer Status
+ - getDrawerStatus()
+   - Returns: `Future<bool?>`
+
+Example:
+```dart
+  bool? isOpen = await iminPrinter.getDrawerStatus();
+```
+
+#### Get Open Drawer Times
+ - getOpenDrawerTimes()
+   - Returns: `Future<int?>`
+
+Example:
+```dart
+  int? openTimes = await iminPrinter.getOpenDrawerTimes();
+```
+
+#### Get Printer Cut Times
+ - getPrinterCutTimes()
+   - Returns: `Future<String?>`
+
+Example:
+```dart
+  String? cutTimes = await iminPrinter.getPrinterCutTimes();
+```
+
+#### Get Printer Mode
+ - getPrinterMode()
+   - Returns: `Future<int?>`
+
+Example:
+```dart
+  int? mode = await iminPrinter.getPrinterMode();
+```
+
+### Printer Self-Checking
+ - printerSelfChecking()
+   - No parameters
+
+Example:
+```dart
+  await iminPrinter.printerSelfChecking();
+```
+
+### RAW Data Operations
+
+#### Send RAW Data
+ - sendRAWData(Uint8List bytes)
+   - parameter:
+     - Uint8List bytes -> Raw data bytes
+
+Example:
+```dart
+  await iminPrinter.sendRAWData(Uint8List.fromList([0x1B, 0x40]));
+```
+
+### Service Management
+
+#### Unbind Service
+ - unBindService()
+   - No parameters
+
+Example:
+```dart
+  await iminPrinter.unBindService();
+```
+
+#### Initialize Printer Parameters
+ - initPrinterParams()
+   - No parameters
+
+Example:
+```dart
+  await iminPrinter.initPrinterParams();
 ```
 
 ## Set the initialization printer
@@ -756,9 +1218,8 @@ Example:
          - bool isDefault -> Whether it is set by default.
 
 ```dart
-  iminPrinter.setInitIminPrinter(true);
+  await iminPrinter.setInitIminPrinter(true);
 ```
-
 
 ## Open Logs
   - openLogs
@@ -766,7 +1227,7 @@ Example:
          - int 0 or 1 -> is open
 
 ```dart
-   iminPrinter.openLogs(1);
+   await iminPrinter.openLogs(1);
 ```
 
 ## Send RAW Data Hex Str
@@ -776,5 +1237,178 @@ Example:
 
 
 ```dart
-   iminPrinter.sendRAWDataHexStr('0A');
+   await iminPrinter.sendRAWDataHexStr('0A');
+```
+
+## Label Printing API
+
+### Initialize Label Canvas
+ - labelInitCanvas({LabelCanvasStyle? labelCanvasStyle})
+   - parameter:
+     - LabelCanvasStyle labelCanvasStyle -> Canvas style settings (optional)
+
+LabelCanvasStyle Properties:
+  | Property | Explain | Type | Default |
+  | ---- | ---- | ---- | ---- |
+  | width | Canvas width | int | 50 |
+  | height | Canvas height | int | 50 |
+  | posX | X position | int | 0 |
+  | posY | Y position | int | 0 |
+
+Example:
+```dart
+import 'package:imin_printer/imin_style.dart';
+
+await iminPrinter.labelInitCanvas(
+  labelCanvasStyle: LabelCanvasStyle(
+    width: 400,
+    height: 300,
+    posX: 0,
+    posY: 0,
+  )
+);
+```
+
+### Add Text to Label
+ - labelAddText(String text, {LabelTextStyle? labelTextStyle})
+   - parameter:
+     - String text -> Text content
+     - LabelTextStyle labelTextStyle -> Text style settings (optional)
+
+LabelTextStyle Properties:
+  | Property | Explain | Type | Default |
+  | ---- | ---- | ---- | ---- |
+  | posX | X position | int | 0 |
+  | posY | Y position | int | 0 |
+  | textSize | Text size | int | 24 |
+  | align | Text alignment | AlignLabel | DEFAULT |
+  | rotate | Text rotation | Rotate | ROTATE_0 |
+  | enableBold | Enable bold | bool | false |
+  | enableUnderline | Enable underline | bool | false |
+
+Example:
+```dart
+import 'package:imin_printer/imin_style.dart';
+import 'package:imin_printer/enums.dart';
+
+await iminPrinter.labelAddText(
+  'Hello Label',
+  labelTextStyle: LabelTextStyle(
+    posX: 10,
+    posY: 10,
+    textSize: 32,
+    enableBold: true,
+    align: AlignLabel.center,
+  )
+);
+```
+
+### Add Barcode to Label
+ - labelAddBarCode(String barCode, {LabelBarCodeStyle? barCodeStyle})
+   - parameter:
+     - String barCode -> Barcode content
+     - LabelBarCodeStyle barCodeStyle -> Barcode style settings (optional)
+
+Example:
+```dart
+await iminPrinter.labelAddBarCode(
+  '1234567890',
+  barCodeStyle: LabelBarCodeStyle(
+    posX: 50,
+    posY: 100,
+    symbology: Symbology.code128,
+    readable: HumanReadable.pos_two,
+  )
+);
+```
+
+### Add QR Code to Label
+ - labelAddQrCode(String qrCode, {LabelQrCodeStyle? qrCodeStyle})
+   - parameter:
+     - String qrCode -> QR code content
+     - LabelQrCodeStyle qrCodeStyle -> QR code style settings (optional)
+
+Example:
+```dart
+await iminPrinter.labelAddQrCode(
+  'https://www.imin.sg',
+  qrCodeStyle: LabelQrCodeStyle(
+    posX: 200,
+    posY: 50,
+    size: 6,
+    errorLevel: ErrorLevel.h,
+  )
+);
+```
+
+### Add Area/Shape to Label
+ - labelAddArea({LabelAreaStyle? areaStyle})
+   - parameter:
+     - LabelAreaStyle areaStyle -> Area style settings (optional)
+
+Example:
+```dart
+await iminPrinter.labelAddArea(
+  areaStyle: LabelAreaStyle(
+    style: Shape.rect_fill,
+    posX: 10,
+    posY: 10,
+    width: 100,
+    height: 50,
+  )
+);
+```
+
+### Add Bitmap to Label
+ - labelAddBitmap(dynamic img, {LabelBitmapStyle? addBitmapStyle})
+   - parameter:
+     - dynamic img -> Image data (Uint8List or URL)
+     - LabelBitmapStyle addBitmapStyle -> Bitmap style settings (optional)
+
+Example:
+```dart
+await iminPrinter.labelAddBitmap(
+  imageBytes,
+  addBitmapStyle: LabelBitmapStyle(
+    posX: 50,
+    posY: 50,
+    algorithm: ImageAlgorithm.binarization,
+  )
+);
+```
+
+### Print Label Canvas
+ - labelPrintCanvas(int printCount)
+   - parameter:
+     - int printCount -> Number of copies to print
+
+Example:
+```dart
+await iminPrinter.labelPrintCanvas(1);
+```
+
+### Print Label Bitmap
+ - printLabelBitmap(dynamic img, {LabelPrintBitmapStyle? printBitmapStyle})
+   - parameter:
+     - dynamic img -> Image data
+     - LabelPrintBitmapStyle printBitmapStyle -> Print style settings (optional)
+
+Example:
+```dart
+await iminPrinter.printLabelBitmap(
+  imageBytes,
+  printBitmapStyle: LabelPrintBitmapStyle(
+    width: 400,
+    height: 300,
+  )
+);
+```
+
+### Label Learning
+ - labelLearning()
+   - No parameters
+
+Example:
+```dart
+await iminPrinter.labelLearning();
 ```

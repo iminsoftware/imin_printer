@@ -2,4 +2,12 @@
 
  * [Quick Start](quickstart.md) 
 
- * [Document](/api)
+ * [API Documentation](/api)
+ 
+ * [Practical Examples](examples.md)
+ 
+ * [Device Compatibility](device-compatibility.md)
+ 
+ * [Migration Guide](migration-guide.md)
+ 
+ * [Error Codes & Troubleshooting](error-codes.md)
