@@ -81,10 +81,16 @@ await iminPrinter.partialCut();
 | M2-203 | Handheld Finance | 58mm | ❌ | ✅ Fully Tested |
 | M2 Pro | Handheld Finance | 58mm | ❌ | ✅ Fully Tested |
 | Swift 1 | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
+| Swift 1 Pro | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
 | Swift 2 | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
+| Swift 2 Pro | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
+| Swift 2 Ultra | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
 | M2 Max | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
 | D1 | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
+| D1 Pro | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
 | Falcon 1 | Flat Panel Terminal | 80mm | ✅ | ⚠️ Compatible |
+| Swan 2 | Flat Panel Terminal | 58mm/80mm | ✅ | ⚠️ Compatible |
+| Falcon 2 | Flat Panel Terminal | 80mm | ✅ | ⚠️ Compatible |
 | D4 | Desktop Cash Register | 80mm | ✅ | ⚠️ Compatible |
 
 **Legend:** ✅ Fully tested | ⚠️ Compatible but not extensively tested

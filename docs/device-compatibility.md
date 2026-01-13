@@ -11,6 +11,7 @@ This document provides detailed information about iMin device compatibility and 
 | M2-203 | 58mm | ❌ | ✅ | Enhanced handheld device |
 | M2 Pro | 58mm | ❌ | ✅ | Professional handheld device |
 | Swift 1 | 58mm | ❌ | ⚠️ | Basic model |
+| Swift 1 Pro | 58mm | ❌ | ⚠️ | Professional basic model |
 | Swift 2 | 58mm | ❌ | ⚠️ | Improved performance |
 | Swift 2 Pro | 58mm | ❌ | ⚠️ | Professional features |
 | Swift 2 Ultra | 58mm | ❌ | ⚠️ | Ultra-fast processing |
