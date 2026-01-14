@@ -16,6 +16,17 @@ It is used to print text, pictures, two-dimensional code, bar code and other fun
 
 [Official Imin Inner Printer Doc](https://oss-sg.imin.sg/docs/en/PrinterSDK.html)
 
+## SDK Version Compatibility
+
+This plugin supports two SDK versions based on your Android OS version:
+
+| SDK Version | Android Version | Status | Features |
+|-------------|----------------|---------|----------|
+| **SDK 2.0** | Android 13+ | ✅ Recommended | Full feature set including label printing, text bitmap, buffer management |
+| **SDK 1.0** | Android 11 and below | 🔄 Legacy | Basic printing, images, barcodes, QR codes |
+
+> **Important**: Choose the appropriate SDK version based on your target device's Android OS version. SDK 2.0 provides enhanced features and is recommended for all new projects on compatible devices.
+
 ## Documentation
 
 - 📚 [API Documentation](docs/api.md) - Complete API reference
@@ -66,36 +77,26 @@ await iminPrinter.printQrCode(
   )
 );
 
-// Cut paper (if supported)
+// Cut paper (if device supports cutter)
 await iminPrinter.partialCut();
 ```
 
+## Device Compatibility
 
+This SDK supports all iMin devices with built-in thermal printers, including:
 
+- **Handheld Finance Series**: Compact portable devices with 58mm paper width
+- **Flat Panel Terminal Series**: Tablet-style terminals supporting 58mm and 80mm paper widths
+- **Desktop Cash Register Equipment**: Desktop POS terminals with 80mm paper width
 
-## Tested Devices
+### Key Features by Device Type
+- **Paper Width**: 58mm or 80mm depending on device model
+- **Cutter Support**: Available on select models with cutter hardware
+- **Android Compatibility**: 
+  - SDK 2.0 for Android 13+
+  - SDK 1.0 for Android 11 and below
 
-| Device Model | Series | Paper Width | Cutter | Status |
-|--------------|--------|-------------|---------|---------|
-| M2-202 | Handheld Finance | 58mm | ❌ | ✅ Fully Tested |
-| M2-203 | Handheld Finance | 58mm | ❌ | ✅ Fully Tested |
-| M2 Pro | Handheld Finance | 58mm | ❌ | ✅ Fully Tested |
-| Swift 1 | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
-| Swift 1 Pro | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
-| Swift 2 | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
-| Swift 2 Pro | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
-| Swift 2 Ultra | Handheld Finance | 58mm | ❌ | ⚠️ Compatible |
-| M2 Max | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
-| D1 | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
-| D1 Pro | Flat Panel Terminal | 58mm | ❌ | ⚠️ Compatible |
-| Falcon 1 | Flat Panel Terminal | 80mm | ✅ | ⚠️ Compatible |
-| Swan 2 | Flat Panel Terminal | 58mm/80mm | ✅ | ⚠️ Compatible |
-| Falcon 2 | Flat Panel Terminal | 80mm | ✅ | ⚠️ Compatible |
-| D4 | Desktop Cash Register | 80mm | ✅ | ⚠️ Compatible |
-
-**Legend:** ✅ Fully tested | ⚠️ Compatible but not extensively tested
-
-For complete device compatibility information, see [Device Compatibility Guide](docs/device-compatibility.md).
+For complete device compatibility information and feature support matrix, see [Device Compatibility Guide](docs/device-compatibility.md).
 
 ## Key Features
 
@@ -122,7 +123,7 @@ For complete device compatibility information, see [Device Compatibility Guide](
 - ✅ Print buffer management
 - ✅ Printer configuration
 - ✅ Cash drawer control
-- ✅ Paper cutting (on supported devices)
+- ✅ Paper cutting (on devices with cutter hardware)
 
 ## Quick Examples
 

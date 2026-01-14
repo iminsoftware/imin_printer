@@ -1,24 +1,40 @@
 ## Overview
-iMin machine has a built-in thermal printer, allowing the App to print thermal receipts directly through the sdk, with a printer
-The products come with:
- - Handheld Finance Series —— M2-202、M2-203、M2 Pro、Swift 1、Swift 1 Pro、Swift 2、Swift 2 Pro、Swift 2 Ultra...。
- - Flat panel terminal Series —— M2 Max、D1、D1 Pro、Falcon 1、Swan 2、Falcon 2  ...。
- - Desk cash register equipment —— D4、Swan 2、Falcon 2 ...
 
-iMin products have two types of built-in printers：
-  - 80mm paper width, with cutter, compatible with 58mm, such as Falcon 1 、Falcon 2 80 equipped with this printer
-  - 58mm 58mm paper width, without cutting knife, such as D1, D1 Pro, M2 Max ,Swift 1, Swift 1 Pro, Swift 2,Swift 2 Pro,Swift 2 Ultra equipped with this printer
+iMin devices feature built-in thermal printers that enable apps to print receipts directly through the SDK. All iMin products across different series include integrated printing capabilities.
 
+### Device Categories
 
-App developers can use flutter mode to call the built-in thermal printer to view[Quick start](/quickstart)Understand the details.
+iMin products are available in three main categories:
+- **Handheld Finance Series**: Compact portable devices for mobile payment and receipt printing
+- **Flat Panel Terminal Series**: Tablet-style terminals for retail and hospitality
+- **Desktop Cash Register Equipment**: Full-featured POS terminals for high-volume operations
 
-SDK 2.0 Documentation description：https://iminsoftware.github.io/imin_printer/#/zh-cn/v2/api
-                https://iminsoftware.github.io/imin_printer/#/v2/api
+### Printer Specifications
 
+iMin devices come with two types of built-in thermal printers:
+- **80mm Printer**: Paper width of 80mm, includes cutter function, compatible with 58mm paper
+- **58mm Printer**: Paper width of 58mm, compact design without cutter function
 
+## SDK Version Compatibility
 
+### SDK 2.0 (Recommended)
+- **Android Version**: Android 13 and above
+- **Features**: Full feature set including label printing, text bitmap, buffer management, and advanced configuration
+- **Documentation**: 
+  - English: https://iminsoftware.github.io/imin_printer/#/v2/api
+  - 中文: https://iminsoftware.github.io/imin_printer/#/zh-cn/v2/api
 
-SDK 1.0 Documentation description：https://iminsoftware.github.io/imin_printer/#/zh-cn/api
-                https://iminsoftware.github.io/imin_printer/#/api 
+### SDK 1.0 (Legacy)
+- **Android Version**: Android 11 and below
+- **Features**: Basic printing, image printing, barcode/QR code support
+- **Documentation**: 
+  - English: https://iminsoftware.github.io/imin_printer/#/api
+  - 中文: https://iminsoftware.github.io/imin_printer/#/zh-cn/api
+
+> **Note**: We recommend using SDK 2.0 for new projects to access the latest features and improvements. SDK 1.0 is maintained for legacy device support.
+
+## Getting Started
+
+App developers can use Flutter to integrate with the built-in thermal printer. See [Quick Start Guide](/quickstart) for detailed instructions. 
       
 

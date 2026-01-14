@@ -116,7 +116,7 @@ Example:
 ```
 
 ### Cutter (Only for devices with cutter function)
-This method is only applicable to iMin devices with 'cutter function'.
+This method is only applicable to iMin devices with cutter hardware.
  - partialCut()
    - No parameters
 
@@ -126,6 +126,7 @@ Example:
 ```
 
 ### Full Cut
+This method is only applicable to iMin devices with cutter hardware.
  - fullCut()
    - No parameters
 

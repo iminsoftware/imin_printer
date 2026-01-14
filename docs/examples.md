@@ -195,7 +195,7 @@ class ReceiptPrinter {
         ),
       );
       
-      // Cut paper (if supported)
+      // Cut paper (if device supports cutter)
       await _printer.partialCut();
       
     } catch (e) {

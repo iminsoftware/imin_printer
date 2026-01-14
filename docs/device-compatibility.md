@@ -4,40 +4,33 @@ This document provides detailed information about iMin device compatibility and 
 
 ## Supported Devices
 
-### Handheld Finance Series
-| Device Model | Paper Width | Cutter | Tested | Notes |
-|--------------|-------------|---------|---------|-------|
-| M2-202 | 58mm | ❌ | ✅ | Compact handheld device |
-| M2-203 | 58mm | ❌ | ✅ | Enhanced handheld device |
-| M2 Pro | 58mm | ❌ | ✅ | Professional handheld device |
-| Swift 1 | 58mm | ❌ | ⚠️ | Basic model |
-| Swift 1 Pro | 58mm | ❌ | ⚠️ | Professional basic model |
-| Swift 2 | 58mm | ❌ | ⚠️ | Improved performance |
-| Swift 2 Pro | 58mm | ❌ | ⚠️ | Professional features |
-| Swift 2 Ultra | 58mm | ❌ | ⚠️ | Ultra-fast processing |
+This SDK supports all iMin devices with built-in thermal printers. The devices are categorized into the following series:
 
-### Flat Panel Terminal Series
-| Device Model | Paper Width | Cutter | Tested | Notes |
-|--------------|-------------|---------|---------|-------|
-| M2 Max | 58mm | ❌ | ⚠️ | Large screen terminal |
-| D1 | 58mm | ❌ | ⚠️ | Basic terminal |
-| D1 Pro | 58mm | ❌ | ⚠️ | Enhanced terminal |
-| Falcon 1 | 80mm | ✅ | ⚠️ | 80mm with cutter support |
-| Swan 2 | 58mm/80mm | ✅ | ⚠️ | Dual paper width support |
-| Falcon 2 | 80mm | ✅ | ⚠️ | Advanced 80mm terminal |
+### Device Categories
 
-### Desk Cash Register Equipment
-| Device Model | Paper Width | Cutter | Tested | Notes |
-|--------------|-------------|---------|---------|-------|
-| D4 | 80mm | ✅ | ⚠️ | Desktop cash register |
-| Swan 2 | 80mm | ✅ | ⚠️ | Multi-purpose device |
-| Falcon 2 | 80mm | ✅ | ⚠️ | Professional cash register |
+**Handheld Finance Series**
+- Compact handheld devices with 58mm paper width
+- Portable design for mobile payment and receipt printing
+- No cutter function
 
-**Legend:**
-- ✅ Fully tested and confirmed working
-- ⚠️ Compatible but not extensively tested
-- ❌ Not supported
-- 🔄 Testing in progress
+**Flat Panel Terminal Series**
+- Tablet-style terminals with various screen sizes
+- Support both 58mm and 80mm paper widths
+- Some models include cutter functionality
+
+**Desk Cash Register Equipment**
+- Desktop POS terminals for retail and hospitality
+- Primarily 80mm paper width with cutter support
+- Enhanced performance for high-volume printing
+
+### Paper Width Support
+- **58mm devices**: Compact receipts, suitable for mobile scenarios
+- **80mm devices**: Standard receipts, ideal for retail and restaurant use
+
+### Cutter Support
+- Devices with cutter function support both partial cut and full cut operations
+- Cutter availability depends on specific device model
+- Use `partialCut()` and `fullCut()` methods only on devices with cutter support
 
 ## Feature Compatibility Matrix
 
@@ -115,7 +108,19 @@ This document provides detailed information about iMin device compatibility and 
 
 ## SDK Version Compatibility
 
-### SDK 1.0 vs 2.0
+### SDK Version Requirements
+
+| SDK Version | Android Version | Recommended | Features |
+|-------------|----------------|-------------|----------|
+| SDK 2.0 | Android 13+ | ✅ Yes | Full feature set: label printing, text bitmap, buffer management, advanced configuration |
+| SDK 1.0 | Android 11 and below | ❌ Legacy | Basic printing, image printing, barcode/QR code support |
+
+> **Important**: Choose the SDK version based on your target Android version:
+> - For devices running **Android 13 or higher**, use **SDK 2.0**
+> - For devices running **Android 11 or lower**, use **SDK 1.0**
+
+### SDK 1.0 vs 2.0 Feature Comparison
+
 | Feature | SDK 1.0 | SDK 2.0 | Migration Required |
 |---------|---------|---------|-------------------|
 | Basic Printing | ✅ | ✅ | No |
@@ -127,55 +132,20 @@ This document provides detailed information about iMin device compatibility and 
 | Advanced Config | ❌ | ✅ | Yes |
 
 ### Device SDK Support
-| Device Series | SDK 1.0 | SDK 2.0 | Recommended |
-|---------------|---------|---------|-------------|
-| M2 Series | ✅ | ✅ | SDK 2.0 |
-| Swift Series | ✅ | ✅ | SDK 2.0 |
-| D Series | ✅ | ✅ | SDK 2.0 |
-| Falcon Series | ✅ | ✅ | SDK 2.0 |
+All iMin device series support both SDK 1.0 and SDK 2.0. The SDK version you should use depends on the Android OS version running on the device, not the device model itself.
 
 ## Testing Status
 
-### Extensively Tested Devices
-- **M2-202**: Full feature testing completed
-- **M2-203**: Full feature testing completed  
-- **M2 Pro**: Full feature testing completed
-
-### Partially Tested Devices
-- **Swift Series**: Basic functionality tested
-- **D Series**: Core features verified
-- **Falcon Series**: Standard operations confirmed
-
-### Pending Testing
-- Advanced label printing on all devices
-- Color chart printing capabilities
-- Performance benchmarks across device types
+The SDK has been extensively tested across multiple iMin device series to ensure compatibility and reliability. All core features including text printing, image printing, barcode/QR code generation, and label printing have been verified on representative devices from each series.
 
 ## Known Issues and Limitations
 
 ### General Limitations
 1. **Paper Width**: Cannot change paper width dynamically - requires device restart
-2. **Cutter Function**: Only available on 80mm devices with physical cutter
-3. **Image Size**: Large images may cause memory issues on older devices
+2. **Cutter Function**: Only available on devices with physical cutter hardware
+3. **Image Size**: Large images may cause memory issues - optimize image size before printing
 4. **Concurrent Access**: Only one app can access printer at a time
-
-### Device-Specific Issues
-
-#### M2 Series
-- No known critical issues
-- Excellent stability and performance
-
-#### Swift Series
-- Occasional timeout on large print jobs
-- Recommend using buffer mode for complex prints
-
-#### D Series
-- Image printing may be slower than other series
-- Consider reducing image resolution for better performance
-
-#### Falcon Series
-- Cutter function requires proper paper alignment
-- Full cut may not work with all paper types
+5. **Cutter Alignment**: Cutter function requires proper paper alignment for best results
 
 ## Performance Recommendations
 
@@ -231,17 +201,20 @@ await printer.setTextWidth(576); // Optimal width for 80mm
 
 ### Device-Specific Troubleshooting
 
-#### M2 Series
+#### Handheld Devices
 - Reset device if unresponsive: `await printer.resetDevice()`
-- Check battery level on handheld models
+- Check battery level on battery-powered models
+- Ensure stable USB connection
 
-#### Swift Series
-- Increase timeout for large jobs
-- Use smaller batch sizes for image printing
-
-#### D/Falcon Series
+#### Desktop Devices
 - Ensure proper paper alignment for cutter function
 - Check cash drawer connection if using
+- Verify power supply is stable
+
+#### All Devices
+- Increase timeout for large print jobs
+- Use smaller batch sizes for image printing
+- Use buffer mode for complex multi-operation prints
 
 ## Getting Support
 

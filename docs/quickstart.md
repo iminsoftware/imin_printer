@@ -6,8 +6,8 @@ This guide will help you get started with the iMin Printer SDK quickly and effic
 
 - Flutter SDK 3.3.0 or higher
 - Dart SDK 3.0.6 or higher
-- Android device with iMin printer
-- USB connection between device and printer
+- iMin device with built-in thermal printer
+- USB connection between device and printer (if applicable)
 
 ## Installation
 
@@ -373,7 +373,7 @@ Future<void> printReceipt() async {
       ),
     );
     
-    // Cut paper (if supported)
+    // Cut paper (if device supports cutter)
     await printer.partialCut();
     
   } catch (e) {

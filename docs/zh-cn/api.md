@@ -21,6 +21,37 @@
   });   
 ```
 
+## 打印机缓冲区管理
+
+### 进入打印机缓冲区
+ - enterPrinterBuffer(bool isClean)
+    - 参数:
+      - bool isClean -> 进入前是否清空缓冲区
+
+示例:
+```dart
+  await iminPrinter.enterPrinterBuffer(true);
+```
+
+### 提交打印机缓冲区
+ - commitPrinterBuffer()
+    - 无参数
+
+示例:
+```dart
+  await iminPrinter.commitPrinterBuffer();
+```
+
+### 退出打印机缓冲区
+ - exitPrinterBuffer(bool isCommit)
+    - 参数:
+      - bool isCommit -> 退出前是否提交
+
+示例:
+```dart
+  await iminPrinter.exitPrinterBuffer(true);
+```
+
 ## 走纸一行
   - printAndLineFeed()
     - 无参数
@@ -194,6 +225,59 @@ iminPrinter.printText("Hello World", IminTextStyle(
   align: IminPrintAlign.center
 ));
 
+```
+
+## 文字位图打印
+
+### 设置文字位图属性
+ - setTextBitmapTypeface(IminTypeface typeface)
+ - setTextBitmapSize(int size)
+ - setTextBitmapStyle(IminFontStyle style)
+ - setTextBitmapStrikeThru(bool strikeThru)
+ - setTextBitmapUnderline(bool haveUnderline)
+ - setTextBitmapLineSpacing(double lineHeight)
+ - setTextBitmapLetterSpacing(double space)
+ - setTextBitmapAntiWhite(bool antiWhite)
+
+示例:
+```dart
+await iminPrinter.setTextBitmapTypeface(IminTypeface.typefaceDefaultBold);
+await iminPrinter.setTextBitmapSize(32);
+await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
+await iminPrinter.setTextBitmapUnderline(true);
+await iminPrinter.setTextBitmapAntiWhite(false);
+```
+
+### 打印文字位图
+ - printTextBitmap(String text, {IminTextPictureStyle? style})
+   - 参数:
+     - String text -> 文字内容
+     - IminTextPictureStyle style -> 文字图片样式设置（可选）
+
+IminTextPictureStyle 属性:
+  | 属性 | 说明 | 类型 | 默认值 |
+  | ---- | ---- | ---- | ---- |
+  | fontSize | 字体大小 | int | 无 |
+  | typeface | 字体类型 | IminTypeface | 无 |
+  | fontStyle | 字体样式 | IminFontStyle | 无 |
+  | align | 文字对齐 | IminPrintAlign | 无 |
+  | letterSpacing | 字母间距 | double | 无 |
+  | underline | 启用下划线 | bool | 无 |
+  | throughline | 启用删除线 | bool | 无 |
+  | lineHeight | 行高 | double | 无 |
+  | reverseWhite | 反白 | bool | 无 |
+
+示例:
+```dart
+await iminPrinter.printTextBitmap(
+  "位图文字",
+  style: IminTextPictureStyle(
+    fontSize: 28,
+    fontStyle: IminFontStyle.bold,
+    underline: true,
+    reverseWhite: false,
+  )
+);
 ```
 
 ## 打印反白文字
