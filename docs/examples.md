@@ -572,33 +572,86 @@ Future<void> printWithErrorHandling() async {
 
 ## Advanced Features
 
-### Using Printer Buffer
+### Using Printer Buffer (Transaction Printing)
+
+Buffer management allows you to cache multiple print commands and submit them at once, improving efficiency and consistency.
+
+#### Complete Call Flow
 ```dart
 Future<void> printWithBuffer() async {
+  final iminPrinter = IminPrinter();
+  
   try {
-    await _printer.initPrinter();
+    await iminPrinter.initPrinter();
     
-    // Enter buffer mode
-    await _printer.enterPrinterBuffer(true);
+    // 1. Enter buffer mode (clean previous buffer)
+    iminPrinter.enterPrinterBuffer(true);
     
-    // Add multiple print commands to buffer
-    await _printer.printText('Buffered Print 1');
-    await _printer.printAndLineFeed();
-    await _printer.printText('Buffered Print 2');
-    await _printer.printAndLineFeed();
-    await _printer.printText('Buffered Print 3');
+    // 2. Send RAW data or add print commands to buffer
+    await iminPrinter.printText('Buffered Print 1');
+    await iminPrinter.printAndLineFeed();
+    await iminPrinter.printText('Buffered Print 2');
+    await iminPrinter.printAndLineFeed();
+    await iminPrinter.printText('Buffered Print 3');
     
-    // Commit all commands at once
-    await _printer.commitPrinterBuffer();
+    // 3. Commit buffer and execute printing
+    await iminPrinter.commitPrinterBuffer();
     
-    // Exit buffer mode
-    await _printer.exitPrinterBuffer(true);
+    // 4. Exit buffer mode (commit remaining content)
+    iminPrinter.exitPrinterBuffer(true);
     
   } catch (e) {
     print('Error with buffered printing: $e');
-    // Exit buffer without committing on error
-    await _printer.exitPrinterBuffer(false);
+    // Exit buffer without committing on error (discard buffer)
+    iminPrinter.exitPrinterBuffer(false);
   }
+}
+```
+
+#### Batch Print Multiple Tickets
+```dart
+Future<void> printMultipleTickets() async {
+  final iminPrinter = IminPrinter();
+  
+  // Prepare multiple ticket data
+  List<Uint8List> ticketDataList = [
+    await getTicket1Data(),
+    await getTicket2Data(),
+    await getTicket3Data(),
+  ];
+  
+  try {
+    // 1. Start transaction printing mode
+    iminPrinter.enterPrinterBuffer(true);
+    
+    // 2. Add all ticket data to buffer
+    for (var ticketData in ticketDataList) {
+      await iminPrinter.sendRAWData(ticketData);
+    }
+    
+    // 3. Commit and print all tickets at once
+    await iminPrinter.commitPrinterBuffer();
+    
+    // 4. Exit transaction printing mode
+    iminPrinter.exitPrinterBuffer(true);
+    
+    print('Batch print successful! Printed ${ticketDataList.length} tickets');
+    
+  } catch (e) {
+    // Cancel printing on error
+    iminPrinter.exitPrinterBuffer(false);
+    print('Batch print failed: $e');
+  }
+}
+
+// Helper function to generate ticket data
+Future<Uint8List> getTicket1Data() async {
+  // Generate ticket data using ESC/POS commands
+  List<int> bytes = [
+    0x1b, 0x40,  // Initialize
+    // ... more ESC/POS commands
+  ];
+  return Uint8List.fromList(bytes);
 }
 ```
 

@@ -230,21 +230,36 @@ await iminPrinter.printTextBitmap('Bitmap Text');
 ```
 
 ### Buffer Management
-Improved print job management:
+Improved print job management with transaction printing:
 
 ```dart
-// Enter buffer mode
-await iminPrinter.enterPrinterBuffer(true);
-
-// Add multiple operations
-await iminPrinter.printText('Line 1');
-await iminPrinter.printText('Line 2');
-await iminPrinter.printText('Line 3');
-
-// Execute all at once
-await iminPrinter.commitPrinterBuffer();
-await iminPrinter.exitPrinterBuffer(true);
+// Complete buffer management flow
+try {
+  // 1. Enter buffer mode (clean previous buffer)
+  iminPrinter.enterPrinterBuffer(true);
+  
+  // 2. Add multiple operations to buffer
+  await iminPrinter.printText('Line 1');
+  await iminPrinter.printText('Line 2');
+  await iminPrinter.printText('Line 3');
+  
+  // 3. Commit buffer and execute printing
+  await iminPrinter.commitPrinterBuffer();
+  
+  // 4. Exit buffer mode (commit remaining content)
+  iminPrinter.exitPrinterBuffer(true);
+  
+} catch (e) {
+  // Exit without committing on error (discard buffer)
+  iminPrinter.exitPrinterBuffer(false);
+  print('Buffer print failed: $e');
+}
 ```
+
+**Use Cases:**
+- Batch printing multiple tickets
+- Complex multi-operation prints
+- Ensuring print consistency
 
 ### Enhanced Configuration
 Advanced printer configuration options:
