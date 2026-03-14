@@ -164,6 +164,7 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
+                  await iminPrinter.printTextBitmap("Ved byttemærke kan der byttes til andre produkter eller tilgodebevis.");
                   await iminPrinter.fullCut();
                   await iminPrinter.printAndFeedPaper(70);
                 },
@@ -188,14 +189,14 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                  // Uint8List byte =
-                  //     await readFileBytes('assets/images/logo.png');
-                  // await iminPrinter.printSingleBitmap(byte,
-                  //     pictureStyle: IminPictureStyle(
-                  //       alignment: IminPrintAlign.center,
-                  //       width: 50,
-                  //       height: 20,
-                  //     ));
+                  Uint8List byte =
+                      await readFileBytes('assets/images/logp.png');
+                  await iminPrinter.printSingleBitmapColorChart(byte,
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.center,
+                        width: 50,
+                        height: 100,
+                      ));
 
                   await iminPrinter.printSingleBitmap(
                       'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
@@ -204,6 +205,16 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+
+                  Uint8List byte1 = await readFileBytes('assets/images/ic_test.jpg');
+                  await iminPrinter.printSingleBitmap(byte1,
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.center,
+                        width: 50,
+                        height: 100,
+                      ));
+
+
                   await iminPrinter.printAndFeedPaper(70);
                   await iminPrinter.printText('232323');
                 },
@@ -427,6 +438,30 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
+
+                  await iminPrinter.printColumnsString(cols: [
+                    ColumnMaker(
+                        text: 'name',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'Apple',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'price',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '25.95',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.right),
+                  ]);
+
                     await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsString'),
@@ -476,65 +511,86 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                  // 创建一个 LabelCanvasStyle 对象
-                  LabelCanvasStyle labelCanvasStyle = LabelCanvasStyle(width: 40 * 8,
-                    height: 30 * 8,);
-                  // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
+                  // // 创建一个 LabelCanvasStyle 对象
+                  LabelCanvasStyle canvasStyle = LabelCanvasStyle(
+                    width: 50 * 8,
+                    height: 30 * 8,
+                    posX: 48
+                  );
 
-                  LabelTextStyle labelTextStyle = LabelTextStyle(
-                    posX: 0,
-                    posY: 60,
-                    align: AlignLabel.CENTER,
-                    enableBold: true,
+                  await iminPrinter.labelInitCanvas(labelCanvasStyle: canvasStyle);
+
+                  LabelTextStyle textStyle = LabelTextStyle(
+                    posX: 30,
+                    posY: 30,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText("PACKED ON",labelTextStyle: textStyle);
+
+                  LabelTextStyle textStyle1 = LabelTextStyle(
+                    posX: 220,
+                    posY: 45,
                     textSize: 30,
                   );
-                  // // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelAddText("iMin Label Printer",labelTextStyle: labelTextStyle);
+                  await iminPrinter.labelAddText("Fuji Apple",labelTextStyle: textStyle1);
 
-                  // 创建一个 LabelCanvasStyle 对象
-                  LabelBarCodeStyle barCodeStyle = LabelBarCodeStyle(
-                    posX: 30,
-                    posY: 370,
-                    align: AlignLabel.CENTER,
-                    symbology: Symbology.CODABAR,
+                  LabelTextStyle textStyle2 = LabelTextStyle(
+                    posX: 27,
+                    posY: 60,
+                    textSize: 20,
+                  );
+                  await iminPrinter.labelAddText("Fuji Apple",labelTextStyle: textStyle2);
+
+                  LabelTextStyle textStyle3 = LabelTextStyle(
+                    posX: 185,
+                    posY: 85,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText("WT/lb                     1.70",labelTextStyle: textStyle3);
+
+                  LabelTextStyle textStyle4 = LabelTextStyle(
+                    posX: 185,
+                    posY: 113,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText("PRICE PER lb       9.98",labelTextStyle: textStyle4);
+
+
+                  LabelTextStyle textStyle5 = LabelTextStyle(
+                    posX: 18,
+                    posY: 130,
+                    textSize: 22,
+                  );
+                  await iminPrinter.labelAddText("TOTAL PRICE",labelTextStyle: textStyle5);
+
+
+                  LabelTextStyle textStyle6 = LabelTextStyle(
+                    posX: 10,
+                    posY: 190,
+                    textSize: 45,
+                    enableBold: true,
+                  );
+                  await iminPrinter.labelAddText("\$16.98",labelTextStyle: textStyle6);
+
+
+                  LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
+                    posX: 160,
+                    posY: 125,
+                    symbology: Symbology.CODE128,
                     dotWidth: 2,
-                    barHeight: 60,
-                    readable: HumanReadable.POS_TWO,
+                    barHeight: 50,
+                    readable: HumanReadable.POS_TWO
                   );
-                  // // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelAddBarCode("123456",barCodeStyle: barCodeStyle);
 
-                  LabelQrCodeStyle qrCodeStyle = LabelQrCodeStyle(
-                    posX: 290,
-                    posY: 145,
-                    size: 3,
-                    errorLevel: ErrorLevel.H,
+                  await iminPrinter.labelAddBarCode("{B123456",barCodeStyle: labelAddBarCode);
+
+
+                  LabelTextStyle textStyle7 = LabelTextStyle(
+                    posX: 12,
+                    posY: 227,
+                    textSize: 16,
                   );
-                  // // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelAddQrCode("12345658哈哈",qrCodeStyle: qrCodeStyle);
-
-                  LabelBitmapStyle addBitmapStyle = LabelBitmapStyle(
-
-                    posX: 290,
-                    posY: 30,
-                    width: 80,
-                    height: 80,
-
-                  );
-                  // // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelAddBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',addBitmapStyle: addBitmapStyle);
-
-                  LabelAreaStyle printBitmapStyle = LabelAreaStyle(
-                    style: Shape.PATH,
-                    posX: 1,
-                    posY: 40,
-                    endX: 50 * 8 - 1,
-                    endY: 60,
-                    thick: 2,
-                  );
-                  // // 调用 labelInitCanvas 方法
-                  await iminPrinter.labelAddArea(areaStyle: printBitmapStyle);
+                  await iminPrinter.labelAddText("Addr: Label Test Supermarket",labelTextStyle: textStyle7);
 
                   await iminPrinter.labelPrintCanvas(1);
 
@@ -542,17 +598,156 @@ class _NewHomeState extends State<NewHome> {
                 child: const Text('labelPrint'),
               ),
 
-              // OutlinedButton(
-              //   onPressed: () async {
-              //     LabelPrintBitmapStyle printBitmapStyle = LabelPrintBitmapStyle(
-              //       width: 50 * 8,
-              //       height: 30 * 8,
-              //     );
-              //     // // 调用 labelInitCanvas 方法
-              //     await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',printBitmapStyle: printBitmapStyle);
-              //   },
-              //   child: const Text('printLabelBitmap'),
-              // ),
+              /////////TEST   TEST    TEST ////////
+              OutlinedButton(
+                onPressed: () async {
+                  // LabelPrintBitmapStyle printBitmapStyle = LabelPrintBitmapStyle(
+                  //   width: 50 * 8,
+                  //   height: 30 * 8,
+                  // );
+                  // // // 调用 labelInitCanvas 方法
+                  // await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',printBitmapStyle: printBitmapStyle);
+                  LabelCanvasStyle canvasStyle = LabelCanvasStyle(
+                      width: 50 * 8,
+                      height: 60 * 8,
+                      posX: 48
+                  );
+
+                  await iminPrinter.labelInitCanvas(labelCanvasStyle: canvasStyle);
+
+                  LabelAreaStyle areaStyle = LabelAreaStyle(
+                      style:Shape.BOX,
+                      width:50*8-26,
+                      height:60*8-24,
+                      posX: 24,
+                      posY: 2,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle);
+
+                  LabelAreaStyle areaStyle1 = LabelAreaStyle(
+                      style:Shape.PATH,
+                      endX:50*8-4,
+                      endY:80,
+                      posX: 24,
+                      posY: 80,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle1);
+
+                  LabelAreaStyle areaStyle2 = LabelAreaStyle(
+                      style:Shape.PATH,
+                      endX:20*8,
+                      endY:80,
+                      posX: 20*8,
+                      posY: 2,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle2);
+
+
+                  LabelAreaStyle areaStyle3 = LabelAreaStyle(
+                      style:Shape.PATH,
+                      endX:50*8-4,
+                      endY:230,
+                      posX: 24,
+                      posY: 230,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle3);
+
+                  LabelAreaStyle areaStyle4 = LabelAreaStyle(
+                      style:Shape.PATH,
+                      endX:20*8,
+                      endY:310,
+                      posX: 20*8,
+                      posY: 232,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle4);
+
+
+                  LabelAreaStyle areaStyle5 = LabelAreaStyle(
+                      style:Shape.PATH,
+                      endX:50*8-4,
+                      endY:310,
+                      posX: 24,
+                      posY: 310,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle5);
+
+
+
+                  LabelTextStyle textStyle0 = LabelTextStyle(
+                      posX: 28,
+                      posY: 55,
+                      textSize: 15,
+                      enableBold: true
+                  );
+                  await iminPrinter.labelAddText("KWE",labelTextStyle: textStyle0);
+
+                  LabelTextStyle textStyle01 = LabelTextStyle(
+                      posX: 20 * 8 + 10,
+                      posY: 55,
+                      textSize: 15,
+                      enableBold: true
+                  );
+                  await iminPrinter.labelAddText("Shipper:XXXXX",labelTextStyle: textStyle01);
+
+
+                  LabelBarCodeStyle labelAddBarCode0 = LabelBarCodeStyle(
+                      posX: 40,
+                      posY: 100,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 2,
+                      barHeight: 80,
+                      readable: HumanReadable.POS_TWO
+                  );
+
+                  await iminPrinter.labelAddBarCode("{AHWB Barcode",barCodeStyle: labelAddBarCode0);
+
+                  LabelTextStyle textStyle2 = LabelTextStyle(
+                    posX: 28,
+                    posY: 260,
+                    textSize: 15,
+                    enableBold: true
+                  );
+                  await iminPrinter.labelAddText("Dest",labelTextStyle: textStyle2);
+
+                  LabelTextStyle textStyle3 = LabelTextStyle(
+                      posX: 28,
+                      posY: 300,
+                      textSize: 15);
+                  await iminPrinter.labelAddText("XXX",labelTextStyle: textStyle3);
+
+                  LabelTextStyle textStyle4 = LabelTextStyle(
+                      posX: 20 * 8 + 10,
+                      posY: 260,
+                      textSize: 15);
+                  await iminPrinter.labelAddText("Actual Pcs",labelTextStyle: textStyle4);
+
+                  LabelTextStyle textStyle5 = LabelTextStyle(
+                      posX: 20 * 8 + 10,
+                      posY: 300,
+                      textSize: 15);
+                  await iminPrinter.labelAddText("XX",labelTextStyle: textStyle5);
+
+                  LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
+                      posX: 110,
+                      posY: 330,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 1,
+                      barHeight: 80,
+                      readable: HumanReadable.POS_TWO
+                  );
+
+                  await iminPrinter.labelAddBarCode("{AJob ID Barcode",barCodeStyle: labelAddBarCode);
+
+                  await iminPrinter.labelPrintCanvas(1);
+                },
+                child: const Text('printLabelBitmap'),
+              ),
               OutlinedButton(
                 onPressed: () async {
                   // 创建一个 LabelCanvasStyle 对象
@@ -568,6 +763,75 @@ class _NewHomeState extends State<NewHome> {
 
                 },
                 child: const Text('getPrinterMode'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+
+                },
+                child: const Text('TEST test'),
+              ),
+
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  // await iminPrinter.printSingleBitmap(
+                  //     'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+                  //     pictureStyle: IminPictureStyle(
+                  //       alignment: IminPrintAlign.center,
+                  //       width: 150,
+                  //       height: 50,
+                  //     ));
+                  // await iminPrinter.setTextBitmapSize(42);
+                  // await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
+                  // await iminPrinter.printTextBitmap('TEXT HHHHHHH');
+                  // await iminPrinter.printColumnsString(cols: [
+                  //   ColumnMaker(
+                  //       text: 'name',
+                  //       width: 1,
+                  //       fontSize: 26,
+                  //       align: IminPrintAlign.left),
+                  //   ColumnMaker(
+                  //       text: 'Apple',
+                  //       width: 1,
+                  //       fontSize: 26,
+                  //       align: IminPrintAlign.left),
+                  //   ColumnMaker(
+                  //       text: 'price',
+                  //       width: 1,
+                  //       fontSize: 26,
+                  //       align: IminPrintAlign.left),
+                  //   ColumnMaker(
+                  //       text: '25.95',
+                  //       width: 1,
+                  //       fontSize: 26,
+                  //       align: IminPrintAlign.right),
+                  // ]);
+                  // await iminPrinter.setTextBitmapSize(26);
+                  // await iminPrinter.setTextBitmapStyle(IminFontStyle.normal);
+                  // await iminPrinter.printTextBitmap('this all');
+
+                  await iminPrinter.setTextBitmapAntiWhite(true);
+                  // await iminPrinter.setTextBitmapLineSpacing(0.8);
+                  // await iminPrinter.setTextLineSpacing(2);
+                  await iminPrinter.printTextBitmap('this is setTextBitmapAntiWhite');
+                  await iminPrinter.setTextBitmapAntiWhite(false);
+                  //
+                  // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
+                  //
+                  // await iminPrinter.printTextBitmap('this all');
+                  //
+                  // await iminPrinter.printTextBitmap('this all');
+
+                  // await iminPrinter.printBarCode(IminBarcodeType.code39, '12345678',
+                  //    style: IminBarCodeStyle(
+                  //      align: IminPrintAlign.left,
+                  //      position: IminBarcodeTextPos.textBelow,
+                  //      height: 100,
+                  //      width: 2
+                  //    ));
+                },
+                child: const Text('printExamp lelabelPrint'),
               ),
             ],
           ),
