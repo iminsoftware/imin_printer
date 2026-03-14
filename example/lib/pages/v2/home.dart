@@ -116,17 +116,17 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('open CashBox'),
               ),
-              OutlinedButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const InfoPage(type: 'CashBox Info')),
-                  );
-                },
-                child: const Text('cashBox info'),
-              ),
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               const InfoPage(type: 'CashBox Info')),
+              //     );
+              //   },
+              //   child: const Text('cashBox info'),
+              // ),
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.printerSelfChecking();
