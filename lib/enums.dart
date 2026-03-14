@@ -2,16 +2,16 @@ library enums;
 
 // 打印机状态
 enum PrinterStatus {
-  initPrinterError('-1', 'Failed to initialize the printer!'),
-  normal('0', 'The printer is normally!'),
-  notPoweredOn('1', 'The printer is not connected or powered on!'),
-  notLibraryMatch('2', 'The printer and call library do not match'),
-  openPrintHead('3', 'Print head open!'),
-  cutterNotReset('4', 'The cutter is not reset!'),
-  overHeated('5', 'Overheated'),
+  initPrinterError('-1', 'Printer initialization failed!'),
+  normal('0', 'Printer is normal'),
+  notPoweredOn('1', 'Printer not connected or powered on!'),
+  notLibraryMatch('2', 'Printer and call library mismatch!'),
+  openPrintHead('3', 'Printer door is open!'),
+  cutterNotReset('4', 'Cutter not reset!'),
+  overHeated('5', 'Printer head overheated!'),
   blackLabelError('6', 'Black label error!'),
-  notPaperFeed('7', 'No Paper Feed'),
-  outOfPaper('8', 'Paper Running Out!'),
+  notPaperFeed('7', 'Paper missing!'),
+  outOfPaper('8', 'Paper is running out!'),
   otherError('99', 'Other errors!');
 
   const PrinterStatus(this.code, this.value);
