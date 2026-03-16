@@ -100,363 +100,379 @@ class _InfoPageState extends State<InfoPage> {
           widget.type.toString(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Table(
-          border: TableBorder.all(color: Colors.black, width: 1),
-          columnWidths: const {
-            0: FixedColumnWidth(160),
-            // 1: FlexColumnWidth(1),
-            // 2: FractionColumnWidth(0.5),
-            // 3: IntrinsicColumnWidth(flex: 0.2),
-            // 4: MaxColumnWidth(FlexColumnWidth(100.0), FractionColumnWidth(0.1))
-          },
-          children: widget.type.toString() == 'Printer Info'
-              ? <TableRow>[
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
+      body: RefreshIndicator(
+        onRefresh: widget.type == 'Printer Info'
+            ? getDevicePrinterInfo
+            : getOpenCashInfo,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 1),
+              columnWidths: const {
+                0: FixedColumnWidth(160),
+                // 1: FlexColumnWidth(1),
+                // 2: FractionColumnWidth(0.5),
+                // 3: IntrinsicColumnWidth(flex: 0.2),
+                // 4: MaxColumnWidth(FlexColumnWidth(100.0), FractionColumnWidth(0.1))
+              },
+              children: widget.type.toString() == 'Printer Info'
+                  ? <TableRow>[
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  'SerialNumber',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )),
+                        TableCell(
+                            child: Center(
                           child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'SerialNumber',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            padding: const EdgeInsets.all(10),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                  child: Text(printerSerialNumber.toString())),
                             ),
                           ),
-                        )),
-                    TableCell(
-                        child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
+                        ))
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
                           child: Center(
-                              child: Text(printerSerialNumber.toString())),
-                        ),
-                      ),
-                    ))
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'ModelName',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(child: Text(printerModelName.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'ThermalHead',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child:
-                            Center(child: Text(printerThermalHead.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'FirmwareVersion',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(printerFirmwareVersion.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PrintServiceVersion',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child:
-                            Center(child: Text(printServiceVersion.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'HardwareVersion',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(printerHardwareVersion.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'UsbPrinterVidPid',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(deviceUsbPrinterVidPid.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'UsbDevicesName',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(deviceUsbDevicesName.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PrinterDensity',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child:
-                            Center(child: Text(printerPrintDensity.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PaperDistance',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(
-                                '${devicePrinterPaperDistance.toString()}cm')),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PaperType',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(devicePrinterPaperType.toString())),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PrinterCutTimes',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(
-                                '${devicePrinterCutTimes?.toString() != "" ? devicePrinterCutTimes?.toString() : 0}n')),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'PrinterMode',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(devicePrinterMode.toString() != '0'
-                                ? 'Normal'
-                                : 'Normal')),
-                      ),
-                    ),
-                  ]),
-                ]
-              : <TableRow>[
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'Drawer Status',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'ModelName',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        )),
-                    TableCell(
-                        child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Center(child: Text(drawerStatus.toString())),
                         ),
-                      ),
-                    ))
-                  ]),
-                  TableRow(children: <Widget>[
-                    const TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
+                        TableCell(
                           child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'OpenDrawerTimes',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printerModelName.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'ThermalHead',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        )),
-                    TableCell(
-                        child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child:
-                              Center(child: Text(openDrawerTimes.toString())),
                         ),
-                      ),
-                    ))
-                  ]),
-                ],
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printerThermalHead.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'FirmwareVersion',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printerFirmwareVersion.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'PrintServiceVersion',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printServiceVersion.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'HardwareVersion',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printerHardwareVersion.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'UsbPrinterVidPid',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(deviceUsbPrinterVidPid.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'UsbDevicesName',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(deviceUsbDevicesName.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'PrinterDensity',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(printerPrintDensity.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'PaperDistance',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(
+                                    '${devicePrinterPaperDistance.toString()}')),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'PaperType',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(devicePrinterPaperType.toString())),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'PrinterCutTimes',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: Text(
+                                    '${devicePrinterCutTimes?.toString() != "" ? devicePrinterCutTimes?.toString() : 0}')),
+                          ),
+                        ),
+                      ]),
+                      // TableRow(children: <Widget>[
+                      //   const TableCell(
+                      //     verticalAlignment: TableCellVerticalAlignment.middle,
+                      //     child: Center(
+                      //       child: Padding(
+                      //         padding: EdgeInsets.all(10),
+                      //         child: Text(
+                      //           'PrinterMode',
+                      //           style: TextStyle(
+                      //               fontSize: 15, fontWeight: FontWeight.bold),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   TableCell(
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(10),
+                      //       child: Center(
+                      //           child: Text(devicePrinterMode.toString() != '0'
+                      //               ? 'Normal'
+                      //               : 'Normal')),
+                      //     ),
+                      //   ),
+                      // ]),
+                    ]
+                  : <TableRow>[
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  'Drawer Status',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )),
+                        TableCell(
+                            child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child:
+                                  Center(child: Text(drawerStatus.toString())),
+                            ),
+                          ),
+                        ))
+                      ]),
+                      TableRow(children: <Widget>[
+                        const TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  'OpenDrawerTimes',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )),
+                        TableCell(
+                            child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                  child: Text(openDrawerTimes.toString())),
+                            ),
+                          ),
+                        ))
+                      ]),
+                    ],
+            ),
+          ),
         ),
       ),
     );
