@@ -251,6 +251,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 break;
             case "printText":
                 String text = call.argument("text");
+                Log.e("IminPrinter", "text=====>" + text);
                 if (iminPrintUtils != null) {
                     iminPrintUtils.printText(text + "\n");
                 } else {

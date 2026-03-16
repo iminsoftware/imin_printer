@@ -159,10 +159,10 @@ class _HomeState extends State<Home> {
                   ElevatedButton(
                       onPressed: () async {
                         await iminPrinter.printSingleBitmap(
-                          'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
-                           pictureStyle: IminPictureStyle(
+                          'https://alburak.logsnx.com/files/AlBurakLH.png',
+                            pictureStyle: IminPictureStyle(
                               width: 250,
-                              height: 50,
+                              height: 80,
                             )
                         );
                         await iminPrinter.sendRAWDataHexStr("0A");
