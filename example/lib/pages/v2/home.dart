@@ -139,7 +139,7 @@ class _NewHomeState extends State<NewHome> {
                   debugPrint('escPos: $escPos');
 
                   await iminPrinter.sendRAWData(Uint8List.fromList(escPos));
-                    await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('sendRAWData'),
               ),
@@ -158,13 +158,14 @@ class _NewHomeState extends State<NewHome> {
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.partialCut();
-                    await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('partialCut'),
               ),
               OutlinedButton(
                 onPressed: () async {
-                  await iminPrinter.printTextBitmap("Ved byttemærke kan der byttes til andre produkter eller tilgodebevis.");
+                  await iminPrinter.printTextBitmap(
+                      "Ved byttemærke kan der byttes til andre produkter eller tilgodebevis.");
                   await iminPrinter.fullCut();
                   await iminPrinter.printAndFeedPaper(70);
                 },
@@ -190,7 +191,7 @@ class _NewHomeState extends State<NewHome> {
               OutlinedButton(
                 onPressed: () async {
                   Uint8List byte =
-                      await readFileBytes('assets/images/logp.png');
+                      await readFileBytes('assets/images/logo.png');
                   await iminPrinter.printSingleBitmapColorChart(byte,
                       pictureStyle: IminPictureStyle(
                         alignment: IminPrintAlign.center,
@@ -206,14 +207,14 @@ class _NewHomeState extends State<NewHome> {
                         height: 50,
                       ));
 
-                  Uint8List byte1 = await readFileBytes('assets/images/ic_test.jpg');
+                  Uint8List byte1 =
+                      await readFileBytes('assets/images/ic_test.jpg');
                   await iminPrinter.printSingleBitmap(byte1,
                       pictureStyle: IminPictureStyle(
                         alignment: IminPrintAlign.center,
                         width: 50,
                         height: 100,
                       ));
-
 
                   await iminPrinter.printAndFeedPaper(70);
                   await iminPrinter.printText('232323');
@@ -239,7 +240,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 250,
                         height: 30,
                       ));
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print multiBitmap'),
               ),
@@ -261,7 +262,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print bitmapColorChart'),
               ),
@@ -410,7 +411,7 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
-                   await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsText'),
               ),
@@ -462,7 +463,7 @@ class _NewHomeState extends State<NewHome> {
                         align: IminPrintAlign.right),
                   ]);
 
-                    await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsString'),
               ),
@@ -470,11 +471,10 @@ class _NewHomeState extends State<NewHome> {
                 onPressed: () async {
                   await iminPrinter.printQrCode('https://www.imin.sg',
                       qrCodeStyle: IminQrCodeStyle(
-                          errorCorrectionLevel:
-                              IminQrcodeCorrectionLevel.levelH,
-                          qrSize: 5,
-                         ));
-                           await iminPrinter.printAndFeedPaper(70);
+                        errorCorrectionLevel: IminQrcodeCorrectionLevel.levelH,
+                        qrSize: 5,
+                      ));
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print Qrcode'),
               ),
@@ -488,7 +488,7 @@ class _NewHomeState extends State<NewHome> {
                         text: 'www.google.com',
                       ),
                       doubleQRSize: 5);
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print DoubleQR'),
               ),
@@ -512,57 +512,60 @@ class _NewHomeState extends State<NewHome> {
               OutlinedButton(
                 onPressed: () async {
                   // // 创建一个 LabelCanvasStyle 对象
-                  LabelCanvasStyle canvasStyle = LabelCanvasStyle(
-                    width: 50 * 8,
-                    height: 30 * 8,
-                    posX: 48
-                  );
+                  LabelCanvasStyle canvasStyle =
+                      LabelCanvasStyle(width: 50 * 8, height: 30 * 8, posX: 48);
 
-                  await iminPrinter.labelInitCanvas(labelCanvasStyle: canvasStyle);
+                  await iminPrinter.labelInitCanvas(
+                      labelCanvasStyle: canvasStyle);
 
                   LabelTextStyle textStyle = LabelTextStyle(
                     posX: 30,
                     posY: 30,
                     textSize: 18,
                   );
-                  await iminPrinter.labelAddText("PACKED ON",labelTextStyle: textStyle);
+                  await iminPrinter.labelAddText("PACKED ON",
+                      labelTextStyle: textStyle);
 
                   LabelTextStyle textStyle1 = LabelTextStyle(
                     posX: 220,
                     posY: 45,
                     textSize: 30,
                   );
-                  await iminPrinter.labelAddText("Fuji Apple",labelTextStyle: textStyle1);
+                  await iminPrinter.labelAddText("Fuji Apple",
+                      labelTextStyle: textStyle1);
 
                   LabelTextStyle textStyle2 = LabelTextStyle(
                     posX: 27,
                     posY: 60,
                     textSize: 20,
                   );
-                  await iminPrinter.labelAddText("Fuji Apple",labelTextStyle: textStyle2);
+                  await iminPrinter.labelAddText("Fuji Apple",
+                      labelTextStyle: textStyle2);
 
                   LabelTextStyle textStyle3 = LabelTextStyle(
                     posX: 185,
                     posY: 85,
                     textSize: 18,
                   );
-                  await iminPrinter.labelAddText("WT/lb                     1.70",labelTextStyle: textStyle3);
+                  await iminPrinter.labelAddText(
+                      "WT/lb                     1.70",
+                      labelTextStyle: textStyle3);
 
                   LabelTextStyle textStyle4 = LabelTextStyle(
                     posX: 185,
                     posY: 113,
                     textSize: 18,
                   );
-                  await iminPrinter.labelAddText("PRICE PER lb       9.98",labelTextStyle: textStyle4);
-
+                  await iminPrinter.labelAddText("PRICE PER lb       9.98",
+                      labelTextStyle: textStyle4);
 
                   LabelTextStyle textStyle5 = LabelTextStyle(
                     posX: 18,
                     posY: 130,
                     textSize: 22,
                   );
-                  await iminPrinter.labelAddText("TOTAL PRICE",labelTextStyle: textStyle5);
-
+                  await iminPrinter.labelAddText("TOTAL PRICE",
+                      labelTextStyle: textStyle5);
 
                   LabelTextStyle textStyle6 = LabelTextStyle(
                     posX: 10,
@@ -570,30 +573,29 @@ class _NewHomeState extends State<NewHome> {
                     textSize: 45,
                     enableBold: true,
                   );
-                  await iminPrinter.labelAddText("\$16.98",labelTextStyle: textStyle6);
-
+                  await iminPrinter.labelAddText("\$16.98",
+                      labelTextStyle: textStyle6);
 
                   LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
-                    posX: 160,
-                    posY: 125,
-                    symbology: Symbology.CODE128,
-                    dotWidth: 2,
-                    barHeight: 50,
-                    readable: HumanReadable.POS_TWO
-                  );
+                      posX: 160,
+                      posY: 125,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 2,
+                      barHeight: 50,
+                      readable: HumanReadable.POS_TWO);
 
-                  await iminPrinter.labelAddBarCode("{B123456",barCodeStyle: labelAddBarCode);
-
+                  await iminPrinter.labelAddBarCode("{B123456",
+                      barCodeStyle: labelAddBarCode);
 
                   LabelTextStyle textStyle7 = LabelTextStyle(
                     posX: 12,
                     posY: 227,
                     textSize: 16,
                   );
-                  await iminPrinter.labelAddText("Addr: Label Test Supermarket",labelTextStyle: textStyle7);
+                  await iminPrinter.labelAddText("Addr: Label Test Supermarket",
+                      labelTextStyle: textStyle7);
 
                   await iminPrinter.labelPrintCanvas(1);
-
                 },
                 child: const Text('labelPrint'),
               ),
@@ -607,18 +609,16 @@ class _NewHomeState extends State<NewHome> {
                   // );
                   // // // 调用 labelInitCanvas 方法
                   // await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',printBitmapStyle: printBitmapStyle);
-                  LabelCanvasStyle canvasStyle = LabelCanvasStyle(
-                      width: 50 * 8,
-                      height: 60 * 8,
-                      posX: 48
-                  );
+                  LabelCanvasStyle canvasStyle =
+                      LabelCanvasStyle(width: 50 * 8, height: 60 * 8, posX: 48);
 
-                  await iminPrinter.labelInitCanvas(labelCanvasStyle: canvasStyle);
+                  await iminPrinter.labelInitCanvas(
+                      labelCanvasStyle: canvasStyle);
 
                   LabelAreaStyle areaStyle = LabelAreaStyle(
-                      style:Shape.BOX,
-                      width:50*8-26,
-                      height:60*8-24,
+                      style: Shape.BOX,
+                      width: 50 * 8 - 26,
+                      height: 60 * 8 - 24,
                       posX: 24,
                       posY: 2,
                       thick: 2);
@@ -626,9 +626,9 @@ class _NewHomeState extends State<NewHome> {
                   await iminPrinter.labelAddArea(areaStyle: areaStyle);
 
                   LabelAreaStyle areaStyle1 = LabelAreaStyle(
-                      style:Shape.PATH,
-                      endX:50*8-4,
-                      endY:80,
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 80,
                       posX: 24,
                       posY: 80,
                       thick: 2);
@@ -636,20 +636,19 @@ class _NewHomeState extends State<NewHome> {
                   await iminPrinter.labelAddArea(areaStyle: areaStyle1);
 
                   LabelAreaStyle areaStyle2 = LabelAreaStyle(
-                      style:Shape.PATH,
-                      endX:20*8,
-                      endY:80,
-                      posX: 20*8,
+                      style: Shape.PATH,
+                      endX: 20 * 8,
+                      endY: 80,
+                      posX: 20 * 8,
                       posY: 2,
                       thick: 2);
 
                   await iminPrinter.labelAddArea(areaStyle: areaStyle2);
 
-
                   LabelAreaStyle areaStyle3 = LabelAreaStyle(
-                      style:Shape.PATH,
-                      endX:50*8-4,
-                      endY:230,
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 230,
                       posX: 24,
                       posY: 230,
                       thick: 2);
@@ -657,44 +656,37 @@ class _NewHomeState extends State<NewHome> {
                   await iminPrinter.labelAddArea(areaStyle: areaStyle3);
 
                   LabelAreaStyle areaStyle4 = LabelAreaStyle(
-                      style:Shape.PATH,
-                      endX:20*8,
-                      endY:310,
-                      posX: 20*8,
+                      style: Shape.PATH,
+                      endX: 20 * 8,
+                      endY: 310,
+                      posX: 20 * 8,
                       posY: 232,
                       thick: 2);
 
                   await iminPrinter.labelAddArea(areaStyle: areaStyle4);
 
-
                   LabelAreaStyle areaStyle5 = LabelAreaStyle(
-                      style:Shape.PATH,
-                      endX:50*8-4,
-                      endY:310,
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 310,
                       posX: 24,
                       posY: 310,
                       thick: 2);
 
                   await iminPrinter.labelAddArea(areaStyle: areaStyle5);
 
-
-
                   LabelTextStyle textStyle0 = LabelTextStyle(
-                      posX: 28,
-                      posY: 55,
-                      textSize: 15,
-                      enableBold: true
-                  );
-                  await iminPrinter.labelAddText("KWE",labelTextStyle: textStyle0);
+                      posX: 28, posY: 55, textSize: 15, enableBold: true);
+                  await iminPrinter.labelAddText("KWE",
+                      labelTextStyle: textStyle0);
 
                   LabelTextStyle textStyle01 = LabelTextStyle(
                       posX: 20 * 8 + 10,
                       posY: 55,
                       textSize: 15,
-                      enableBold: true
-                  );
-                  await iminPrinter.labelAddText("Shipper:XXXXX",labelTextStyle: textStyle01);
-
+                      enableBold: true);
+                  await iminPrinter.labelAddText("Shipper:XXXXX",
+                      labelTextStyle: textStyle01);
 
                   LabelBarCodeStyle labelAddBarCode0 = LabelBarCodeStyle(
                       posX: 40,
@@ -702,36 +694,30 @@ class _NewHomeState extends State<NewHome> {
                       symbology: Symbology.CODE128,
                       dotWidth: 2,
                       barHeight: 80,
-                      readable: HumanReadable.POS_TWO
-                  );
+                      readable: HumanReadable.POS_TWO);
 
-                  await iminPrinter.labelAddBarCode("{AHWB Barcode",barCodeStyle: labelAddBarCode0);
+                  await iminPrinter.labelAddBarCode("{AHWB Barcode",
+                      barCodeStyle: labelAddBarCode0);
 
                   LabelTextStyle textStyle2 = LabelTextStyle(
-                    posX: 28,
-                    posY: 260,
-                    textSize: 15,
-                    enableBold: true
-                  );
-                  await iminPrinter.labelAddText("Dest",labelTextStyle: textStyle2);
+                      posX: 28, posY: 260, textSize: 15, enableBold: true);
+                  await iminPrinter.labelAddText("Dest",
+                      labelTextStyle: textStyle2);
 
-                  LabelTextStyle textStyle3 = LabelTextStyle(
-                      posX: 28,
-                      posY: 300,
-                      textSize: 15);
-                  await iminPrinter.labelAddText("XXX",labelTextStyle: textStyle3);
+                  LabelTextStyle textStyle3 =
+                      LabelTextStyle(posX: 28, posY: 300, textSize: 15);
+                  await iminPrinter.labelAddText("XXX",
+                      labelTextStyle: textStyle3);
 
                   LabelTextStyle textStyle4 = LabelTextStyle(
-                      posX: 20 * 8 + 10,
-                      posY: 260,
-                      textSize: 15);
-                  await iminPrinter.labelAddText("Actual Pcs",labelTextStyle: textStyle4);
+                      posX: 20 * 8 + 10, posY: 260, textSize: 15);
+                  await iminPrinter.labelAddText("Actual Pcs",
+                      labelTextStyle: textStyle4);
 
                   LabelTextStyle textStyle5 = LabelTextStyle(
-                      posX: 20 * 8 + 10,
-                      posY: 300,
-                      textSize: 15);
-                  await iminPrinter.labelAddText("XX",labelTextStyle: textStyle5);
+                      posX: 20 * 8 + 10, posY: 300, textSize: 15);
+                  await iminPrinter.labelAddText("XX",
+                      labelTextStyle: textStyle5);
 
                   LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
                       posX: 110,
@@ -739,10 +725,10 @@ class _NewHomeState extends State<NewHome> {
                       symbology: Symbology.CODE128,
                       dotWidth: 1,
                       barHeight: 80,
-                      readable: HumanReadable.POS_TWO
-                  );
+                      readable: HumanReadable.POS_TWO);
 
-                  await iminPrinter.labelAddBarCode("{AJob ID Barcode",barCodeStyle: labelAddBarCode);
+                  await iminPrinter.labelAddBarCode("{AJob ID Barcode",
+                      barCodeStyle: labelAddBarCode);
 
                   await iminPrinter.labelPrintCanvas(1);
                 },
@@ -760,14 +746,12 @@ class _NewHomeState extends State<NewHome> {
                       backgroundColor: Colors.red,
                       textColor: Colors.white,
                       fontSize: 16.0);
-
                 },
                 child: const Text('getPrinterMode'),
               ),
               OutlinedButton(
                 onPressed: () async {
                   // 创建一个 LabelCanvasStyle 对象
-
                 },
                 child: const Text('TEST test'),
               ),
@@ -814,7 +798,8 @@ class _NewHomeState extends State<NewHome> {
                   await iminPrinter.setTextBitmapAntiWhite(true);
                   // await iminPrinter.setTextBitmapLineSpacing(0.8);
                   // await iminPrinter.setTextLineSpacing(2);
-                  await iminPrinter.printTextBitmap('this is setTextBitmapAntiWhite');
+                  await iminPrinter
+                      .printTextBitmap('this is setTextBitmapAntiWhite');
                   await iminPrinter.setTextBitmapAntiWhite(false);
                   //
                   // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
