@@ -1,4 +1,6 @@
 # Changelog
+# 0.6.16 (2026/03/23)
+- Remove unused JAR files from libs directory to reduce package size (移除libs目录下未使用的JAR文件，减小包体积)
 # 0.6.15 (2026/03/23)
 - Optimize build.gradle, remove unnecessary dependencies (优化build.gradle，清除无用的依赖引用)
 # 0.6.14 (2025/09/13  14:42)
