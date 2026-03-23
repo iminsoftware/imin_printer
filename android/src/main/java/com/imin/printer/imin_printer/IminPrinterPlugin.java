@@ -128,6 +128,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                 } else {
                     Log.d(TAG, _context.getPackageName());
                     PrinterHelper.getInstance().initPrinter(_context.getPackageName(), null);
+                    result.success(true);
                 }
                 break;
             case "getPrinterStatus":
@@ -621,8 +622,12 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                                 int barCodeFullPosition = call.argument("position");
                                 int barCodeFullHeight = call.argument("height");
                                 int barCodeFullWidth = call.argument("width");
-                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeFullWidth, barCodeFullHeight, barCodeAlign, barCodeFullPosition, null);
+                                Log.d("IminPrinter:printBarCode", "barCodeContent000=:" + barCodeContent+" ,barCodeType=> "+barCodeType+"" +
+                                        " ,barCodeFullWidth=>"+barCodeFullWidth+" ,barCodeFullHeight=>"+barCodeFullHeight+" ,barCodeAlign=>"+barCodeAlign+" ,barCodeFullPosition=>"+barCodeFullPosition);
+                                PrinterHelper.getInstance().printBarCodeWithFull(barCodeContent, barCodeType, barCodeFullWidth, barCodeFullHeight,  barCodeFullPosition, barCodeAlign, null);
                             } else {
+                                Log.d("IminPrinter:printBarCode", "barCodeContent111=:" + barCodeContent+" ,barCodeType=> "+barCodeType+"" +
+                                        " ,barCodeAlign=>"+barCodeAlign);
                                 PrinterHelper.getInstance().printBarCodeWithAlign(barCodeContent, barCodeType, barCodeAlign, null);
                             }
                         }
