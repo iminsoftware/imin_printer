@@ -429,6 +429,7 @@ class _BarCodeSettingComponentState extends State<BarCodeSettingComponent> {
               value: IminBarcodeTextPos.textAbove,
               child: Text('Above the barcode'),
             ),
+
             DropdownMenuItem(
               value: IminBarcodeTextPos.textBelow,
               child: Text('Below the barcode'),

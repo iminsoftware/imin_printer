@@ -157,8 +157,9 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                  await iminPrinter.partialCut();
                   await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.partialCut();
+
                 },
                 child: const Text('partialCut'),
               ),
@@ -166,8 +167,10 @@ class _NewHomeState extends State<NewHome> {
                 onPressed: () async {
                   await iminPrinter.printTextBitmap(
                       "Ved byttemærke kan der byttes til andre produkter eller tilgodebevis.");
+
+                  await iminPrinter.printAndFeedPaper(100);
                   await iminPrinter.fullCut();
-                  await iminPrinter.printAndFeedPaper(70);
+
                 },
                 child: const Text('fullCut'),
               ),
@@ -749,16 +752,16 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('getPrinterMode'),
               ),
-              OutlinedButton(
-                onPressed: () async {
-                  // 创建一个 LabelCanvasStyle 对象
-                },
-                child: const Text('TEST test'),
-              ),
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     // 创建一个 LabelCanvasStyle 对象
+              //   },
+              //   child: const Text('TEST test'),
+              // ),
 
-              OutlinedButton(
-                onPressed: () async {
-                  // 创建一个 LabelCanvasStyle 对象
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     // 创建一个 LabelCanvasStyle 对象
                   // await iminPrinter.printSingleBitmap(
                   //     'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
                   //     pictureStyle: IminPictureStyle(
@@ -795,12 +798,12 @@ class _NewHomeState extends State<NewHome> {
                   // await iminPrinter.setTextBitmapStyle(IminFontStyle.normal);
                   // await iminPrinter.printTextBitmap('this all');
 
-                  await iminPrinter.setTextBitmapAntiWhite(true);
-                  // await iminPrinter.setTextBitmapLineSpacing(0.8);
-                  // await iminPrinter.setTextLineSpacing(2);
-                  await iminPrinter
-                      .printTextBitmap('this is setTextBitmapAntiWhite');
-                  await iminPrinter.setTextBitmapAntiWhite(false);
+                  // await iminPrinter.setTextBitmapAntiWhite(true);
+                  // // await iminPrinter.setTextBitmapLineSpacing(0.8);
+                  // // await iminPrinter.setTextLineSpacing(2);
+                  // await iminPrinter
+                  //     .printTextBitmap('this is setTextBitmapAntiWhite');
+                  // await iminPrinter.setTextBitmapAntiWhite(false);
                   //
                   // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
                   //
@@ -815,9 +818,9 @@ class _NewHomeState extends State<NewHome> {
                   //      height: 100,
                   //      width: 2
                   //    ));
-                },
-                child: const Text('printExamp lelabelPrint'),
-              ),
+              //   },
+              //   child: const Text('printExamp lelabelPrint'),
+              // ),
             ],
           ),
         )));
