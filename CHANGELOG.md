@@ -1,4 +1,6 @@
 # Changelog
+# 0.6.15 (2026/03/23)
+- Optimize build.gradle, remove unnecessary dependencies (优化build.gradle，清除无用的依赖引用)
 # 0.6.14 (2025/09/13  14:42)
 - Adaptation and compatibility with Android 15 适配兼容android15
 - Update Flutter plugin v0.6.14更新Flutter 插件v0.6.14
