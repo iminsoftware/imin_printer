@@ -1,4 +1,6 @@
 # Changelog
+# 0.6.17 (2026/03/24)
+- Fix initPrinter not returning result on SDK 2.0 (Android 15+), causing Flutter await to hang indefinitely (修复SDK 2.0模式下initPrinter未返回result导致Flutter端await永久挂起的问题)
 # 0.6.16 (2026/03/23)
 - Remove unused JAR files from libs directory to reduce package size (移除libs目录下未使用的JAR文件，减小包体积)
 # 0.6.15 (2026/03/23)
