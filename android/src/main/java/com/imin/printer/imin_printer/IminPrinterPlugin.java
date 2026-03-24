@@ -1276,15 +1276,23 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
                         Integer height1 = (Integer) labelCanvasStyleMap.get("height");
                         Integer posX = (Integer) labelCanvasStyleMap.get("posX");
                         Integer posY = (Integer) labelCanvasStyleMap.get("posY");
+                        Boolean enableReverse = (Boolean) labelCanvasStyleMap.get("enableReverse");
+                        Boolean enableMirror = (Boolean) labelCanvasStyleMap.get("enableMirror");
 
                         // 使用解析后的数据
                         Log.e("IminPrinter", "labelInitCanvas:" + width+" "+height1+" "+posX+" ,y= "+posY);
-                        PrinterHelper.getInstance().labelInitCanvas(LabelCanvasStyle.getCanvasStyle()
+                        LabelCanvasStyle canvasStyle = LabelCanvasStyle.getCanvasStyle()
                                 .setWidth(width)
                                 .setHeight(height1)
                                 .setPosX(posX)
-                                .setPosY(posY)
-                        );
+                                .setPosY(posY);
+                        if (enableReverse != null) {
+                            canvasStyle.setEnableReverse(enableReverse.booleanValue());
+                        }
+                        if (enableMirror != null) {
+                            canvasStyle.setEnableMirror(enableMirror.booleanValue());
+                        }
+                        PrinterHelper.getInstance().labelInitCanvas(canvasStyle);
                     }
                     result.success(true);
                 }
@@ -1649,6 +1657,530 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             }
 
                 break;
+
+            // ==================== 新增方法 ====================
+
+            // --- ESC/POS 字体控制 ---
+            case "setFontMultiple":
+                if (iminPrintUtils == null) {
+                    int wide = call.argument("wide");
+                    int high = call.argument("high");
+                    PrinterHelper.getInstance().setFontMultiple(wide, high);
+                }
+                result.success(true);
+                break;
+            case "setFontBold":
+                if (iminPrintUtils == null) {
+                    boolean bold = call.argument("bold");
+                    PrinterHelper.getInstance().setFontBold(bold);
+                }
+                result.success(true);
+                break;
+            case "setFontAntiWhite":
+                if (iminPrintUtils == null) {
+                    boolean fontAntiWhite = call.argument("antiWhite");
+                    PrinterHelper.getInstance().setFontAntiWhite(fontAntiWhite);
+                }
+                result.success(true);
+                break;
+            case "setFontItalic":
+                if (iminPrintUtils == null) {
+                    boolean italic = call.argument("italic");
+                    PrinterHelper.getInstance().setFontItalic(italic);
+                }
+                result.success(true);
+                break;
+            case "setFontUnderline":
+                if (iminPrintUtils == null) {
+                    int underline = call.argument("underline");
+                    PrinterHelper.getInstance().setFontUnderline(underline);
+                }
+                result.success(true);
+                break;
+            case "setFontRotate":
+                if (iminPrintUtils == null) {
+                    int rotate = call.argument("rotate");
+                    PrinterHelper.getInstance().setFontRotate(rotate);
+                }
+                result.success(true);
+                break;
+            case "setFontDirection":
+                if (iminPrintUtils == null) {
+                    int direction = call.argument("direction");
+                    PrinterHelper.getInstance().setFontDirection(direction);
+                }
+                result.success(true);
+                break;
+            case "setFontLineSpacing":
+                if (iminPrintUtils == null) {
+                    int fontSpace = call.argument("space");
+                    PrinterHelper.getInstance().setFontLineSpacing(fontSpace);
+                }
+                result.success(true);
+                break;
+            case "setFontChineseSpace":
+                if (iminPrintUtils == null) {
+                    int chsLeftSpace = call.argument("leftSpace");
+                    int chsRightSpace = call.argument("rightSpace");
+                    PrinterHelper.getInstance().setFontChineseSpace(chsLeftSpace, chsRightSpace);
+                }
+                result.success(true);
+                break;
+            case "setFontCharSpace":
+                if (iminPrintUtils == null) {
+                    int charSpace = call.argument("space");
+                    PrinterHelper.getInstance().setFontCharSpace(charSpace);
+                }
+                result.success(true);
+                break;
+            case "setFontChineseSize":
+                if (iminPrintUtils == null) {
+                    int chHeight = call.argument("height");
+                    int chWidth = call.argument("width");
+                    int chUnderLine = call.argument("underLine");
+                    int chineseType = call.argument("chineseType");
+                    PrinterHelper.getInstance().setFontChineseSize(chHeight, chWidth, chUnderLine, chineseType);
+                }
+                result.success(true);
+                break;
+            case "setFontCharSize":
+                if (iminPrintUtils == null) {
+                    int csHeight = call.argument("height");
+                    int csWidth = call.argument("width");
+                    int csUnderLine = call.argument("underLine");
+                    int asciiType = call.argument("asciiType");
+                    PrinterHelper.getInstance().setFontCharSize(csHeight, csWidth, csUnderLine, asciiType);
+                }
+                result.success(true);
+                break;
+            case "setFontChineseMode":
+                if (iminPrintUtils == null) {
+                    int chineseMode = call.argument("mode");
+                    PrinterHelper.getInstance().setFontChineseMode(chineseMode);
+                }
+                result.success(true);
+                break;
+            case "setFontCountryCode":
+                if (iminPrintUtils == null) {
+                    int country = call.argument("country");
+                    PrinterHelper.getInstance().setFontCountryCode(country);
+                }
+                result.success(true);
+                break;
+            case "getFontCountryCode":
+                if (iminPrintUtils == null) {
+                    List<String> countryList = PrinterHelper.getInstance().getFontCountryCode();
+                    result.success(countryList);
+                }
+                break;
+
+            // --- 文本打印补充 ---
+            case "printEscPosText":
+                if (iminPrintUtils == null) {
+                    String escText = call.argument("text");
+                    // 设置 ESC/POS 字体属性
+                    if (call.argument("widthMultiple") != null) {
+                        int wide = call.argument("widthMultiple");
+                        int high = call.argument("heightMultiple") != null ? (int) call.argument("heightMultiple") : 1;
+                        PrinterHelper.getInstance().setFontMultiple(wide, high);
+                    } else if (call.argument("heightMultiple") != null) {
+                        int high = call.argument("heightMultiple");
+                        PrinterHelper.getInstance().setFontMultiple(1, high);
+                    }
+                    if (call.argument("bold") != null) {
+                        boolean bold = call.argument("bold");
+                        PrinterHelper.getInstance().setFontBold(bold);
+                    }
+                    if (call.argument("italic") != null) {
+                        boolean italic = call.argument("italic");
+                        PrinterHelper.getInstance().setFontItalic(italic);
+                    }
+                    if (call.argument("antiWhite") != null) {
+                        boolean antiWhite = call.argument("antiWhite");
+                        PrinterHelper.getInstance().setFontAntiWhite(antiWhite);
+                    }
+                    if (call.argument("underline") != null) {
+                        int underline = call.argument("underline");
+                        PrinterHelper.getInstance().setFontUnderline(underline);
+                    }
+                    if (call.argument("lineSpacing") != null) {
+                        int lineSpacing = call.argument("lineSpacing");
+                        PrinterHelper.getInstance().setFontLineSpacing(lineSpacing);
+                    }
+                    if (call.argument("charSpace") != null) {
+                        int charSpace = call.argument("charSpace");
+                        PrinterHelper.getInstance().setFontCharSpace(charSpace);
+                    }
+                    if (call.argument("align") != null) {
+                        int align = call.argument("align");
+                        PrinterHelper.getInstance().setCodeAlignment(align);
+                    }
+                    // 打印文本
+                    PrinterHelper.getInstance().printText(escText + "\n", null);
+                }
+                result.success(true);
+                break;
+            case "printTextWithAli":
+                if (iminPrintUtils == null) {
+                    String textAli = call.argument("text");
+                    int textAlign = call.argument("align");
+                    PrinterHelper.getInstance().printTextWithAli(textAli, textAlign, null);
+                }
+                result.success(true);
+                break;
+            case "printTextWithEncode":
+                if (iminPrintUtils == null) {
+                    String textEncode = call.argument("text");
+                    String encodeStr = call.argument("encode");
+                    PrinterHelper.getInstance().printTextWithEncode(textEncode, encodeStr, null);
+                }
+                result.success(true);
+                break;
+
+            // --- 走纸/切纸补充 ---
+            case "printAndQuitPaper":
+                if (iminPrintUtils == null) {
+                    int quitValue = call.argument("value");
+                    PrinterHelper.getInstance().printAndQuitPaper(quitValue);
+                }
+                result.success(true);
+                break;
+            case "partialCutAndFeedPaper":
+                if (iminPrintUtils == null) {
+                    int partialLength = call.argument("length");
+                    PrinterHelper.getInstance().partialCutAndFeedPaper(partialLength);
+                }
+                result.success(true);
+                break;
+            case "fullCutAndFeedPaper":
+                if (iminPrintUtils == null) {
+                    int fullLength = call.argument("length");
+                    PrinterHelper.getInstance().fullCutAndFeedPaper(fullLength);
+                }
+                result.success(true);
+                break;
+
+            // --- 高级2D码打印 ---
+            case "print2DCode":
+                if (iminPrintUtils == null) {
+                    String code2dData = call.argument("data");
+                    int code2dSymbology = call.argument("symbology");
+                    int code2dModuleSize = call.argument("moduleSize");
+                    int code2dErrorLevel = call.argument("errorLevel");
+                    int code2dAlign = call.argument("align");
+                    PrinterHelper.getInstance().print2DCode(code2dData, code2dSymbology, code2dModuleSize, code2dErrorLevel, code2dAlign, null);
+                }
+                result.success(true);
+                break;
+            case "printPDF417":
+                if (iminPrintUtils == null) {
+                    String pdf417Data = call.argument("data");
+                    int pdf417Cols = call.argument("columns");
+                    int pdf417Rows = call.argument("rows");
+                    int pdf417ModuleW = call.argument("moduleWidth");
+                    int pdf417RowH = call.argument("rowHeight");
+                    int pdf417Error = call.argument("errorLevel");
+                    int pdf417Options = call.argument("selectOptions");
+                    int pdf417Align = call.argument("align");
+                    PrinterHelper.getInstance().printPDF417(pdf417Data, pdf417Cols, pdf417Rows, pdf417ModuleW, pdf417RowH, pdf417Error, pdf417Options, pdf417Align, null);
+                }
+                result.success(true);
+                break;
+            case "printMaxiCode":
+                if (iminPrintUtils == null) {
+                    String maxiData = call.argument("data");
+                    int maxiMode = call.argument("modeType");
+                    int maxiAlign = call.argument("align");
+                    PrinterHelper.getInstance().printMaxiCode(maxiData, maxiMode, maxiAlign, null);
+                }
+                result.success(true);
+                break;
+            case "printAztecCode":
+                if (iminPrintUtils == null) {
+                    String aztecData = call.argument("data");
+                    int aztecMode = call.argument("modeType");
+                    int aztecLayers = call.argument("dataLayers");
+                    int aztecModuleSize = call.argument("moduleSize");
+                    int aztecError = call.argument("errorLevel");
+                    int aztecAlign = call.argument("align");
+                    PrinterHelper.getInstance().printAztecCode(aztecData, aztecMode, aztecLayers, aztecModuleSize, aztecError, aztecAlign, null);
+                }
+                result.success(true);
+                break;
+            case "printDataMatrix":
+                if (iminPrintUtils == null) {
+                    String dmData = call.argument("data");
+                    int dmSymbolType = call.argument("symbolType");
+                    int dmCols = call.argument("columns");
+                    int dmRows = call.argument("rows");
+                    int dmModuleSize = call.argument("moduleSize");
+                    int dmAlign = call.argument("align");
+                    PrinterHelper.getInstance().printDataMatrix(dmData, dmSymbolType, dmCols, dmRows, dmModuleSize, dmAlign, null);
+                }
+                result.success(true);
+                break;
+
+            // --- 通用 Key-Value 接口 ---
+            case "setPrinterAction":
+                if (iminPrintUtils == null) {
+                    String actionKey = call.argument("keyName");
+                    String actionValue = call.argument("keyValue");
+                    PrinterHelper.getInstance().setPrinterAction(actionKey, actionValue, new IPrinterCallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+                            result.success(code == 1);
+                        }
+                    });
+                }
+                break;
+            case "setPrinterActionList":
+                if (iminPrintUtils == null) {
+                    String actionListKey = call.argument("keyName");
+                    List<String> actionListValue = call.argument("keyValue");
+                    PrinterHelper.getInstance().setPrinterActionList(actionListKey, actionListValue, new IPrinterCallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+                            result.success(code == 1);
+                        }
+                    });
+                }
+                break;
+            case "getPrinterInfo":
+                if (iminPrintUtils == null) {
+                    String infoKey = call.argument("keyName");
+                    PrinterHelper.getInstance().getPrinterInfo(infoKey, new IPrinterCallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+            case "getPrinterInfoList":
+                if (iminPrintUtils == null) {
+                    String infoListKey = call.argument("keyName");
+                    List<String> infoList = PrinterHelper.getInstance().getPrinterInfoList(infoListKey);
+                    result.success(infoList);
+                }
+                break;
+            case "getPrinterInfoString":
+                if (iminPrintUtils == null) {
+                    String infoStrKey = call.argument("keyName");
+                    String infoStr = PrinterHelper.getInstance().getPrinterInfoString(infoStrKey);
+                    result.success(infoStr);
+                }
+                break;
+
+            // --- 打印机信息/设置补充 ---
+            case "getPrinterTemperature":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterTemperature(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+            case "supportCashBox":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().supportCashBox());
+                }
+                break;
+            case "getPrinterPatternList":
+                if (iminPrintUtils == null) {
+                    List<String> patternList = PrinterHelper.getInstance().getPrinterPatternList();
+                    result.success(patternList);
+                }
+                break;
+            case "getPrinterSupplierName":
+                if (iminPrintUtils == null) {
+                    result.success(PrinterHelper.getInstance().getPrinterSupplierName());
+                }
+                break;
+            case "getPrinterKnifeReset":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().getPrinterKnifeReset(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+
+            // --- 事务打印带回调 ---
+            case "commitPrinterBufferWithCallback":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().commitPrinterBuffer(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);
+                        }
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+            case "exitPrinterBufferWithCallback":
+                if (iminPrintUtils == null) {
+                    boolean exitCommit = call.argument("isCommit");
+                    PrinterHelper.getInstance().exitPrinterBuffer(exitCommit, new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);
+                        }
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+
+            // --- 标签打印补充 ---
+            case "labelPrintBitmap":
+                if (iminPrintUtils == null) {
+                    try {
+                        byte[] labelBmpBytes = call.argument("bitmap");
+                        int labelBmpW = call.argument("width");
+                        int labelBmpH = call.argument("height");
+                        Bitmap labelBmp = BitmapFactory.decodeByteArray(labelBmpBytes, 0, labelBmpBytes.length);
+                        PrinterHelper.getInstance().labelPrintBitmap(labelBmp, labelBmpW, labelBmpH, null);
+                        result.success(true);
+                    } catch (Exception e) {
+                        Log.e("IminPrinter", "labelPrintBitmap:" + e.getMessage());
+                        result.success(false);
+                    }
+                }
+                break;
+            case "labelGapSensorCalibration":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().labelGapSensorCalibration(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {
+                            result.success(s);
+                        }
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+            case "labelSetPrinterMode":
+                if (iminPrintUtils == null) {
+                    int labelMode = call.argument("mode");
+                    PrinterHelper.getInstance().labelSetPrinterMode(labelMode);
+                    result.success(true);
+                }
+                break;
+            case "labelQueryInfo":
+                if (iminPrintUtils == null) {
+                    String labelInfoCode = call.argument("code");
+                    PrinterHelper.getInstance().labelQueryInfoCallback(
+                        com.imin.printer.enums.LabelInfo.valueOf(labelInfoCode),
+                        new INeoPrinterCallback() {
+                            @Override
+                            public void onRunResult(boolean isSuccess) throws RemoteException {}
+                            @Override
+                            public void onReturnString(String s) throws RemoteException {
+                                result.success(s);
+                            }
+                            @Override
+                            public void onRaiseException(int code, String msg) throws RemoteException {}
+                            @Override
+                            public void onPrintResult(int code, String msg) throws RemoteException {}
+                        });
+                }
+                break;
+            case "labelRestoreDefaults":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().labelRestoreDefaults(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {
+                            result.success(isSuccess);
+                        }
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {}
+                    });
+                }
+                break;
+            case "setLabelContinuousPrint":
+                if (iminPrintUtils == null) {
+                    boolean labelContinuous = call.argument("enable");
+                    PrinterHelper.getInstance().setLabelContinuousPrint(labelContinuous);
+                    result.success(true);
+                }
+                break;
+
+            // --- 状态监听 ---
+            case "regesiterPrinterStatusCallback":
+                if (iminPrintUtils == null) {
+                    PrinterHelper.getInstance().regesiterPrinterStatusCallback(new INeoPrinterCallback() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) throws RemoteException {}
+                        @Override
+                        public void onReturnString(String s) throws RemoteException {}
+                        @Override
+                        public void onRaiseException(int code, String msg) throws RemoteException {}
+                        @Override
+                        public void onPrintResult(int code, String msg) throws RemoteException {
+                            if (eventSink != null) {
+                                Map<String, Object> statusResult = new HashMap<>();
+                                statusResult.put("status", code);
+                                statusResult.put("msg", msg);
+                                statusResult.put("action", "printer_status_callback");
+                                eventSink.success(statusResult);
+                            }
+                        }
+                    });
+                    result.success(true);
+                }
+                break;
+
             default:
                 result.notImplemented();
                 break;

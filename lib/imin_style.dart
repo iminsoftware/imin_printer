@@ -124,7 +124,8 @@ class LabelAreaStyle {
   // Factory method to create an instance from a Map
   factory LabelAreaStyle.fromMap(Map<String, dynamic> map) {
     return LabelAreaStyle(
-      style: Shape.values.firstWhere((e) => e.toString() == 'Shape.${map['style']}'),
+      style: Shape.values
+          .firstWhere((e) => e.toString() == 'Shape.${map['style']}'),
       width: map['width'],
       height: map['height'],
       posX: map['posX'],
@@ -170,7 +171,8 @@ class LabelBarCodeStyle {
       'dotWidth': dotWidth,
       'barHeight': barHeight,
       'readable': readable.toString().split('.').last, // Convert enum to string
-      'symbology': symbology.toString().split('.').last, // Convert enum to string
+      'symbology':
+          symbology.toString().split('.').last, // Convert enum to string
       'align': align.toString().split('.').last, // Convert enum to string
       'rotate': rotate.toString().split('.').last, // Convert enum to string
       'width': width,
@@ -185,15 +187,18 @@ class LabelBarCodeStyle {
       posY: map['posY'],
       dotWidth: map['dotWidth'],
       barHeight: map['barHeight'],
-      readable: HumanReadable.values.firstWhere((e) => e.toString() == 'HumanReadable.${map['readable']}'),
-      symbology: Symbology.values.firstWhere((e) => e.toString() == 'Symbology.${map['symbology']}'),
-      align: AlignLabel.values.firstWhere((e) => e.toString() == 'AlignLabel.${map['align']}'),
-      rotate: Rotate.values.firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
+      readable: HumanReadable.values.firstWhere(
+          (e) => e.toString() == 'HumanReadable.${map['readable']}'),
+      symbology: Symbology.values
+          .firstWhere((e) => e.toString() == 'Symbology.${map['symbology']}'),
+      align: AlignLabel.values
+          .firstWhere((e) => e.toString() == 'AlignLabel.${map['align']}'),
+      rotate: Rotate.values
+          .firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
       width: map['width'],
       height: map['height'],
     );
   }
-
 }
 
 class LabelBitmapStyle {
@@ -219,7 +224,8 @@ class LabelBitmapStyle {
     return {
       'posX': posX,
       'posY': posY,
-      'algorithm': algorithm.toString().split('.').last, // Convert enum to string
+      'algorithm':
+          algorithm.toString().split('.').last, // Convert enum to string
       'value': value,
       'width': width,
       'height': height,
@@ -231,7 +237,8 @@ class LabelBitmapStyle {
     return LabelBitmapStyle(
       posX: map['posX'],
       posY: map['posY'],
-      algorithm: ImageAlgorithm.values.firstWhere((e) => e.toString() == 'ImageAlgorithm.${map['algorithm']}'),
+      algorithm: ImageAlgorithm.values.firstWhere(
+          (e) => e.toString() == 'ImageAlgorithm.${map['algorithm']}'),
       value: map['value'],
       width: map['width'],
       height: map['height'],
@@ -239,18 +246,21 @@ class LabelBitmapStyle {
   }
 }
 
-class LabelCanvasStyle{
+class LabelCanvasStyle {
   int? width;
   int? height;
   int? posX;
   int? posY;
-
+  bool? enableReverse;
+  bool? enableMirror;
 
   LabelCanvasStyle({
     this.width = 50,
     this.height = 50,
     this.posX = 0,
     this.posY = 0,
+    this.enableReverse = false,
+    this.enableMirror = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -259,6 +269,8 @@ class LabelCanvasStyle{
       'height': height,
       'posX': posX,
       'posY': posY,
+      'enableReverse': enableReverse,
+      'enableMirror': enableMirror,
     };
   }
 
@@ -268,11 +280,13 @@ class LabelCanvasStyle{
       height: map['height'],
       posX: map['posX'],
       posY: map['posY'],
+      enableReverse: map['enableReverse'],
+      enableMirror: map['enableMirror'],
     );
   }
 }
 
-class LabelQrCodeStyle{
+class LabelQrCodeStyle {
   int? posX;
   int? posY;
   int? size;
@@ -298,7 +312,8 @@ class LabelQrCodeStyle{
       'posX': posX,
       'posY': posY,
       'size': size,
-      'errorLevel': errorLevel.toString().split('.').last, // Convert enum to string
+      'errorLevel':
+          errorLevel.toString().split('.').last, // Convert enum to string
       'rotate': rotate.toString().split('.').last, // Convert enum to string
       'width': width,
       'height': height,
@@ -311,15 +326,17 @@ class LabelQrCodeStyle{
       posX: map['posX'],
       posY: map['posY'],
       size: map['size'],
-      errorLevel: ErrorLevel.values.firstWhere((e) => e.toString() == 'ErrorLevel.${map['errorLevel']}'),
-      rotate: Rotate.values.firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
+      errorLevel: ErrorLevel.values
+          .firstWhere((e) => e.toString() == 'ErrorLevel.${map['errorLevel']}'),
+      rotate: Rotate.values
+          .firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
       width: map['width'],
       height: map['height'],
     );
   }
 }
 
-class LabelTextStyle{
+class LabelTextStyle {
   int? posX;
   int? posY;
   int? textSize;
@@ -386,8 +403,10 @@ class LabelTextStyle{
       textHeightRatio: map['textHeightRatio'],
       width: map['width'],
       height: map['height'],
-      align: AlignLabel.values.firstWhere((e) => e.toString() == 'AlignLabel.${map['align']}'),
-      rotate: Rotate.values.firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
+      align: AlignLabel.values
+          .firstWhere((e) => e.toString() == 'AlignLabel.${map['align']}'),
+      rotate: Rotate.values
+          .firstWhere((e) => e.toString() == 'Rotate.${map['rotate']}'),
       textSpace: map['textSpace'],
       enableBold: map['enableBold'],
       enableUnderline: map['enableUnderline'],
@@ -398,8 +417,7 @@ class LabelTextStyle{
   }
 }
 
-
-class LabelPrintBitmapStyle{
+class LabelPrintBitmapStyle {
   int? width;
   int? height;
 
@@ -421,7 +439,45 @@ class LabelPrintBitmapStyle{
   }
 }
 
+/// ESC/POS 文本样式（2.0 SDK 专属）
+/// 用于 printEscPosText 方法，直接映射 ESC/POS 字体指令
+class IminEscPosTextStyle {
+  /// 字体倍宽 1-8
+  int? widthMultiple;
 
+  /// 字体倍高 1-8
+  int? heightMultiple;
 
+  /// 加粗
+  bool? bold;
 
+  /// 斜体
+  bool? italic;
 
+  /// 反白
+  bool? antiWhite;
+
+  /// 下划线 0=无 1=单线 2=双线
+  int? underline;
+
+  /// 行间距
+  int? lineSpacing;
+
+  /// 字符间距
+  int? charSpace;
+
+  /// 对齐方式
+  IminPrintAlign? align;
+
+  IminEscPosTextStyle({
+    this.widthMultiple,
+    this.heightMultiple,
+    this.bold,
+    this.italic,
+    this.antiWhite,
+    this.underline,
+    this.lineSpacing,
+    this.charSpace,
+    this.align,
+  });
+}

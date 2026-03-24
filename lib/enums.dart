@@ -125,34 +125,17 @@ enum IminBarCodeToBitmapFormat {
   upcE,
   upcEanExteNsion;
 }
+
 enum ImageAlgorithm {
   BINARIZATION,
   DITHERING;
 }
 
-enum Shape {
-  RECT_FILL,
-  RECT_WHITE,
-  RECT_REVERSE,
-  BOX,
-  CIRCLE,
-  OVAL,
-  PATH
-}
+enum Shape { RECT_FILL, RECT_WHITE, RECT_REVERSE, BOX, CIRCLE, OVAL, PATH }
 
-enum Rotate {
-  ROTATE_0,
-  ROTATE_90,
-  ROTATE_180,
-  ROTATE_270
-}
+enum Rotate { ROTATE_0, ROTATE_90, ROTATE_180, ROTATE_270 }
 
-enum ErrorLevel {
-  L,
-  M,
-  Q,
-  H
-}
+enum ErrorLevel { L, M, Q, H }
 
 enum Symbology {
   UPCA,
@@ -164,19 +147,28 @@ enum Symbology {
   CODABAR,
   CODE93,
   CODE128;
-
 }
 
-enum AlignLabel {
-  DEFAULT,
-  LEFT,
-  CENTER,
-  RIGHT
-}
+enum AlignLabel { DEFAULT, LEFT, CENTER, RIGHT }
 
-enum HumanReadable {
-  HIDE,
-  POS_ONE,
-  POS_TWO,
-  POS_THREE
+enum HumanReadable { HIDE, POS_ONE, POS_TWO, POS_THREE }
+
+/// Label info query types for labelQueryInfo
+enum IminLabelInfo {
+  MODEL,
+  VERSION,
+  HEIGHT,
+  DENSITY,
+  SPEED,
+  MODE,
+  GAP_OFFSET,
+  PRINT_LENGTH,
+  NO_PAPER_THRESHOLD,
+  HAS_PAPER_THRESHOLD,
+  THRESHOLD_ADJUSTMENT,
+  ORIGINAL_STATUS,
+  LABEL_STATUS,
+  PAPER_STATUS,
+  HOST_RESULT,
+  GAP_ERROR
 }

@@ -11,6 +11,7 @@ class IminPrinter {
   Future<String?> getSdkVersion() {
     return IminPrinterPlatform.instance.getSdkVersion();
   }
+
   Stream<dynamic> get receiveBroadcastStream {
     return IminPrinterPlatform.instance.initEventChannel();
   }
@@ -636,7 +637,7 @@ class IminPrinter {
   }
 
   Future<void> setTextBitmapLetterSpacing(double space) {
-    return IminPrinterPlatform.instance.setTextBitmapLineSpacing(space);
+    return IminPrinterPlatform.instance.setTextBitmapLetterSpacing(space);
   }
 
   Future<void> setTextBitmapAntiWhite(bool antiWhite) {
@@ -731,35 +732,43 @@ class IminPrinter {
 
   ///print Label api
   Future<void> labelInitCanvas({LabelCanvasStyle? labelCanvasStyle}) {
-    return IminPrinterPlatform.instance.labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
+    return IminPrinterPlatform.instance
+        .labelInitCanvas(labelCanvasStyle: labelCanvasStyle);
   }
 
-  Future<void> labelAddText(String text,{ LabelTextStyle? labelTextStyle}) {
-    return IminPrinterPlatform.instance.labelAddText(text,labelTextStyle: labelTextStyle);
+  Future<void> labelAddText(String text, {LabelTextStyle? labelTextStyle}) {
+    return IminPrinterPlatform.instance
+        .labelAddText(text, labelTextStyle: labelTextStyle);
   }
 
-  Future<void> labelAddBarCode(String barCode,{ LabelBarCodeStyle? barCodeStyle}) {
-    return IminPrinterPlatform.instance.labelAddBarCode(barCode,barCodeStyle: barCodeStyle);
+  Future<void> labelAddBarCode(String barCode,
+      {LabelBarCodeStyle? barCodeStyle}) {
+    return IminPrinterPlatform.instance
+        .labelAddBarCode(barCode, barCodeStyle: barCodeStyle);
   }
 
-  Future<void> labelAddQrCode(String qrCode,{ LabelQrCodeStyle? qrCodeStyle}) {
-    return IminPrinterPlatform.instance.labelAddQrCode(qrCode,qrCodeStyle: qrCodeStyle);
+  Future<void> labelAddQrCode(String qrCode, {LabelQrCodeStyle? qrCodeStyle}) {
+    return IminPrinterPlatform.instance
+        .labelAddQrCode(qrCode, qrCodeStyle: qrCodeStyle);
   }
 
-  Future<void> labelAddArea({ LabelAreaStyle? areaStyle}) {
+  Future<void> labelAddArea({LabelAreaStyle? areaStyle}) {
     return IminPrinterPlatform.instance.labelAddArea(areaStyle: areaStyle);
   }
 
-  Future<void> labelAddBitmap(dynamic img,{ LabelBitmapStyle? addBitmapStyle}) {
-    return IminPrinterPlatform.instance.labelAddBitmap(img,addBitmapStyle: addBitmapStyle);
+  Future<void> labelAddBitmap(dynamic img, {LabelBitmapStyle? addBitmapStyle}) {
+    return IminPrinterPlatform.instance
+        .labelAddBitmap(img, addBitmapStyle: addBitmapStyle);
   }
 
   Future<void> labelPrintCanvas(int printCount) {
     return IminPrinterPlatform.instance.labelPrintCanvas(printCount);
   }
 
-  Future<void> printLabelBitmap(dynamic img,{ LabelPrintBitmapStyle? printBitmapStyle}) {
-    return IminPrinterPlatform.instance.printLabelBitmap(img,printBitmapStyle: printBitmapStyle);
+  Future<void> printLabelBitmap(dynamic img,
+      {LabelPrintBitmapStyle? printBitmapStyle}) {
+    return IminPrinterPlatform.instance
+        .printLabelBitmap(img, printBitmapStyle: printBitmapStyle);
   }
 
   Future<void> labelLearning() {
@@ -770,4 +779,221 @@ class IminPrinter {
     return IminPrinterPlatform.instance.setPrintModel(printModel);
   }
 
+  // ==================== 新增方法 ====================
+
+  // --- ESC/POS 字体控制 ---
+  Future<void> setFontMultiple(int wide, int high) {
+    return IminPrinterPlatform.instance.setFontMultiple(wide, high);
+  }
+
+  Future<void> setFontBold(bool bold) {
+    return IminPrinterPlatform.instance.setFontBold(bold);
+  }
+
+  Future<void> setFontAntiWhite(bool antiWhite) {
+    return IminPrinterPlatform.instance.setFontAntiWhite(antiWhite);
+  }
+
+  Future<void> setFontItalic(bool italic) {
+    return IminPrinterPlatform.instance.setFontItalic(italic);
+  }
+
+  Future<void> setFontUnderline(int underline) {
+    return IminPrinterPlatform.instance.setFontUnderline(underline);
+  }
+
+  Future<void> setFontRotate(int rotate) {
+    return IminPrinterPlatform.instance.setFontRotate(rotate);
+  }
+
+  Future<void> setFontDirection(int direction) {
+    return IminPrinterPlatform.instance.setFontDirection(direction);
+  }
+
+  Future<void> setFontLineSpacing(int space) {
+    return IminPrinterPlatform.instance.setFontLineSpacing(space);
+  }
+
+  Future<void> setFontChineseSpace(int leftSpace, int rightSpace) {
+    return IminPrinterPlatform.instance
+        .setFontChineseSpace(leftSpace, rightSpace);
+  }
+
+  Future<void> setFontCharSpace(int space) {
+    return IminPrinterPlatform.instance.setFontCharSpace(space);
+  }
+
+  Future<void> setFontChineseSize(
+      int height, int width, int underLine, int chineseType) {
+    return IminPrinterPlatform.instance
+        .setFontChineseSize(height, width, underLine, chineseType);
+  }
+
+  Future<void> setFontCharSize(
+      int height, int width, int underLine, int asciiType) {
+    return IminPrinterPlatform.instance
+        .setFontCharSize(height, width, underLine, asciiType);
+  }
+
+  Future<void> setFontChineseMode(int mode) {
+    return IminPrinterPlatform.instance.setFontChineseMode(mode);
+  }
+
+  Future<void> setFontCountryCode(int country) {
+    return IminPrinterPlatform.instance.setFontCountryCode(country);
+  }
+
+  Future<List<String>?> getFontCountryCode() {
+    return IminPrinterPlatform.instance.getFontCountryCode();
+  }
+
+  // --- 文本打印补充 ---
+  Future<void> printTextWithAli(String text, int align) {
+    return IminPrinterPlatform.instance.printTextWithAli(text, align);
+  }
+
+  /// 2.0 SDK 专属：使用 ESC/POS 指令打印文本并设置字体样式
+  ///
+  /// {@tool snippet}
+  ///  ```dart
+  /// iminPrinter.printEscPosText('加粗大字',
+  ///   style: IminEscPosTextStyle(
+  ///     bold: true,
+  ///     widthMultiple: 2,
+  ///     heightMultiple: 2,
+  ///     align: IminPrintAlign.center,
+  ///   ),
+  /// );
+  /// ```
+  /// {@end-tool}
+  Future<void> printEscPosText(String text, {IminEscPosTextStyle? style}) {
+    return IminPrinterPlatform.instance.printEscPosText(text, style: style);
+  }
+
+  Future<void> printTextWithEncode(String text, String encode) {
+    return IminPrinterPlatform.instance.printTextWithEncode(text, encode);
+  }
+
+  // --- 走纸/切纸补充 ---
+  Future<void> printAndQuitPaper(int value) {
+    return IminPrinterPlatform.instance.printAndQuitPaper(value);
+  }
+
+  Future<void> partialCutAndFeedPaper(int length) {
+    return IminPrinterPlatform.instance.partialCutAndFeedPaper(length);
+  }
+
+  Future<void> fullCutAndFeedPaper(int length) {
+    return IminPrinterPlatform.instance.fullCutAndFeedPaper(length);
+  }
+
+  // --- 高级2D码 ---
+  Future<void> print2DCode(
+      String data, int symbology, int moduleSize, int errorLevel, int align) {
+    return IminPrinterPlatform.instance
+        .print2DCode(data, symbology, moduleSize, errorLevel, align);
+  }
+
+  Future<void> printPDF417(String data, int columns, int rows, int moduleWidth,
+      int rowHeight, int errorLevel, int selectOptions, int align) {
+    return IminPrinterPlatform.instance.printPDF417(data, columns, rows,
+        moduleWidth, rowHeight, errorLevel, selectOptions, align);
+  }
+
+  Future<void> printMaxiCode(String data, int modeType, int align) {
+    return IminPrinterPlatform.instance.printMaxiCode(data, modeType, align);
+  }
+
+  Future<void> printAztecCode(String data, int modeType, int dataLayers,
+      int moduleSize, int errorLevel, int align) {
+    return IminPrinterPlatform.instance.printAztecCode(
+        data, modeType, dataLayers, moduleSize, errorLevel, align);
+  }
+
+  Future<void> printDataMatrix(String data, int symbolType, int columns,
+      int rows, int moduleSize, int align) {
+    return IminPrinterPlatform.instance
+        .printDataMatrix(data, symbolType, columns, rows, moduleSize, align);
+  }
+
+  // --- 通用 Key-Value 接口 ---
+  Future<bool?> setPrinterAction(String keyName, String keyValue) {
+    return IminPrinterPlatform.instance.setPrinterAction(keyName, keyValue);
+  }
+
+  Future<bool?> setPrinterActionList(String keyName, List<String> keyValue) {
+    return IminPrinterPlatform.instance.setPrinterActionList(keyName, keyValue);
+  }
+
+  Future<String?> getPrinterInfoByKey(String keyName) {
+    return IminPrinterPlatform.instance.getPrinterInfoByKey(keyName);
+  }
+
+  Future<List<String>?> getPrinterInfoList(String keyName) {
+    return IminPrinterPlatform.instance.getPrinterInfoList(keyName);
+  }
+
+  Future<String?> getPrinterInfoString(String keyName) {
+    return IminPrinterPlatform.instance.getPrinterInfoString(keyName);
+  }
+
+  // --- 打印机信息/设置补充 ---
+  Future<String?> getPrinterTemperature() {
+    return IminPrinterPlatform.instance.getPrinterTemperature();
+  }
+
+  Future<bool?> supportCashBox() {
+    return IminPrinterPlatform.instance.supportCashBox();
+  }
+
+  Future<List<String>?> getPrinterPatternList() {
+    return IminPrinterPlatform.instance.getPrinterPatternList();
+  }
+
+  Future<String?> getPrinterSupplierName() {
+    return IminPrinterPlatform.instance.getPrinterSupplierName();
+  }
+
+  Future<String?> getPrinterKnifeReset() {
+    return IminPrinterPlatform.instance.getPrinterKnifeReset();
+  }
+
+  // --- 事务打印带回调 ---
+  Future<bool?> commitPrinterBufferWithCallback() {
+    return IminPrinterPlatform.instance.commitPrinterBufferWithCallback();
+  }
+
+  Future<bool?> exitPrinterBufferWithCallback(bool isCommit) {
+    return IminPrinterPlatform.instance.exitPrinterBufferWithCallback(isCommit);
+  }
+
+  // --- 标签打印补充 ---
+  Future<void> labelPrintBitmapDirect(Uint8List bitmap, int width, int height) {
+    return IminPrinterPlatform.instance.labelPrintBitmap(bitmap, width, height);
+  }
+
+  Future<String?> labelGapSensorCalibration() {
+    return IminPrinterPlatform.instance.labelGapSensorCalibration();
+  }
+
+  Future<void> labelSetPrinterMode(int mode) {
+    return IminPrinterPlatform.instance.labelSetPrinterMode(mode);
+  }
+
+  Future<String?> labelQueryInfo(IminLabelInfo labelInfo) {
+    return IminPrinterPlatform.instance.labelQueryInfo(labelInfo);
+  }
+
+  Future<bool?> labelRestoreDefaults() {
+    return IminPrinterPlatform.instance.labelRestoreDefaults();
+  }
+
+  Future<void> setLabelContinuousPrint(bool enable) {
+    return IminPrinterPlatform.instance.setLabelContinuousPrint(enable);
+  }
+
+  // --- 状态监听 ---
+  Future<void> regesiterPrinterStatusCallback() {
+    return IminPrinterPlatform.instance.regesiterPrinterStatusCallback();
+  }
 }

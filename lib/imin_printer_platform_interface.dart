@@ -103,7 +103,8 @@ abstract class IminPrinterPlatform extends PlatformInterface {
 
   Future<void> printSingleBitmapWithTranslation(dynamic img,
       {IminPictureStyle? pictureStyle}) {
-    throw UnimplementedError('printSingleBitmapWithTranslation() has not been implemented.');
+    throw UnimplementedError(
+        'printSingleBitmapWithTranslation() has not been implemented.');
   }
 
   Future<void> printMultiBitmap(List<dynamic> imgs,
@@ -412,9 +413,11 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   Future<void> setPrinterEncode(int encode) {
     throw UnimplementedError('setPrinterEncode() has not been implemented.');
   }
+
   Future<void> openLogs(int encode) {
     throw UnimplementedError('openLogs() has not been implemented.');
   }
+
   Future<void> sendRAWDataHexStr(String bytes) {
     throw UnimplementedError('sendRAWDataHexStr() has not been implemented.');
   }
@@ -423,23 +426,24 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('labelInitCanvas() has not been implemented.');
   }
 
-  Future<void> labelAddText(String text,{ LabelTextStyle? labelTextStyle}) {
+  Future<void> labelAddText(String text, {LabelTextStyle? labelTextStyle}) {
     throw UnimplementedError('labelAddText() has not been implemented.');
   }
 
-  Future<void> labelAddBarCode(String barCode,{ LabelBarCodeStyle? barCodeStyle}) {
+  Future<void> labelAddBarCode(String barCode,
+      {LabelBarCodeStyle? barCodeStyle}) {
     throw UnimplementedError('labelAddBarCode() has not been implemented.');
   }
 
-  Future<void> labelAddQrCode(String qrCode,{ LabelQrCodeStyle? qrCodeStyle}) {
+  Future<void> labelAddQrCode(String qrCode, {LabelQrCodeStyle? qrCodeStyle}) {
     throw UnimplementedError('labelAddQrCode() has not been implemented.');
   }
 
-  Future<void> labelAddArea({ LabelAreaStyle? areaStyle}) {
+  Future<void> labelAddArea({LabelAreaStyle? areaStyle}) {
     throw UnimplementedError('labelAddArea() has not been implemented.');
   }
 
-  Future<void> labelAddBitmap(dynamic img,{ LabelBitmapStyle? addBitmapStyle}) {
+  Future<void> labelAddBitmap(dynamic img, {LabelBitmapStyle? addBitmapStyle}) {
     throw UnimplementedError('labelAddBitmap() has not been implemented.');
   }
 
@@ -447,7 +451,8 @@ abstract class IminPrinterPlatform extends PlatformInterface {
     throw UnimplementedError('labelPrintCanvas() has not been implemented.');
   }
 
-  Future<void> printLabelBitmap(dynamic img,{ LabelPrintBitmapStyle? printBitmapStyle}) {
+  Future<void> printLabelBitmap(dynamic img,
+      {LabelPrintBitmapStyle? printBitmapStyle}) {
     throw UnimplementedError('printLabelBitmap() has not been implemented.');
   }
 
@@ -456,11 +461,216 @@ abstract class IminPrinterPlatform extends PlatformInterface {
   }
 
   Future<void> setPrintModel(int printModel) {
-    throw UnimplementedError('labelLearning() has not been implemented.');
+    throw UnimplementedError('setPrintModel() has not been implemented.');
   }
 
-  // Future<String?> getPrintModel() {
-  //   throw UnimplementedError('getUsbPrinterVidPid() has not been implemented.');
-  // }
+  // ==================== 新增方法 ====================
 
+  // --- ESC/POS 字体控制 ---
+  Future<void> setFontMultiple(int wide, int high) {
+    throw UnimplementedError('setFontMultiple() has not been implemented.');
+  }
+
+  Future<void> setFontBold(bool bold) {
+    throw UnimplementedError('setFontBold() has not been implemented.');
+  }
+
+  Future<void> setFontAntiWhite(bool antiWhite) {
+    throw UnimplementedError('setFontAntiWhite() has not been implemented.');
+  }
+
+  Future<void> setFontItalic(bool italic) {
+    throw UnimplementedError('setFontItalic() has not been implemented.');
+  }
+
+  Future<void> setFontUnderline(int underline) {
+    throw UnimplementedError('setFontUnderline() has not been implemented.');
+  }
+
+  Future<void> setFontRotate(int rotate) {
+    throw UnimplementedError('setFontRotate() has not been implemented.');
+  }
+
+  Future<void> setFontDirection(int direction) {
+    throw UnimplementedError('setFontDirection() has not been implemented.');
+  }
+
+  Future<void> setFontLineSpacing(int space) {
+    throw UnimplementedError('setFontLineSpacing() has not been implemented.');
+  }
+
+  Future<void> setFontChineseSpace(int leftSpace, int rightSpace) {
+    throw UnimplementedError('setFontChineseSpace() has not been implemented.');
+  }
+
+  Future<void> setFontCharSpace(int space) {
+    throw UnimplementedError('setFontCharSpace() has not been implemented.');
+  }
+
+  Future<void> setFontChineseSize(
+      int height, int width, int underLine, int chineseType) {
+    throw UnimplementedError('setFontChineseSize() has not been implemented.');
+  }
+
+  Future<void> setFontCharSize(
+      int height, int width, int underLine, int asciiType) {
+    throw UnimplementedError('setFontCharSize() has not been implemented.');
+  }
+
+  Future<void> setFontChineseMode(int mode) {
+    throw UnimplementedError('setFontChineseMode() has not been implemented.');
+  }
+
+  Future<void> setFontCountryCode(int country) {
+    throw UnimplementedError('setFontCountryCode() has not been implemented.');
+  }
+
+  Future<List<String>?> getFontCountryCode() {
+    throw UnimplementedError('getFontCountryCode() has not been implemented.');
+  }
+
+  // --- 文本打印补充 ---
+  Future<void> printTextWithAli(String text, int align) {
+    throw UnimplementedError('printTextWithAli() has not been implemented.');
+  }
+
+  Future<void> printEscPosText(String text, {IminEscPosTextStyle? style}) {
+    throw UnimplementedError('printEscPosText() has not been implemented.');
+  }
+
+  Future<void> printTextWithEncode(String text, String encode) {
+    throw UnimplementedError('printTextWithEncode() has not been implemented.');
+  }
+
+  // --- 走纸/切纸补充 ---
+  Future<void> printAndQuitPaper(int value) {
+    throw UnimplementedError('printAndQuitPaper() has not been implemented.');
+  }
+
+  Future<void> partialCutAndFeedPaper(int length) {
+    throw UnimplementedError(
+        'partialCutAndFeedPaper() has not been implemented.');
+  }
+
+  Future<void> fullCutAndFeedPaper(int length) {
+    throw UnimplementedError('fullCutAndFeedPaper() has not been implemented.');
+  }
+
+  // --- 高级2D码 ---
+  Future<void> print2DCode(
+      String data, int symbology, int moduleSize, int errorLevel, int align) {
+    throw UnimplementedError('print2DCode() has not been implemented.');
+  }
+
+  Future<void> printPDF417(String data, int columns, int rows, int moduleWidth,
+      int rowHeight, int errorLevel, int selectOptions, int align) {
+    throw UnimplementedError('printPDF417() has not been implemented.');
+  }
+
+  Future<void> printMaxiCode(String data, int modeType, int align) {
+    throw UnimplementedError('printMaxiCode() has not been implemented.');
+  }
+
+  Future<void> printAztecCode(String data, int modeType, int dataLayers,
+      int moduleSize, int errorLevel, int align) {
+    throw UnimplementedError('printAztecCode() has not been implemented.');
+  }
+
+  Future<void> printDataMatrix(String data, int symbolType, int columns,
+      int rows, int moduleSize, int align) {
+    throw UnimplementedError('printDataMatrix() has not been implemented.');
+  }
+
+  // --- 通用 Key-Value 接口 ---
+  Future<bool?> setPrinterAction(String keyName, String keyValue) {
+    throw UnimplementedError('setPrinterAction() has not been implemented.');
+  }
+
+  Future<bool?> setPrinterActionList(String keyName, List<String> keyValue) {
+    throw UnimplementedError(
+        'setPrinterActionList() has not been implemented.');
+  }
+
+  Future<String?> getPrinterInfoByKey(String keyName) {
+    throw UnimplementedError('getPrinterInfoByKey() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterInfoList(String keyName) {
+    throw UnimplementedError('getPrinterInfoList() has not been implemented.');
+  }
+
+  Future<String?> getPrinterInfoString(String keyName) {
+    throw UnimplementedError(
+        'getPrinterInfoString() has not been implemented.');
+  }
+
+  // --- 打印机信息/设置补充 ---
+  Future<String?> getPrinterTemperature() {
+    throw UnimplementedError(
+        'getPrinterTemperature() has not been implemented.');
+  }
+
+  Future<bool?> supportCashBox() {
+    throw UnimplementedError('supportCashBox() has not been implemented.');
+  }
+
+  Future<List<String>?> getPrinterPatternList() {
+    throw UnimplementedError(
+        'getPrinterPatternList() has not been implemented.');
+  }
+
+  Future<String?> getPrinterSupplierName() {
+    throw UnimplementedError(
+        'getPrinterSupplierName() has not been implemented.');
+  }
+
+  Future<String?> getPrinterKnifeReset() {
+    throw UnimplementedError(
+        'getPrinterKnifeReset() has not been implemented.');
+  }
+
+  // --- 事务打印带回调 ---
+  Future<bool?> commitPrinterBufferWithCallback() {
+    throw UnimplementedError(
+        'commitPrinterBufferWithCallback() has not been implemented.');
+  }
+
+  Future<bool?> exitPrinterBufferWithCallback(bool isCommit) {
+    throw UnimplementedError(
+        'exitPrinterBufferWithCallback() has not been implemented.');
+  }
+
+  // --- 标签打印补充 ---
+  Future<void> labelPrintBitmap(Uint8List bitmap, int width, int height) {
+    throw UnimplementedError('labelPrintBitmap() has not been implemented.');
+  }
+
+  Future<String?> labelGapSensorCalibration() {
+    throw UnimplementedError(
+        'labelGapSensorCalibration() has not been implemented.');
+  }
+
+  Future<void> labelSetPrinterMode(int mode) {
+    throw UnimplementedError('labelSetPrinterMode() has not been implemented.');
+  }
+
+  Future<String?> labelQueryInfo(IminLabelInfo labelInfo) {
+    throw UnimplementedError('labelQueryInfo() has not been implemented.');
+  }
+
+  Future<bool?> labelRestoreDefaults() {
+    throw UnimplementedError(
+        'labelRestoreDefaults() has not been implemented.');
+  }
+
+  Future<void> setLabelContinuousPrint(bool enable) {
+    throw UnimplementedError(
+        'setLabelContinuousPrint() has not been implemented.');
+  }
+
+  // --- 状态监听 ---
+  Future<void> regesiterPrinterStatusCallback() {
+    throw UnimplementedError(
+        'regesiterPrinterStatusCallback() has not been implemented.');
+  }
 }

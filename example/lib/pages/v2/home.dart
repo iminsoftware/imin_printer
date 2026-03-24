@@ -11,6 +11,7 @@ import 'package:imin_printer_example/pages/v2/print_sttings_form.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'transaction_print.dart';
+import 'new_features_test.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({super.key});
@@ -159,7 +160,6 @@ class _NewHomeState extends State<NewHome> {
                 onPressed: () async {
                   await iminPrinter.printAndFeedPaper(70);
                   await iminPrinter.partialCut();
-
                 },
                 child: const Text('partialCut'),
               ),
@@ -170,7 +170,6 @@ class _NewHomeState extends State<NewHome> {
 
                   await iminPrinter.printAndFeedPaper(100);
                   await iminPrinter.fullCut();
-
                 },
                 child: const Text('fullCut'),
               ),
@@ -762,65 +761,75 @@ class _NewHomeState extends State<NewHome> {
               // OutlinedButton(
               //   onPressed: () async {
               //     // 创建一个 LabelCanvasStyle 对象
-                  // await iminPrinter.printSingleBitmap(
-                  //     'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
-                  //     pictureStyle: IminPictureStyle(
-                  //       alignment: IminPrintAlign.center,
-                  //       width: 150,
-                  //       height: 50,
-                  //     ));
-                  // await iminPrinter.setTextBitmapSize(42);
-                  // await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
-                  // await iminPrinter.printTextBitmap('TEXT HHHHHHH');
-                  // await iminPrinter.printColumnsString(cols: [
-                  //   ColumnMaker(
-                  //       text: 'name',
-                  //       width: 1,
-                  //       fontSize: 26,
-                  //       align: IminPrintAlign.left),
-                  //   ColumnMaker(
-                  //       text: 'Apple',
-                  //       width: 1,
-                  //       fontSize: 26,
-                  //       align: IminPrintAlign.left),
-                  //   ColumnMaker(
-                  //       text: 'price',
-                  //       width: 1,
-                  //       fontSize: 26,
-                  //       align: IminPrintAlign.left),
-                  //   ColumnMaker(
-                  //       text: '25.95',
-                  //       width: 1,
-                  //       fontSize: 26,
-                  //       align: IminPrintAlign.right),
-                  // ]);
-                  // await iminPrinter.setTextBitmapSize(26);
-                  // await iminPrinter.setTextBitmapStyle(IminFontStyle.normal);
-                  // await iminPrinter.printTextBitmap('this all');
+              // await iminPrinter.printSingleBitmap(
+              //     'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+              //     pictureStyle: IminPictureStyle(
+              //       alignment: IminPrintAlign.center,
+              //       width: 150,
+              //       height: 50,
+              //     ));
+              // await iminPrinter.setTextBitmapSize(42);
+              // await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
+              // await iminPrinter.printTextBitmap('TEXT HHHHHHH');
+              // await iminPrinter.printColumnsString(cols: [
+              //   ColumnMaker(
+              //       text: 'name',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: 'Apple',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: 'price',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: '25.95',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.right),
+              // ]);
+              // await iminPrinter.setTextBitmapSize(26);
+              // await iminPrinter.setTextBitmapStyle(IminFontStyle.normal);
+              // await iminPrinter.printTextBitmap('this all');
 
-                  // await iminPrinter.setTextBitmapAntiWhite(true);
-                  // // await iminPrinter.setTextBitmapLineSpacing(0.8);
-                  // // await iminPrinter.setTextLineSpacing(2);
-                  // await iminPrinter
-                  //     .printTextBitmap('this is setTextBitmapAntiWhite');
-                  // await iminPrinter.setTextBitmapAntiWhite(false);
-                  //
-                  // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
-                  //
-                  // await iminPrinter.printTextBitmap('this all');
-                  //
-                  // await iminPrinter.printTextBitmap('this all');
+              // await iminPrinter.setTextBitmapAntiWhite(true);
+              // // await iminPrinter.setTextBitmapLineSpacing(0.8);
+              // // await iminPrinter.setTextLineSpacing(2);
+              // await iminPrinter
+              //     .printTextBitmap('this is setTextBitmapAntiWhite');
+              // await iminPrinter.setTextBitmapAntiWhite(false);
+              //
+              // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
+              //
+              // await iminPrinter.printTextBitmap('this all');
+              //
+              // await iminPrinter.printTextBitmap('this all');
 
-                  // await iminPrinter.printBarCode(IminBarcodeType.code39, '12345678',
-                  //    style: IminBarCodeStyle(
-                  //      align: IminPrintAlign.left,
-                  //      position: IminBarcodeTextPos.textBelow,
-                  //      height: 100,
-                  //      width: 2
-                  //    ));
+              // await iminPrinter.printBarCode(IminBarcodeType.code39, '12345678',
+              //    style: IminBarCodeStyle(
+              //      align: IminPrintAlign.left,
+              //      position: IminBarcodeTextPos.textBelow,
+              //      height: 100,
+              //      width: 2
+              //    ));
               //   },
               //   child: const Text('printExamp lelabelPrint'),
               // ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewFeaturesTestPage()),
+                  );
+                },
+                child: const Text('🆕 New Features Test'),
+              ),
             ],
           ),
         )));
