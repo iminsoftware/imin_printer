@@ -1,6 +1,6 @@
 name: imin_printer
 description: Add label printing API and call examples
-version: 0.6.17
+version: 0.7.0
 homepage: https://github.com/iminsoftware/imin_printer
 
 environment:

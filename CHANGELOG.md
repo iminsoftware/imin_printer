@@ -1,4 +1,83 @@
 # Changelog
+# 0.7.0 (2026/03/24)
+
+> **Note:** All new features below are only available on Android 13 (API 33) and above devices using SDK 2.0. On older devices (SDK 1.0), these methods will be silently ignored.
+> 
+> 以下新增功能仅适用于 Android 13 (API 33) 及以上设备（SDK 2.0）。在旧设备（SDK 1.0）上调用这些方法会被静默忽略。
+
+### Bug Fixes
+- Fix `setTextBitmapLetterSpacing` calling wrong method internally (修复setTextBitmapLetterSpacing内部调用错误方法)
+- Fix `setTextWidth` calling wrong MethodChannel name (修复setTextWidth调用了错误的MethodChannel名称)
+- Fix `printText` with style not working on SDK 2.0 devices — now auto routes to printTextBitmap path (修复2.0设备上printText带style参数无效的问题，自动走位图打印路径)
+- Fix `LabelCanvasStyle` missing `enableReverse` and `enableMirror` fields (修复LabelCanvasStyle缺少enableReverse和enableMirror字段)
+
+### New Features — ESC/POS Font Control (2.0 SDK)
+
+> **Important:** These methods only take effect when used with `printEscPosText` or `printText` (without style). They do NOT affect `printTextBitmap`. These are global settings — you must manually reset them after use (e.g. `setFontBold(false)` or call `initPrinterParams()`), otherwise they will affect all subsequent prints.
+> 
+> 重要提示：这些方法仅对 `printEscPosText` 或不带 style 的 `printText` 生效，对 `printTextBitmap` 无效。这些是全局配置，使用后需手动还原（如 `setFontBold(false)` 或调用 `initPrinterParams()`），否则会影响后续所有打印。
+
+- Add `setFontMultiple` — set font width/height multiple (设置字体倍宽倍高)
+- Add `setFontBold` — set font bold (设置字体加粗)
+- Add `setFontItalic` — set font italic (设置字体斜体)
+- Add `setFontAntiWhite` — set font anti-white (设置字体反白)
+- Add `setFontUnderline` — set font underline (设置字体下划线)
+- Add `setFontRotate` — set font rotate (设置字体旋转)
+- Add `setFontDirection` — set print direction (设置打印方向)
+- Add `setFontLineSpacing` — set line spacing (设置行间距)
+- Add `setFontCharSpace` — set char spacing (设置字符间距)
+- Add `setFontChineseSpace` — set Chinese char spacing (设置中文左右间距)
+- Add `setFontChineseSize` — set Chinese font size (设置中文字号)
+- Add `setFontCharSize` — set ASCII font size (设置ASCII字号)
+- Add `setFontChineseMode` — set Chinese mode (设置中文模式)
+- Add `setFontCountryCode` / `getFontCountryCode` — country code setting (国家代码设置)
+
+### New Features — printEscPosText
+- Add `printEscPosText` — ESC/POS text print with style (ESC/POS指令文本打印，支持倍宽倍高/加粗/斜体/反白/下划线/对齐等)
+- Add `IminEscPosTextStyle` style class
+
+### New Features — Advanced 2D Codes
+- Add `print2DCode` — generic 2D code print (通用2D码打印)
+- Add `printPDF417` — PDF417 barcode print (PDF417码打印)
+- Add `printDataMatrix` — DataMatrix code print (DataMatrix码打印)
+- Add `printAztecCode` — Aztec code print (Aztec码打印)
+- Add `printMaxiCode` — MaxiCode print (MaxiCode打印)
+
+### New Features — Text Print
+- Add `printTextWithAli` — print text with alignment (带对齐的文本打印)
+- Add `printTextWithEncode` — print text with encoding (带编码的文本打印)
+
+### New Features — Paper Control
+- Add `printAndQuitPaper` — print and retract paper (打印并退纸)
+- Add `partialCutAndFeedPaper` — partial cut and feed (半切并走纸)
+- Add `fullCutAndFeedPaper` — full cut and feed (全切并走纸)
+
+### New Features — Printer Info
+- Add `getPrinterTemperature` — get print head temperature (获取打印头温度)
+- Add `supportCashBox` — check cash box support (检查是否支持钱箱)
+- Add `getPrinterPatternList` — get pattern list (获取模式列表)
+- Add `getPrinterSupplierName` — get supplier name (获取供应商名称)
+- Add `getPrinterKnifeReset` — knife reset (切刀复位)
+
+### New Features — Transaction Print
+- Add `commitPrinterBufferWithCallback` — commit with callback (带回调的事务提交)
+- Add `exitPrinterBufferWithCallback` — exit with callback (带回调的事务退出)
+
+### New Features — Label Print
+- Add `labelPrintBitmapDirect` — direct label bitmap print (直接标签位图打印)
+- Add `labelGapSensorCalibration` — gap sensor calibration (缝隙传感器校准)
+- Add `labelSetPrinterMode` — set label printer mode (设置标签打印机模式)
+- Add `labelQueryInfo` — query label info (查询标签信息)
+- Add `labelRestoreDefaults` — restore label defaults (恢复标签默认设置)
+- Add `setLabelContinuousPrint` — continuous label print (标签连续打印)
+- Add `IminLabelInfo` enum for label query types
+
+### New Features — Status
+- Add `regesiterPrinterStatusCallback` — register printer status callback via EventChannel (注册打印机状态变化回调)
+
+### Dependencies
+- Upgrade NeoPrinterLibrary from V1.0.0.15 to V2.0.0.18
+
 # 0.6.17 (2026/03/24)
 - Fix initPrinter not returning result on SDK 2.0 (Android 15+), causing Flutter await to hang indefinitely (修复SDK 2.0模式下initPrinter未返回result导致Flutter端await永久挂起的问题)
 # 0.6.16 (2026/03/23)
