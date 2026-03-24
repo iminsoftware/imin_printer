@@ -116,11 +116,11 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
   Future<void> printText(String text, {IminTextStyle? style}) async {
     Map<String, dynamic> arguments = <String, dynamic>{};
     if (style != null) {
-      if (style.wordWrap != null && style.wordWrap == false) {
+      // if (style.wordWrap != null && style.wordWrap == false) {
         arguments.putIfAbsent('text', () => text);
-      } else {
-        arguments.putIfAbsent('text', () => '$text\n');
-      }
+      // } else {
+      //   arguments.putIfAbsent('text', () => '$text\n');
+      // }
       if (style.align != null) {
         await setAlignment(style.align!);
       }
@@ -139,7 +139,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         await setTextStyle(style.fontStyle!);
       }
     } else {
-      arguments.putIfAbsent('text', () => '$text\n');
+      // arguments.putIfAbsent('text', () => '$text\n');
+      arguments.putIfAbsent('text', () => text);
     }
     await methodChannel.invokeMethod<void>('printText', arguments);
     if (style != null) {
@@ -180,7 +181,8 @@ class MethodChannelIminPrinter extends IminPrinterPlatform {
         await setTextStyle(style.fontStyle!);
       }
     } else {
-      arguments.putIfAbsent('text', () => '$text\n');
+      // arguments.putIfAbsent('text', () => '$text\n');
+      arguments.putIfAbsent('text', () => text);
     }
 
     await methodChannel.invokeMethod<void>('printAntiWhiteText', arguments);
