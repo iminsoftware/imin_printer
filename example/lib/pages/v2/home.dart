@@ -821,6 +821,12 @@ class _NewHomeState extends State<NewHome> {
               //   child: const Text('printExamp lelabelPrint'),
               // ),
               OutlinedButton(
+                onPressed: () async {
+                  await _printReceipt();
+                },
+                child: const Text('☕ Print Coffee Receipt'),
+              ),
+              OutlinedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -833,6 +839,146 @@ class _NewHomeState extends State<NewHome> {
             ],
           ),
         )));
+  }
+
+  Future<void> _printReceipt() async {
+    try {
+      // Initialize printer
+      bool? initialized = await iminPrinter.initPrinter();
+      if (initialized != true) {
+        throw Exception('Failed to initialize printer');
+      }
+
+      // Check printer status
+      Map<String, dynamic> state = await iminPrinter.getPrinterStatus();
+      debugPrint('Printer status: $state');
+
+      // Print receipt header
+      await iminPrinter.printText(
+        'COFFEE SHOP',
+        style: IminTextStyle(
+          fontSize: 32,
+          fontStyle: IminFontStyle.bold,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printText(
+        '123 Main Street',
+        style: IminTextStyle(
+          fontSize: 24,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printAndLineFeed();
+      await iminPrinter.printText('--------------------------------');
+      await iminPrinter.printAndLineFeed();
+
+      // Print items using columns
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Item',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: 'Price',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Coffee',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$3.50',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Muffin',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$2.50',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printText('--------------------------------');
+
+      // Print total
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'TOTAL',
+          width: 200,
+          fontSize: 28,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$6.00',
+          width: 150,
+          fontSize: 28,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printAndLineFeed();
+
+      // Print QR code for receipt
+      await iminPrinter.printQrCode(
+        'receipt-12345',
+        qrCodeStyle: IminQrCodeStyle(
+          qrSize: 5,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printAndLineFeed();
+      await iminPrinter.printText(
+        'Thank you!',
+        style: IminTextStyle(
+          fontSize: 24,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      // Cut paper (if device supports cutter)
+      await iminPrinter.partialCut();
+
+      Fluttertoast.showToast(
+          msg: 'Receipt printed successfully!',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } catch (e) {
+      debugPrint('Receipt printing failed: $e');
+      Fluttertoast.showToast(
+          msg: 'Print failed: $e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   @override
