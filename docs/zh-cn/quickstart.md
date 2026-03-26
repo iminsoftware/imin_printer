@@ -15,7 +15,7 @@ flutter pub add imin_printer
 或在`pubspec.yaml`中添加
 ```yaml
 dependencies:
-  imin_printer: ^0.5.7
+  imin_printer: ^0.7.1
 ```
 
 ## 项目中使用打印插件
@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> {
             child: const Text('打印文本'),
           )
         )
-      )
-     )
+      ),
+     );
   }
 }
 

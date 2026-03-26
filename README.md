@@ -143,9 +143,10 @@ Future<void> printReceipt() async {
   );
   
   // Items
+  // Note: width is the column pixel width, not a ratio
   await iminPrinter.printColumnsText(cols: [
-    ColumnMaker(text: 'Coffee', width: 2, align: IminPrintAlign.left),
-    ColumnMaker(text: '\$3.50', width: 1, align: IminPrintAlign.right),
+    ColumnMaker(text: 'Coffee', width: 200, align: IminPrintAlign.left),
+    ColumnMaker(text: '\$3.50', width: 150, align: IminPrintAlign.right),
   ]);
   
   // QR Code

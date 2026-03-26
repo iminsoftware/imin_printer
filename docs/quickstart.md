@@ -17,7 +17,7 @@ Add the iMin printer plugin to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  imin_printer: ^0.6.14
+  imin_printer: ^0.7.1
 ```
 
 Or install via command line:
@@ -47,7 +47,7 @@ cd my_printer_app
 dependencies:
   flutter:
     sdk: flutter
-  imin_printer: ^0.6.14
+  imin_printer: ^0.7.1
 ```
 
 ### Run pub get
@@ -239,8 +239,8 @@ Future<void> printBarcode() async {
     IminBarcodeType.code128,
     '1234567890',
     style: IminBarCodeStyle(
-      width: 300,
-      height: 80,
+      width: 2,
+      height: 100,
       align: IminPrintAlign.center,
       position: IminBarcodeTextPos.textBelow,
     ),
@@ -290,16 +290,17 @@ Future<void> printReceipt() async {
     await printer.printAndLineFeed();
     
     // Print items using columns
+    // Note: width is the column pixel width, not a ratio. Use values like 200, 150, etc.
     await printer.printColumnsText(cols: [
       ColumnMaker(
         text: 'Item',
-        width: 2,
+        width: 200,
         fontSize: 24,
         align: IminPrintAlign.left,
       ),
       ColumnMaker(
         text: 'Price',
-        width: 1,
+        width: 150,
         fontSize: 24,
         align: IminPrintAlign.right,
       ),
@@ -308,13 +309,13 @@ Future<void> printReceipt() async {
     await printer.printColumnsText(cols: [
       ColumnMaker(
         text: 'Coffee',
-        width: 2,
+        width: 200,
         fontSize: 24,
         align: IminPrintAlign.left,
       ),
       ColumnMaker(
         text: '\$3.50',
-        width: 1,
+        width: 150,
         fontSize: 24,
         align: IminPrintAlign.right,
       ),
@@ -323,13 +324,13 @@ Future<void> printReceipt() async {
     await printer.printColumnsText(cols: [
       ColumnMaker(
         text: 'Muffin',
-        width: 2,
+        width: 200,
         fontSize: 24,
         align: IminPrintAlign.left,
       ),
       ColumnMaker(
         text: '\$2.50',
-        width: 1,
+        width: 150,
         fontSize: 24,
         align: IminPrintAlign.right,
       ),
@@ -341,13 +342,13 @@ Future<void> printReceipt() async {
     await printer.printColumnsText(cols: [
       ColumnMaker(
         text: 'TOTAL',
-        width: 2,
+        width: 200,
         fontSize: 28,
         align: IminPrintAlign.left,
       ),
       ColumnMaker(
         text: '\$6.00',
-        width: 1,
+        width: 150,
         fontSize: 28,
         align: IminPrintAlign.right,
       ),

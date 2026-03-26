@@ -30,7 +30,7 @@ flutter pub add imin_printer
 
 ```yaml
 dependencies:
-  imin_printer: ^0.6.14
+  imin_printer: ^0.7.1
 ```
 
 然后运行：
@@ -273,8 +273,8 @@ await iminPrinter.printBarCode(
   IminBarcodeType.code128,
   '1234567890',
   style: IminBarCodeStyle(
-    width: 300,
-    height: 80,
+    width: 2,
+    height: 100,
     align: IminPrintAlign.center,
     position: IminBarcodeTextPos.textBelow,
   ),
