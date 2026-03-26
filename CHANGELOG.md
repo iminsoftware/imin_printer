@@ -1,4 +1,17 @@
 # Changelog
+# 0.7.1 (2026/03/26)
+
+### Bug Fixes
+- Fix `printColumnsText` example code using incorrect `width` values (1/2) in documentation — `width` represents column pixel width, not a proportional ratio. Updated to proper values (e.g. 200/150) (修复文档中printColumnsText示例代码width参数值错误，width表示列的像素宽度而非比例权重，已更正为合理的像素值)
+
+### Documentation
+- Update `docs/quickstart.md` receipt example with correct `ColumnMaker` width values (更新quickstart.md小票示例中ColumnMaker的width参数)
+- Update `README.md` printColumnsText example with correct width values (更新README.md中printColumnsText示例的width参数)
+- Add width parameter usage note in documentation (在文档中添加width参数用法说明)
+
+### Example
+- Add "Print Coffee Receipt" button in v2 home page for quick receipt printing test (在v2首页添加"Print Coffee Receipt"按钮，用于快速测试小票打印)
+
 # 0.7.0 (2026/03/24)
 
 > **Note:** All new features below are only available on Android 13 (API 33) and above devices using SDK 2.0. On older devices (SDK 1.0), these methods will be silently ignored.
