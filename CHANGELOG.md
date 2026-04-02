@@ -1,4 +1,9 @@
 # Changelog
+# 0.7.2 (2026/04/02)
+
+### Bug Fixes
+- Widen `logger` dependency from `^1.1.0` to `>=1.1.0 <3.0.0` to resolve version conflict with `flutter_map >=7.0.2` and other packages that depend on `logger ^2.0.0` (放宽logger依赖版本范围，解决与flutter_map等依赖logger 2.x的包产生版本冲突的问题)
+
 # 0.7.1 (2026/03/26)
 
 ### Bug Fixes
