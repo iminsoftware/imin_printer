@@ -1,22 +1,22 @@
-# iMin Printer Flutter Plugin
+# iMin Printer Flutter 插件
 
-> 🌐 Language / 语言: **English** | [中文](README-zh.md)
+> 🌐 Language / 语言: [English](README.md) | **中文**
 
-Flutter plugin for iMin built-in thermal printers. Supports text, image, barcode, QR code, and label printing.
+iMin 内置热敏打印�?Flutter 插件，支持文本、图片、条码、QR 码、标签打印等功能�?
 
-## Device Quick Reference
+## 设备信息
 
-| Paper Width | Printable Pixels | Cutter |
-|-------------|-----------------|--------|
-| 80mm | 576px | �?Some models |
+| 纸宽 | 可打印像素宽�?| 有切刀 |
+|------|--------------|--------|
+| 80mm | 576px | �?部分型号 |
 | 58mm | 384px | �?|
 
-| SDK Version | Android Version | Notes |
-|-------------|----------------|-------|
-| SDK 2.0 | Android 13+ | Full feature set, recommended |
-| SDK 1.0 | Android 11 and below | Basic printing features |
+| SDK 版本 | Android 版本 | 说明 |
+|---------|-------------|------|
+| SDK 2.0 | Android 13+ | 完整功能，推荐新项目使用 |
+| SDK 1.0 | Android 11 及以�?| 基础打印功能 |
 
-## Installation
+## 安装
 
 ```yaml
 dependencies:
@@ -27,7 +27,7 @@ dependencies:
 flutter pub get
 ```
 
-## Quick Start
+## 快速开�?
 
 ```dart
 import 'package:imin_printer/imin_printer.dart';
@@ -37,17 +37,17 @@ import 'package:imin_printer/column_maker.dart';
 
 final iminPrinter = IminPrinter();
 
-// 1. Initialize
+// 1. 初始�?
 await iminPrinter.initPrinter();
 
-// 2. Check status
+// 2. 检查状�?
 Map<String, dynamic> status = await iminPrinter.getPrinterStatus();
 if (status['code'] != '0') {
-  print('Printer error: ${status['msg']}');
+  print('打印机异�? ${status['msg']}');
   return;
 }
 
-// 3. Print
+// 3. 打印
 await iminPrinter.printText('Hello World',
   style: IminTextStyle(
     fontSize: 28,
@@ -56,11 +56,11 @@ await iminPrinter.printText('Hello World',
   ),
 );
 
-// 4. Feed paper
+// 4. 走纸
 await iminPrinter.printAndLineFeed();
 ```
 
-## Receipt Example
+## 小票打印示例
 
 ```dart
 Future<void> printReceipt() async {
@@ -77,7 +77,7 @@ Future<void> printReceipt() async {
   await printer.printText('--------------------------------');
   await printer.printAndLineFeed();
 
-  // width is pixel width, 80mm paper = 576px total
+  // width 是像素宽度，80mm 纸总宽 576px
   await printer.printColumnsText(cols: [
     ColumnMaker(text: 'Coffee', width: 200, fontSize: 24, align: IminPrintAlign.left),
     ColumnMaker(text: 'x2',     width: 100, fontSize: 24, align: IminPrintAlign.center),
@@ -107,30 +107,30 @@ Future<void> printReceipt() async {
 }
 ```
 
-## Error Handling
+## 错误处理
 
 ```dart
 Future<void> safePrint() async {
   try {
     Map<String, dynamic> status = await iminPrinter.getPrinterStatus();
     if (status['code'] != '0') {
-      throw Exception('Printer error: ${status['msg']}');
+      throw Exception('打印机异�? ${status['msg']}');
     }
     await iminPrinter.printText('Hello World');
   } on PlatformException catch (e) {
-    print('Platform error: ${e.message}');
+    print('平台错误: ${e.message}');
   } catch (e) {
-    print('Print error: $e');
+    print('打印错误: $e');
   }
 }
 ```
 
-## API Reference
+## API 文档
 
-Complete method documentation �?[api.md](api.md)
+完整方法参�?�?[api-zh.md](api-zh.md)
 
-## Resources
+## 资源
 
 - [Pub Package](https://pub.dev/packages/imin_printer)
 - [GitHub Repository](https://github.com/iminsoftware/imin_printer)
-- [Official iMin Printer SDK Doc](https://oss-sg.imin.sg/docs/en/PrinterSDK.html)
+- [iMin 官方打印 SDK 文档](https://oss-sg.imin.sg/docs/en/PrinterSDK.html)

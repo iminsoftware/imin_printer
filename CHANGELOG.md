@@ -1,4 +1,20 @@
 # Changelog
+# 0.7.3 (2026/04/29)
+
+### Documentation
+- Restructure documentation: merge 4 separate doc sets (EN 1.0/2.0, ZH 1.0/2.0) into 2 (EN + ZH), each method tagged with `[1.0+]` or `[2.0]` (重构文档结构，合并4套文档为中英文各1套，每个方法标注SDK版本)
+- Add method quick reference table with SDK version tags (新增方法速查表，标注SDK版本)
+- Document all 40+ methods added in v0.7.0 (补齐v0.7.0新增的40+方法文档)
+- Add warnings for `printText` auto-routing behavior on SDK 2.0 devices (标注printText在2.0设备上的自动路由行为)
+- Add global state warnings for ESC/POS font control methods (标注ESC/POS字体控制方法的全局状态陷阱)
+- Fix `printColumnsText` width parameter description: pixel width, not ratio (修正printColumnsText的width参数说明为像素宽度)
+- Clarify `printColumnsString` width is proportional weight, not pixel (说明printColumnsString的width是比例权重)
+- Note `printSingleBitmapBlackWhite` baseStyle parameter is not effective (标注printSingleBitmapBlackWhite的baseStyle参数无效)
+- Note `IminTextStyle.width/space/wordWrap` not effective on 2.0 devices (标注IminTextStyle部分属性在2.0设备上无效)
+- Add missing `width/height` properties to LabelQrCodeStyle and LabelBarCodeStyle docs (补充LabelQrCodeStyle和LabelBarCodeStyle缺失的width/height属性)
+- Remove redundant doc files: examples.md, migration-guide.md, device-compatibility.md, error-codes.md (删除冗余文档文件)
+- Update root README.md for pub.dev with cleaner structure (更新根目录README.md)
+
 # 0.7.2 (2026/04/02)
 
 ### Bug Fixes
