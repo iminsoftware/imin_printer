@@ -2,11 +2,11 @@
 
 Flutter plugin for iMin built-in thermal printers. Supports text, image, barcode, QR code, and label printing on Android.
 
-iMin 内置热敏打印�?Flutter 插件，支持文本、图片、条码、QR 码、标签打印�?
+iMin built-in thermal printer Flutter plugin.
 
 ### Resources
 
-- [Complete Documentation (English / 中文)](https://iminsoftware.github.io/imin_printer/)
+- [Complete Documentation (English / Chinese)](https://iminsoftware.github.io/imin_printer/)
 - [Pub Package](https://pub.dev/packages/imin_printer)
 - [GitHub Repository](https://github.com/iminsoftware/imin_printer)
 - [Official iMin Printer SDK Doc](https://oss-sg.imin.sg/docs/en/PrinterSDK.html)
@@ -15,7 +15,7 @@ iMin 内置热敏打印�?Flutter 插件，支持文本、图片、条码、QR �
 
 | Android |
 | :-----: |
-|   �?  |
+|   Yes   |
 
 ## SDK Version Compatibility
 
@@ -103,7 +103,7 @@ try {
 
 For complete API reference, examples, and device compatibility details:
 
-👉 **[https://iminsoftware.github.io/imin_printer/](https://iminsoftware.github.io/imin_printer/)**
+**[https://iminsoftware.github.io/imin_printer/](https://iminsoftware.github.io/imin_printer/)**
 
 ## License
 
