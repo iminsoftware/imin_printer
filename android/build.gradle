@@ -29,7 +29,6 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 
-apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
 android {
     compileSdkVersion = flutter.compileSdkVersion
     compileOptions {

@@ -35,12 +35,10 @@ doc/api/
 # Android
 android/.idea/
 android/key.properties
-android/libs/*.jar
 example/key.properties
 example/my-release-key.jks
 example/FlutterDemo.apk
 example/android/app/.cxx/
-
 # Keys
 *.jks
 *.keystore

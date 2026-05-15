@@ -1,4 +1,11 @@
 # Changelog
+
+# 0.7.4 (2026/05/15)
+
+### Bug Fixes
+- Fix Android module lib package missing issue (修复android模块lib包丢失问题)
+- Remove `apply from: "./resolve_dependencies.gradle"` to avoid HarmonyOS call conflicts (去掉resolve_dependencies.gradle引用，避免鸿蒙调用冲突)
+
 # 0.7.3 (2026/04/29)
 
 ### Documentation
