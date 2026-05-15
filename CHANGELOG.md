@@ -1,5 +1,10 @@
 # Changelog
 
+# 0.7.5 (2026/05/15)
+
+### Bug Fixes
+- Fix README.md install version reference not updated (修复README.md中安装版本号未同步更新)
+
 # 0.7.4 (2026/05/15)
 
 ### Bug Fixes

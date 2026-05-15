@@ -28,7 +28,7 @@ iMin built-in thermal printer Flutter plugin.
 
 ```yaml
 dependencies:
-  imin_printer: ^0.7.3
+  imin_printer: ^0.7.5
 ```
 
 ```bash

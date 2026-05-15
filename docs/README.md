@@ -8,8 +8,8 @@ Flutter plugin for iMin built-in thermal printers. Supports text, image, barcode
 
 | Paper Width | Printable Pixels | Cutter |
 |-------------|-----------------|--------|
-| 80mm | 576px | ‚ú?Some models |
-| 58mm | 384px | ‚ù?|
+| 80mm | 576px | ÔøΩ?Some models |
+| 58mm | 384px | ÔøΩ?|
 
 | SDK Version | Android Version | Notes |
 |-------------|----------------|-------|
@@ -20,7 +20,7 @@ Flutter plugin for iMin built-in thermal printers. Supports text, image, barcode
 
 ```yaml
 dependencies:
-  imin_printer: ^0.7.3
+  imin_printer: ^0.7.5
 ```
 
 ```bash
@@ -127,7 +127,7 @@ Future<void> safePrint() async {
 
 ## API Reference
 
-Complete method documentation ‚Ü?[api.md](api.md)
+Complete method documentation ÔøΩ?[api.md](api.md)
 
 ## Resources
 

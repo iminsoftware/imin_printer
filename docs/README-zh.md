@@ -2,32 +2,32 @@
 
 > 🌐 Language / 语言: [English](README.md) | **中文**
 
-iMin 内置热敏打印�?Flutter 插件，支持文本、图片、条码、QR 码、标签打印等功能�?
+iMin 内置热敏打印�?Flutter 插件，支持文本、图片、条码、QR 码、标签打印等功能�?
 
 ## 设备信息
 
-| 纸宽 | 可打印像素宽�?| 有切刀 |
+| 纸宽 | 可打印像素宽�?| 有切刀 |
 |------|--------------|--------|
-| 80mm | 576px | �?部分型号 |
-| 58mm | 384px | �?|
+| 80mm | 576px | �?部分型号 |
+| 58mm | 384px | �?|
 
 | SDK 版本 | Android 版本 | 说明 |
 |---------|-------------|------|
 | SDK 2.0 | Android 13+ | 完整功能，推荐新项目使用 |
-| SDK 1.0 | Android 11 及以�?| 基础打印功能 |
+| SDK 1.0 | Android 11 及以�?| 基础打印功能 |
 
 ## 安装
 
 ```yaml
 dependencies:
-  imin_printer: ^0.7.3
+  imin_printer: ^0.7.5
 ```
 
 ```bash
 flutter pub get
 ```
 
-## 快速开�?
+## 快速开�?
 
 ```dart
 import 'package:imin_printer/imin_printer.dart';
@@ -37,13 +37,13 @@ import 'package:imin_printer/column_maker.dart';
 
 final iminPrinter = IminPrinter();
 
-// 1. 初始�?
+// 1. 初始�?
 await iminPrinter.initPrinter();
 
-// 2. 检查状�?
+// 2. 检查状�?
 Map<String, dynamic> status = await iminPrinter.getPrinterStatus();
 if (status['code'] != '0') {
-  print('打印机异�? ${status['msg']}');
+  print('打印机异�? ${status['msg']}');
   return;
 }
 
@@ -114,7 +114,7 @@ Future<void> safePrint() async {
   try {
     Map<String, dynamic> status = await iminPrinter.getPrinterStatus();
     if (status['code'] != '0') {
-      throw Exception('打印机异�? ${status['msg']}');
+      throw Exception('打印机异�? ${status['msg']}');
     }
     await iminPrinter.printText('Hello World');
   } on PlatformException catch (e) {
@@ -127,7 +127,7 @@ Future<void> safePrint() async {
 
 ## API 文档
 
-完整方法参�?�?[api-zh.md](api-zh.md)
+完整方法参�?�?[api-zh.md](api-zh.md)
 
 ## 资源
 
